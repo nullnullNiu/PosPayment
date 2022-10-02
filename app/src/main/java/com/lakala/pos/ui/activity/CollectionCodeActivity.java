@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.lakala.pos.R;
+import com.lakala.pos.interfaces.ICollectionCodeView;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.presente.CollectionCodePresenter;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
 
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class CollectionCodeActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class CollectionCodeActivity extends MVPActivity<ICollectionCodeView, CollectionCodePresenter> implements ICollectionCodeView {
 
 
 //    @BindView(R.id.my_qr)
@@ -33,8 +35,8 @@ public class CollectionCodeActivity extends MVPActivity<IHomeView, MainActivityP
     RequestOptions options = new RequestOptions().bitmapTransform(new RoundedCorners(8)).error(R.drawable.default_image);
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected CollectionCodePresenter createPresenter() {
+        return new CollectionCodePresenter();
     }
 
 

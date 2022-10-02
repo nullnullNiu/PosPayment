@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.lakala.pos.R;
+import com.lakala.pos.interfaces.IHelpView;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.presente.HelpPresenter;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
 
@@ -12,13 +14,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class HelpActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class HelpActivity extends MVPActivity<IHelpView, HelpPresenter> implements IHelpView {
 
 
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected HelpPresenter createPresenter() {
+        return new HelpPresenter();
     }
 
 

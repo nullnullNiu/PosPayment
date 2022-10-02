@@ -13,7 +13,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.lakala.pos.R;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.presente.MainActivityPresenter;
+import com.lakala.pos.presente.TransPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.fragment.TranQueryFragment;
 import com.lakala.pos.utils.LogUtil;
@@ -24,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class TranQueryActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> implements ITransView {
 
     @BindView(R.id.tablayout)
     TabLayout mTabLayout;
@@ -40,8 +42,8 @@ public class TranQueryActivity extends MVPActivity<IHomeView, MainActivityPresen
     private int[] mState = {0, 1, 2, 3};
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected TransPresenter createPresenter() {
+        return new TransPresenter();
     }
 
 

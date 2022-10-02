@@ -5,20 +5,22 @@ import android.view.View;
 
 import com.lakala.pos.R;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.interfaces.ISummaryView;
 import com.lakala.pos.presente.MainActivityPresenter;
+import com.lakala.pos.presente.SummaryPresenter;
 import com.lakala.pos.ui.MVPActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SummaryActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter> implements ISummaryView {
 
 
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected SummaryPresenter createPresenter() {
+        return new SummaryPresenter();
     }
 
 

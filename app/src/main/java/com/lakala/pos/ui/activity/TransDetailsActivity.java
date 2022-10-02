@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lakala.pos.R;
-import com.lakala.pos.interfaces.IHomeView;
-import com.lakala.pos.presente.MainActivityPresenter;
+import com.lakala.pos.interfaces.ITransView;
+import com.lakala.pos.presente.TransPresenter;
 import com.lakala.pos.ui.MVPActivity;
 
 import butterknife.BindView;
@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class TransDetailsActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter> implements ITransView {
 
     @BindView(R.id.previous)
     LinearLayout previous;
@@ -24,8 +24,8 @@ public class TransDetailsActivity extends MVPActivity<IHomeView, MainActivityPre
 
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected TransPresenter createPresenter() {
+        return new TransPresenter();
     }
 
 

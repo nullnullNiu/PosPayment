@@ -7,7 +7,9 @@ import android.widget.EditText;
 
 import com.lakala.pos.R;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.interfaces.IRevokeView;
 import com.lakala.pos.presente.MainActivityPresenter;
+import com.lakala.pos.presente.RevokePresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.ToastUtil;
@@ -17,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class RevokeActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView  {
+public class RevokeActivity extends MVPActivity<IRevokeView, RevokePresenter> implements IRevokeView  {
 
 //    @BindView(R.id.rb_scan)
 //    RadioButton rbScan;
@@ -28,8 +30,8 @@ public class RevokeActivity extends MVPActivity<IHomeView, MainActivityPresenter
     private int transType = 0;
 
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected RevokePresenter createPresenter() {
+        return new RevokePresenter();
     }
 
 

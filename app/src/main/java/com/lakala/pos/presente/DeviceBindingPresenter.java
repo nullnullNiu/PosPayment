@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lakala.pos.bean.BindDeviceInfoBean;
+import com.lakala.pos.bean.EnterpriseInfoBean;
 import com.lakala.pos.bean.LoginInfo;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.IDeviceBindView;
@@ -24,12 +25,21 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
             @Override
             public void onSuccess(String result) {
                 LogUtil.e("根据公司名称获取抬头信息 成功" + result);
-                getView().companySearch(result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+                    EnterpriseInfoBean bean = new Gson().fromJson(result,EnterpriseInfoBean.class);
+                    getView().companySearch(bean);
+                }else {
+                    String msg = jsonObject.get("msg").getAsString();
+                    ToastUtil.showToast(msg);
+                }
             }
 
             @Override
             public void onFailure(Throwable e, String s) {
-
+                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
             }
         });
     }
@@ -58,7 +68,8 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
 
             @Override
             public void onFailure(Throwable e, String s) {
-
+                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
             }
         });
     }

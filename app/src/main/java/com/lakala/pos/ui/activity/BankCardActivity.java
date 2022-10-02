@@ -12,7 +12,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.lakala.pos.R;
 import com.lakala.pos.adapter.ViewPagerAdapter;
+import com.lakala.pos.interfaces.IBankCardView;
 import com.lakala.pos.interfaces.IHomeView;
+import com.lakala.pos.presente.BankCardPresenter;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
 
@@ -24,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class BankCardActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresenter> implements IBankCardView {
 
     @BindView(R.id.tv_money_lalue)
     TextView money;
@@ -47,8 +49,8 @@ public class BankCardActivity extends MVPActivity<IHomeView, MainActivityPresent
 
     double amount = 0;
     @Override
-    protected MainActivityPresenter createPresenter() {
-        return new MainActivityPresenter();
+    protected BankCardPresenter createPresenter() {
+        return new BankCardPresenter();
     }
 
 

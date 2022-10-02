@@ -1,6 +1,10 @@
 package com.lakala.pos.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -8,16 +12,18 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.BindDeviceInfoBean;
+import com.lakala.pos.bean.EnterpriseInfoBean;
 import com.lakala.pos.interfaces.IDeviceBindView;
 import com.lakala.pos.presente.DeviceBindingPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBindingPresenter> implements IDeviceBindView {
+public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBindingPresenter> implements IDeviceBindView , TextWatcher {
 
     @BindView(R.id.enterprise_name)
     EditText et_entName; // 企业名称
@@ -38,6 +44,23 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @BindView(R.id.et_phone)
     EditText et_phone; // 手机号
 
+    private String name = "";
+
+    private Handler handler = new Handler();
+
+    /**
+     * 延迟线程，看是否还有下一个字符输入
+     */
+    private Runnable delayRun = new Runnable() {
+
+        @Override
+        public void run() {
+            //在这里调用服务器的接口，获取数据
+            LogUtil.i("在这里调用服务器的接口 获取数据" );
+            onCompanySearch();
+        }
+    };
+
 
     @Override
     protected DeviceBindingPresenter createPresenter() {
@@ -51,8 +74,28 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         setContentView(R.layout.activity_device_binding);
         ButterKnife.bind(this);
 
-
+        et_entName.addTextChangedListener(this);
     }
+
+
+
+    private void onCompanySearch(){
+        if (TextUtils.isEmpty(name)){
+            ToastUtil.showToast("请输入企业名称");
+            return;
+        }
+        String entName = "{\"companyName\":\"" + name + "\"}";
+        mPresenter.companySearch(entName);
+    }
+
+
+    @Override
+    public void companySearch(EnterpriseInfoBean bean) {
+        LogUtil.i("根据公司名称返回抬头信息:  " + bean);
+        tax_number.setText(bean.getData().get(0).getTaxId());
+        et_address.setText(bean.getData().get(0).getLocation());
+    }
+
 
 
     @OnClick({R.id.back_tv, R.id.submit_modify})
@@ -123,21 +166,40 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         mPresenter.onBindDevice(bindInfo);
     }
 
-
-    private void onCompanySearch(){
-//        String s = "北京百望商";
-//        String str = "{\"companyName\":\"" + s + "\"}";
-//        mPresenter.companySearch(str);
-    }
-
-    @Override
-    public void companySearch(String result) {
-        LogUtil.i("根据公司名称获取抬头信息:  " + result);
-
-    }
-
     @Override
     public void bindResult(String result) {
         LogUtil.i("绑定设备信息:  " + result);
+
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        LogUtil.i("beforeTextChanged  修改前 " + s  );
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        LogUtil.i("onTextChanged 修改中" );
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        LogUtil.i("afterTextChanged 修改后"  + s );
+        if(delayRun!=null){
+            //每次editText有变化的时候，则移除上次发出的延迟线程
+            handler.removeCallbacks(delayRun);
+            LogUtil.i("移除上次发出的延迟线程" );
+        }
+        name = s.toString();
+        //延迟800ms，如果不再输入字符，则执行该线程的run方法
+        handler.postDelayed(delayRun, 5000);
     }
 }

@@ -11,9 +11,14 @@
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_to_black_color.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_bank_card.xml" value="0.33" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_collection_code.xml" value="0.5046875" />
-        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_device_binding.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_customer_service.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_device_binding.xml" value="0.5" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_main.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_revoke.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_set_personnel.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_seting.xml" value="0.24445005045408677" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_shift_change.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_summary.xml" value="0.24445005045408677" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_tran_query.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/exception_reminder_dialog.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_first.xml" value="0.5046875" />

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rl_title_layoutr"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:background="#423B3A"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/back_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title_tv"
+             app:layout_constraintBottom_toBottomOf="@id/title_tv"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            android:drawableStart="@mipmap/back_img"
+            android:background="@drawable/title_bg_r10"
+            android:padding="8dp"
+            android:text="返回" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:text="收款码" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="40dp">
+
+        <TextView
+            android:id="@+id/tv_money_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付金额:"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_money_lalue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/tv_money_key"
+            app:layout_constraintTop_toTopOf="@id/tv_money_key"
+            app:layout_constraintBottom_toBottomOf="@id/tv_money_key"
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:text="￥0.00"/>
+
+
+        <TextView
+            android:id="@+id/tv_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="支持钱包类型:"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_money_key"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ImageView
+            android:id="@+id/im_wechat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tv_pay_type"
+            app:layout_constraintTop_toTopOf="@id/tv_pay_type"
+            app:layout_constraintBottom_toBottomOf="@id/tv_pay_type"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/wechat"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/im_wechat"
+            app:layout_constraintTop_toTopOf="@id/im_wechat"
+            app:layout_constraintBottom_toBottomOf="@id/im_wechat"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/alipay"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/my_qr"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/default_image"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tv_money_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请引导客户扫描订单二维码完成付款:"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="25dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/return_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/textview_pressed_true_bg_r4"
+            android:paddingStart="45dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="45dp"
+            android:paddingBottom="8dp"
+            android:text="返回"
+            android:textColor="@color/black" />
+
+
+        <TextView
+            android:id="@+id/select_result_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/textview_blue_background_r4"
+            android:paddingStart="30dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="8dp"
+            android:text="查询结果"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>

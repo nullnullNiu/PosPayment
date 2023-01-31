@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shape="rectangle"
+    tools:ignore="MissingDefaultResource">
+    <corners android:radius="10dp" />
+<!--    &lt;!&ndash;边框的宽度及颜色&ndash;&gt;-->
+<!--    <stroke android:width="2px"-->
+<!--        android:color="#0C7EF3" />-->
+    <gradient
+        android:angle="90"
+        android:endColor="#696969"
+        android:startColor="#666666" />
+</shape>

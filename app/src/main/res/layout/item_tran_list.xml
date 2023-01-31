@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/trans_list_layout"
+    android:background="#F8F8F8"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/textview_white_background_r4">
+
+
+        <ImageView
+            android:id="@+id/img_tran_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:paddingEnd="8dp"
+            android:src="@mipmap/tran_code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_tran_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="凭证号:"
+            android:textColor="@color/black"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_data"
+            app:layout_constraintStart_toEndOf="@+id/img_tran_code"
+            app:layout_constraintTop_toTopOf="@id/img_tran_code" />
+
+        <TextView
+            android:id="@+id/tv_tran_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0000001"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/tv_tran_msg"
+            app:layout_constraintStart_toEndOf="@id/tv_tran_msg"
+            app:layout_constraintTop_toTopOf="@id/tv_tran_msg" />
+
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2023/01/27 00:00:00"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/img_tran_code"
+            app:layout_constraintStart_toEndOf="@id/img_tran_code"
+            app:layout_constraintTop_toBottomOf="@id/tv_tran_msg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="1dp"
+            android:text="¥"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/monye_tv"
+            app:layout_constraintEnd_toStartOf="@id/monye_tv" />
+
+        <TextView
+            android:id="@+id/monye_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="999"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

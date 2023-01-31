@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/switch_custom_track_off.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_brown_bg_r10.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_yellow_bg_r10.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_background_r21.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_pressed_true_bg_r21.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_to_black_color.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_bank_card.xml" value="0.33" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_collection_code.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_device_binding.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_main.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_shift_change.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_tran_query.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/exception_reminder_dialog.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_first.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_second.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_third.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_tran_query_list.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/query_failed_dialog.xml" value="0.5046875" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

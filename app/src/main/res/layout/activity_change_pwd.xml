@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rl_title_layoutr"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:background="#423B3A"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/back_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title_tv"
+             app:layout_constraintBottom_toBottomOf="@id/title_tv"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            android:drawableStart="@mipmap/back_img"
+            android:background="@drawable/title_bg_r10"
+            android:padding="8dp"
+            android:text="返回" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:text="修改主管密码" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <EditText
+        android:id="@+id/et_old_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/but_out_bg"
+        android:clickable="true"
+        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:hint="请输入旧密码"
+        android:inputType="numberPassword"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="15dp"
+        app:layout_constrainedWidth="true" />
+
+    <EditText
+        android:id="@+id/et_new_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/but_out_bg"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:hint="请输入新密码"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="15dp"
+        android:inputType="numberPassword"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        app:layout_constrainedWidth="true" />
+
+
+    <EditText
+        android:id="@+id/et_renew_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/but_out_bg"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:hint="请确认新密码"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="15dp"
+        android:inputType="numberPassword"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        app:layout_constrainedWidth="true" />
+
+
+    <TextView
+        android:id="@+id/submit_modi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/textview_blue_background_r4"
+        android:paddingStart="50dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="8dp"
+        android:text="确认修改"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>

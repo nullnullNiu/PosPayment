@@ -13,6 +13,7 @@ import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.http.Query;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -232,6 +233,40 @@ public class BuildApi {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(stringSubscriber);
     }
+
+
+
+
+    /**
+     * 创建订单
+     */
+    public void createOrder(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.createOrder(body)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
+
+    /**
+     * 修改密码
+     */
+    public void changeOwnPassword(String password,String newPasswor, Subscriber<String> stringSubscriber) {
+        mServiceAPI.changeOwnPassword(password,newPasswor)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
 
 
 }

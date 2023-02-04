@@ -14,18 +14,18 @@ public class ChangePwdPresenter extends BasePresenter<ChangePwdView> {
         if (noNetWork()){
             return;
         }
-//        modelAPI.loginOutUserApi(new DataListener<String>() {
-//            @Override
-//            public void onSuccess(String result) {
-//                LogUtil.e("退出登录成功" + result);
-//                getView().changePwdResult(result);
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable e, String s) {
-//
-//            }
-//        });
+        modelAPI.changeOwnPassword(oldP,newP,new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("修改密码成功 : " + result);
+                getView().changePwdResult(result);
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+
+            }
+        });
     }
 
 

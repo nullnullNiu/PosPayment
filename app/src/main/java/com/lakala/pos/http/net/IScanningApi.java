@@ -19,4 +19,10 @@ public interface IScanningApi {
 
     void uploaduploadOrder(String info , DataListener<String> listener);
 
+    void createOrder(String info , DataListener<String> listener);
+
+    void changeOwnPassword(String password,String newPasswor, DataListener<String> listener);
+
+
+
 }

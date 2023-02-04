@@ -80,5 +80,6 @@ public class ChangePwdActivity extends MVPActivity<ChangePwdView, ChangePwdPrese
     public void changePwdResult(String resu) {
         LogUtil.i("修改密码成功回调信息： " + resu);
 
+
     }
 }

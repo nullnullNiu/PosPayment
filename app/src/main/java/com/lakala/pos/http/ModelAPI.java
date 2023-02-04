@@ -174,4 +174,49 @@ public class ModelAPI implements IScanningApi {
         });
     }
 
+
+    @Override
+    public void createOrder(String info, DataListener<String> listener) {
+        BuildApi.getInstance().createOrder(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "创建订单 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
+
+
+
+    @Override
+    public void changeOwnPassword(String password,String newPasswor, DataListener<String> listener) {
+        BuildApi.getInstance().changeOwnPassword(password,newPasswor, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "修改密码 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
+
+
+
 }

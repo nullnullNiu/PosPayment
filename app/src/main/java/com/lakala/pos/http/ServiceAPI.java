@@ -3,8 +3,10 @@ package com.lakala.pos.http;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 
@@ -88,6 +90,27 @@ public interface ServiceAPI {
     @POST("order/uploaduploadOrder")
     @Headers({"TOKEN:XGYQRSQJKDYXGPQJPBQV"})
     Observable<String> uploaduploadOrder(@Body RequestBody requestBody);
+
+
+    /**
+     * 创建订单
+     *
+     */
+
+    @POST("agency/pay/createOrder")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> createOrder(@Body RequestBody requestBody);
+
+
+
+    /**
+     * 修改密码
+     *
+     */
+    @GET("agency/sys/user/changeOwnPassword")
+    @Headers({"TOKEN:XGYQRSQJKDYXGPQJPBQV"})
+    Observable<String> changeOwnPassword(@Query("password") String password,
+                                          @Query("newPasswor") String newPasswor);
 
 
 }

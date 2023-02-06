@@ -1,11 +1,14 @@
 package com.lakala.pos.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -53,9 +57,28 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        checkToken();
+    }
 
+    private void checkToken(){
+       String access_token  = PreferencesUtils.getPreferenceString("access_token", "");
+       if (TextUtils.isEmpty(access_token)){
+           startActivity(new Intent(this,DeviceBindingActivity.class));
+           return;
+       }
+        getDeviceInfo();
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
     @OnClick({R.id.im_more, R.id.shift_change, R.id.tv_deletd, R.id.previous_tv, R.id.next_tv, R.id.select_tv, R.id.revoke_tv
@@ -271,6 +294,50 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     public void versionAppUpdateView() {
 
     }
+
+
+
+
+
+    private void getDeviceInfo(){
+        ComponentName component = new ComponentName(
+                "com.lkl.cloudpos.payment",
+                "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+        Intent intent = new Intent();
+        intent.setComponent(component);
+        Bundle bundle = new Bundle();
+        bundle.putString("msg_tp", "0000");
+        bundle.putString("proc_cd", "000000");
+        intent.putExtras(bundle);
+        this.startActivityForResult(intent,1);
+
+    }
+
+
+
+
+        @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i(requestCode+"  " + resultCode  +" " + data);
+        switch (resultCode) {
+            // 支付成功
+            case Activity.RESULT_OK:
+
+                break;
+            // 支付取消
+            case Activity.RESULT_CANCELED:
+
+                break;
+            case -2:
+
+                break;
+            default:
+                break;
+        }
+    }
+
+
 
 
 }

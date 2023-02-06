@@ -1,5 +1,6 @@
 package com.lakala.pos.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import com.lakala.pos.interfaces.IDeviceBindView;
 import com.lakala.pos.presente.DeviceBindingPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -170,13 +172,20 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     public void bindResult(String result) {
         LogUtil.i("绑定设备信息:  " + result);
 
+//        PreferencesUtils.setPreference("keep_phone_number", getUserLoginBean.getData().getPhoneNum());
+
+
+        mPresenter.onLogin("");
     }
 
+    @Override
+    public void loginResult(String result) {
 
+        PreferencesUtils.setPreference("access_token", "");
+        ToastUtil.showToast("绑定成功。");
+        startActivity(new Intent(this,MainActivity.class));
 
-
-
-
+    }
 
 
     @Override

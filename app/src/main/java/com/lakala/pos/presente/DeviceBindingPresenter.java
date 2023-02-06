@@ -61,7 +61,38 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
 
                     getView().bindResult(result);
                 } else {
-                    String msg = jsonObject.get("msg").getAsString();
+                    String msg = jsonObject.get("message").getAsString();
+                    ToastUtil.showToast(msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
+            }
+        });
+    }
+
+
+    /**
+     * 登录
+     */
+    public void onLogin(String info) {
+        if (noNetWork()){
+            return;
+        }
+        modelAPI.onLogin(info,new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("登录 成功" + result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+
+                    getView().loginResult(result);
+                } else {
+                    String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);
                 }
             }

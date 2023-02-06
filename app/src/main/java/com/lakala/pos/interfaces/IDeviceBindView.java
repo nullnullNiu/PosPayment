@@ -11,4 +11,6 @@ public interface IDeviceBindView {
 
     void bindResult(String result);
 
+    void loginResult(String result);
+
 }

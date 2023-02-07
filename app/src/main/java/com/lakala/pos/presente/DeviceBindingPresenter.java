@@ -54,7 +54,7 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
         modelAPI.onBindDevice(info,new DataListener<String>() {
             @Override
             public void onSuccess(String result) {
-                LogUtil.e("绑定设备 成功" + result);
+                LogUtil.e("绑定设备 数据返回：" + result);
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {

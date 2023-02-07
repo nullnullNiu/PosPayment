@@ -256,8 +256,8 @@ public class BuildApi {
     /**
      * 修改密码
      */
-    public void changeOwnPassword(String password,String newPasswor, Subscriber<String> stringSubscriber) {
-        mServiceAPI.changeOwnPassword(password,newPasswor)
+    public void changeOwnPassword(String token,String password,String newPassword, Subscriber<String> stringSubscriber) {
+        mServiceAPI.changeOwnPassword(token,password,newPassword)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

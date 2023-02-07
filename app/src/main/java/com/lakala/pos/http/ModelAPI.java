@@ -198,8 +198,8 @@ public class ModelAPI implements IScanningApi {
 
 
     @Override
-    public void changeOwnPassword(String password,String newPasswor, DataListener<String> listener) {
-        BuildApi.getInstance().changeOwnPassword(password,newPasswor, new Subscriber<String>() {
+    public void changeOwnPassword(String token,String password,String newPassword, DataListener<String> listener) {
+        BuildApi.getInstance().changeOwnPassword(token,password,newPassword, new Subscriber<String>() {
             @Override
             public void onCompleted() {
 

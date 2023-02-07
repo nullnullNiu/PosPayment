@@ -21,7 +21,7 @@ public interface IScanningApi {
 
     void createOrder(String info , DataListener<String> listener);
 
-    void changeOwnPassword(String password,String newPasswor, DataListener<String> listener);
+    void changeOwnPassword(String token,String password,String newPassword, DataListener<String> listener);
 
 
 

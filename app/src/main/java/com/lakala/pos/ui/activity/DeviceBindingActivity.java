@@ -50,6 +50,9 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
     private String name = "";
 
+    private String etPhone;
+    private String etAdmin;
+
     private Handler handler = new Handler();
 
     /**
@@ -152,13 +155,13 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
            return;
        }
 
-       String etAdmin = et_admin.getText().toString();
+        etAdmin = et_admin.getText().toString();
        if (TextUtils.isEmpty(etAdmin)){
            ToastUtil.showToast("管理员不能为空");
            return;
        }
 
-       String etPhone = et_phone.getText().toString();
+       etPhone = et_phone.getText().toString();
        if (TextUtils.isEmpty(etPhone)){
            ToastUtil.showToast("手机号不能为空");
            return;
@@ -200,7 +203,6 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     public void bindResult(String result) {
         LogUtil.i("绑定设备信息:  " + result);
 
-        String etPhone = et_phone.getText().toString();
         if (TextUtils.isEmpty(etPhone)){
             ToastUtil.showToast("手机号不能为空");
             return;
@@ -216,6 +218,9 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @Override
     public void loginResult(String token) {
         LogUtil.i("tk" + token);
+        PreferencesUtils.setPreference("admin", etAdmin);
+        PreferencesUtils.setPreference("phone", etPhone);
+        PreferencesUtils.setPreference("possword", "123456");
         PreferencesUtils.setPreference("access_token", token);
         ToastUtil.showToast("绑定成功。");
         startActivity(new Intent(this,MainActivity.class));

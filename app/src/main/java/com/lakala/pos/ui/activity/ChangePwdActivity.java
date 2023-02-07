@@ -1,14 +1,19 @@
 package com.lakala.pos.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
 import com.lakala.pos.R;
+import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.interfaces.ChangePwdView;
 import com.lakala.pos.presente.ChangePwdPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +73,15 @@ public class ChangePwdActivity extends MVPActivity<ChangePwdView, ChangePwdPrese
             ToastUtil.showToast("确认密码不能为空");
         } else {
             if (newP.equals(reNewP)) {
-                mPresenter.subNewPwd(oldP, newP);
+
+              String userPhone =  PreferencesUtils.getPreferenceString("phone", "");
+              String possword =  PreferencesUtils.getPreferenceString("possword", "");
+
+                UserInfoBean userInfoBean = new UserInfoBean();
+                userInfoBean.setLoginName(userPhone);
+                userInfoBean.setPassword(possword);
+                String user = new Gson().toJson(userInfoBean);
+                mPresenter.onLogin(user,oldP, newP);
             } else {
                 ToastUtil.showToast("两次输入密码不一致请重新输入");
             }
@@ -76,10 +89,15 @@ public class ChangePwdActivity extends MVPActivity<ChangePwdView, ChangePwdPrese
 
     }
 
+
     @Override
     public void changePwdResult(String resu) {
         LogUtil.i("修改密码成功回调信息： " + resu);
-
-
+        ToastUtil.showToast("密码修改成功");
+        startActivity(new Intent(this,MainActivity.class));
+        this.finish();
     }
+
+
+
 }

@@ -23,6 +23,8 @@ public interface IScanningApi {
 
     void changeOwnPassword(String token,String password,String newPassword, DataListener<String> listener);
 
+    void transRevoked(String info , DataListener<String> listener);
+
 
 
 }

@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.lakala.pos.R;
+import com.lakala.pos.bean.RevokeInfoBean;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.interfaces.IRevokeView;
 import com.lakala.pos.presente.MainActivityPresenter;
@@ -74,7 +76,7 @@ public class RevokeActivity extends MVPActivity<IRevokeView, RevokePresenter> im
                     return;
                 }
 
-
+                transRevoked();
                 break;
 
             case R.id.img_scan:
@@ -82,6 +84,19 @@ public class RevokeActivity extends MVPActivity<IRevokeView, RevokePresenter> im
                 break;
 
         }
+    }
+
+
+    private void transRevoked(){
+        RevokeInfoBean bean = new RevokeInfoBean();
+        bean.setMerchant_no("822290070111135");//结算商户号
+        bean.setTerm_no("29034705");//终端号
+        bean.setOrigin_out_trade_no("20230206000000000000000000000002");//商户订单号
+        bean.setOrigin_trade_no("23020611012001101011000885840");//支付流水号
+        bean.setRequestIp("101.23.108.254");//ip，必送
+
+        String revokedInfo = new Gson().toJson(bean);
+        mPresenter.transRevoked(revokedInfo);
     }
 
     @Override

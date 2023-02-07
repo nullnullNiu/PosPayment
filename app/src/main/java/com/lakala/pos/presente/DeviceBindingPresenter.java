@@ -31,14 +31,14 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
                     EnterpriseInfoBean bean = new Gson().fromJson(result,EnterpriseInfoBean.class);
                     getView().companySearch(bean);
                 }else {
-                    String msg = jsonObject.get("msg").getAsString();
+                    String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);
                 }
             }
 
             @Override
             public void onFailure(Throwable e, String s) {
-                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
                 ToastUtil.showToast("服务端数据异常：" + s);
             }
         });
@@ -68,7 +68,7 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
 
             @Override
             public void onFailure(Throwable e, String s) {
-                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
                 ToastUtil.showToast("服务端数据异常：" + s);
             }
         });
@@ -100,7 +100,7 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
 
             @Override
             public void onFailure(Throwable e, String s) {
-                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
                 ToastUtil.showToast("服务端数据异常：" + s);
             }
         });

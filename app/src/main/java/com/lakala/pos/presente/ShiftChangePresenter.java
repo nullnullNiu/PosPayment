@@ -30,7 +30,7 @@ public class ShiftChangePresenter extends BasePresenter<IShiftChangeView> {
                     LoginInfo loginInfo = new Gson().fromJson(result, LoginInfo.class);
                     getView().onLoginResult(loginInfo);
                 } else {
-                    String msg = jsonObject.get("msg").getAsString();
+                    String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);
                 }
             }

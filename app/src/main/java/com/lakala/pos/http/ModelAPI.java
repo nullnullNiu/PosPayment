@@ -219,4 +219,24 @@ public class ModelAPI implements IScanningApi {
 
 
 
+
+    @Override
+    public void transRevoked(String info, DataListener<String> listener) {
+        BuildApi.getInstance().transRevoked(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "交易撤销 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
 }

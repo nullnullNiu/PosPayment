@@ -114,5 +114,12 @@ public interface ServiceAPI {
                                          @Query("password") String password,
                                          @Query("newPassword") String newPassword);
 
+    /**
+     * 交易撤销
+     *
+     */
 
+    @POST("agency/pay/revoked")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> transRevoked(@Body RequestBody requestBody);
 }

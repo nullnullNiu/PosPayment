@@ -39,7 +39,7 @@ public class ChangePwdPresenter extends BasePresenter<ChangePwdView> {
 
             @Override
             public void onFailure(Throwable e, String s) {
-                LogUtil.e("error,throwable:" + e.getMessage() + ",msg:" + s);
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
                 ToastUtil.showToast("服务端数据异常：" + s);
             }
         });

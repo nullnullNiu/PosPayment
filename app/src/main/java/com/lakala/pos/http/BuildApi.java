@@ -268,5 +268,20 @@ public class BuildApi {
 
 
 
+    /**
+     * 交易撤销
+     */
+    public void transRevoked(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.transRevoked(body)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
 
 }

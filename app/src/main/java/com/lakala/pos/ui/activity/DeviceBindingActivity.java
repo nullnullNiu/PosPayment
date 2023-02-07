@@ -14,12 +14,14 @@ import com.google.gson.Gson;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.BindDeviceInfoBean;
 import com.lakala.pos.bean.EnterpriseInfoBean;
+import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.interfaces.IDeviceBindView;
 import com.lakala.pos.presente.DeviceBindingPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
+import com.lakala.pos.utils.ToolsUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,50 +121,76 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
 
     private void bindDevice() {
-//       String tax = tax_number.getText().toString();
-//       if (TextUtils.isEmpty(tax)){
-//           ToastUtil.showToast("企业税号不能为空");
-//           return;
-//       }
-//
-//       String entName = et_entName.getText().toString();
-//       if (TextUtils.isEmpty(entName)){
-//           ToastUtil.showToast("企业名称不能为空");
-//           return;
-//       }
-//
-//       String etAddress = et_address.getText().toString();
-//       if (TextUtils.isEmpty(etAddress)){
-//           ToastUtil.showToast("门店地址不能为空");
-//           return;
-//       }
-//
-//       String etDrawer = et_drawer.getText().toString();
-//       if (TextUtils.isEmpty(etDrawer)){
-//           ToastUtil.showToast("开票人不能为空");
-//           return;
-//       }
-//
-//
-//       String etReviewed = et_reviewed.getText().toString();
-//       if (TextUtils.isEmpty(etReviewed)){
-//           ToastUtil.showToast("审核人不能为空");
-//           return;
-//       }
+       String tax = tax_number.getText().toString();
+       if (TextUtils.isEmpty(tax)){
+           ToastUtil.showToast("企业税号不能为空");
+           return;
+       }
 
+       String entName = et_entName.getText().toString();
+       if (TextUtils.isEmpty(entName)){
+           ToastUtil.showToast("企业名称不能为空");
+           return;
+       }
+
+       String etAddress = et_address.getText().toString();
+       if (TextUtils.isEmpty(etAddress)){
+           ToastUtil.showToast("门店地址不能为空");
+           return;
+       }
+
+       String etDrawer = et_drawer.getText().toString();
+       if (TextUtils.isEmpty(etDrawer)){
+           ToastUtil.showToast("开票人不能为空");
+           return;
+       }
+
+
+       String etReviewed = et_reviewed.getText().toString();
+       if (TextUtils.isEmpty(etReviewed)){
+           ToastUtil.showToast("审核人不能为空");
+           return;
+       }
+
+       String etAdmin = et_admin.getText().toString();
+       if (TextUtils.isEmpty(etAdmin)){
+           ToastUtil.showToast("管理员不能为空");
+           return;
+       }
+
+       String etPhone = et_phone.getText().toString();
+       if (TextUtils.isEmpty(etPhone)){
+           ToastUtil.showToast("手机号不能为空");
+           return;
+       }
+
+        if (!ToolsUtil.isPhoneNumber(etPhone)) {
+            ToastUtil.showToast("电话号码格式不对");
+            return ;
+        }
 
 
         BindDeviceInfoBean bean = new BindDeviceInfoBean();
-        bean.setDeviceCode("123");
-        bean.setTaxNo("12312313123");
-        bean.setAddress("门店地址");
+//        bean.setDeviceCode("123");
+//        bean.setTaxNo("12312313123");
+//        bean.setAddress("门店地址");
+//
+//        bean.setDrawer("开票人");
+//        bean.setChecker("审核人");
+//        bean.setSellerName("商户名称");
+//        bean.setSellerNo("2111");
+//        bean.setBossName("张三");
+//        bean.setBossPhone("13231917723");
 
-        bean.setDrawer("开票人");
-        bean.setChecker("审核人");
-        bean.setSellerName("商户名称");
+        bean.setDeviceCode("123");
+        bean.setTaxNo(tax);
+        bean.setAddress(etAddress);
+        bean.setDrawer(etDrawer);
+        bean.setChecker(etReviewed);
+        bean.setSellerName(entName);
         bean.setSellerNo("2111");
-        bean.setBossName("张三");
-        bean.setBossPhone("13231917723");
+        bean.setBossName(etAdmin);
+        bean.setBossPhone(etPhone);
 
         String bindInfo = new Gson().toJson(bean);
         mPresenter.onBindDevice(bindInfo);
@@ -172,19 +200,26 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     public void bindResult(String result) {
         LogUtil.i("绑定设备信息:  " + result);
 
-//        PreferencesUtils.setPreference("keep_phone_number", getUserLoginBean.getData().getPhoneNum());
+        String etPhone = et_phone.getText().toString();
+        if (TextUtils.isEmpty(etPhone)){
+            ToastUtil.showToast("手机号不能为空");
+            return;
+        }
 
-
-        mPresenter.onLogin("");
+        UserInfoBean userInfoBean = new UserInfoBean();
+        userInfoBean.setLoginName(etPhone);
+        userInfoBean.setPassword("123456");
+        String user = new Gson().toJson(userInfoBean);
+        mPresenter.onLogin(user);
     }
 
     @Override
-    public void loginResult(String result) {
-
-        PreferencesUtils.setPreference("access_token", "");
+    public void loginResult(String token) {
+        LogUtil.i("tk" + token);
+        PreferencesUtils.setPreference("access_token", token);
         ToastUtil.showToast("绑定成功。");
         startActivity(new Intent(this,MainActivity.class));
-
+        this.finish();
     }
 
 
@@ -209,6 +244,6 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         }
         name = s.toString();
         //延迟800ms，如果不再输入字符，则执行该线程的run方法
-        handler.postDelayed(delayRun, 5000);
+        handler.postDelayed(delayRun, 6000);
     }
 }

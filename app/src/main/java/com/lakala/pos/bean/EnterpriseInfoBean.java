@@ -246,4 +246,12 @@ public class EnterpriseInfoBean {
 
     }
 
+    @Override
+    public String toString() {
+        return "EnterpriseInfoBean{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -89,12 +89,13 @@ public class DeviceBindingPresenter extends BasePresenter<IDeviceBindView> {
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-
-                    getView().loginResult(result);
+                    String token = jsonObject.get("data").getAsJsonObject().get("access_token").getAsString();
+                    getView().loginResult(token);
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);
                 }
+
             }
 
             @Override

@@ -122,4 +122,14 @@ public interface ServiceAPI {
     @POST("agency/pay/revoked")
     @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
     Observable<String> transRevoked(@Body RequestBody requestBody);
+
+
+    /**
+     * 撤销之前先查询订单
+     *
+     */
+
+    @POST("agency/pay/queryOrder")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> queryOrder(@Body RequestBody requestBody);
 }

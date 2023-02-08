@@ -284,4 +284,21 @@ public class BuildApi {
 
 
 
+
+    /**
+     * 撤销之前先查询订单
+     */
+    public void queryOrder(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.queryOrder(body)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
+
 }

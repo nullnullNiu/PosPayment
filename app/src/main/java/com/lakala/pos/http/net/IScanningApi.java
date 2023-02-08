@@ -25,6 +25,8 @@ public interface IScanningApi {
 
     void transRevoked(String info , DataListener<String> listener);
 
+    void queryOrder(String info , DataListener<String> listener);
+
 
 
 }

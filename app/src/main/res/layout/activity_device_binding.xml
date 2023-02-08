@@ -90,13 +90,46 @@
             android:textColor="#333333"
             android:textColorHint="#999999"
             android:textSize="15sp"
-            android:visibility="visible"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@id/tv_enterprise_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@id/tv_enterprise_name"
             app:layout_constraintTop_toTopOf="@id/tv_enterprise_name" />
+
+<!--        <Spinner-->
+<!--            android:id="@+id/sp_name"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:overlapAnchor="false"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingEnd="15dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:textSize="15sp"-->
+<!--            android:visibility="gone"-->
+<!--            android:spinnerMode="dropdown"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_enterprise_name"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_enterprise_name"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_enterprise_name" >-->
+
+        <Spinner
+            android:id="@+id/sp_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:overlapAnchor="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toBottomOf="@+id/enterprise_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="2.5"
+            app:layout_constraintStart_toStartOf="@+id/enterprise_name"
+            >
+
+        </Spinner>
 
         <View
             android:id="@+id/lin1"
@@ -105,7 +138,7 @@
             android:background="#F0F0F0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_enterprise_name" />
+            app:layout_constraintTop_toBottomOf="@id/sp_name" />
 
         <TextView
             android:id="@+id/tv_tax_number"
@@ -406,20 +439,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/submit_modify"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:background="@drawable/textview_blue_background_r4"
-        android:layout_margin="25dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:gravity="center"
-        android:text="绑定/修改"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/submit_modify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/textview_blue_background_r4"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="变更"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 

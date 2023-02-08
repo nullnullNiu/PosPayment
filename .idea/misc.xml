@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/pressed_transparent_to_blue_background.xml" value="0.334" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/pressed_true_blue.xml" value="0.334" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/switch_custom_track_off.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_brown_bg_r10.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_yellow_bg_r10.xml" value="0.3" />
@@ -25,6 +27,7 @@
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_second.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_third.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/fragment_tran_query_list.xml" value="0.24445005045408677" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/item_spinner_view.xml" value="0.5057291666666667" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/query_failed_dialog.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_login_dialog.xml" value="0.5046875" />
       </map>

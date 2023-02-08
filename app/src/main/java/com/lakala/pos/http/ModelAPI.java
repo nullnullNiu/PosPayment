@@ -239,4 +239,25 @@ public class ModelAPI implements IScanningApi {
             }
         });
     }
+
+
+    @Override
+    public void queryOrder(String info, DataListener<String> listener) {
+        BuildApi.getInstance().queryOrder(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "撤销之前先查询订单 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
 }

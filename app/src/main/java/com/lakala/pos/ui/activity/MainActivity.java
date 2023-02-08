@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 
 import com.lakala.pos.R;
+import com.lakala.pos.common.DeviceInfo;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.MainActivityPresenter;
@@ -27,6 +28,12 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
+
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +70,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         ButterKnife.bind(this);
 
         checkToken();
+        try {
+            DeviceInfo.initDevice(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void checkToken() {
@@ -346,6 +359,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 break;
         }
     }
+
+
+
+
+
 
 
 }

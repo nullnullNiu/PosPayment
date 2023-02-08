@@ -48,11 +48,15 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @BindView(R.id.et_phone)
     EditText et_phone; // 手机号
 
+    @BindView(R.id.back_tv)
+    TextView back_tv; // 返回
+
     private String name = "";
 
     private String etPhone;
     private String etAdmin;
 
+    private int typeCode = 0;
     private Handler handler = new Handler();
 
     /**
@@ -81,10 +85,25 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         setContentView(R.layout.activity_device_binding);
         ButterKnife.bind(this);
 
+        if (getIntent().resolveActivity(getPackageManager()) != null){
+            if (getIntent().hasExtra("typeCode")){
+                typeCode = getIntent().getExtras().getInt("typeCode", 0);
+                if (typeCode == -1){
+                    back_tv.setVisibility(View.GONE);
+                }
+            }
+        }
+
         et_entName.addTextChangedListener(this);
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (typeCode != -1){
+            super.onBackPressed();
+        }
+    }
 
     private void onCompanySearch(){
         if (TextUtils.isEmpty(name)){
@@ -114,9 +133,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
             case R.id.submit_modify:// 绑定、修改
 
-
                 bindDevice();
-
                 break;
 
         }

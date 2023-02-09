@@ -27,6 +27,10 @@ public interface IScanningApi {
 
     void queryOrder(String info , DataListener<String> listener);
 
+    void customerService(String info , DataListener<String> listener);
+
+    void getHelp(String info , DataListener<String> listener);
+
 
 
 }

@@ -301,4 +301,36 @@ public class BuildApi {
 
 
 
+    /**
+     * 获取客服页地址
+     */
+    public void customerService(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.customerService()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
+
+    /**
+     * 获取帮助页地址
+     */
+    public void getHelp(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.getHelp()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
+
 }

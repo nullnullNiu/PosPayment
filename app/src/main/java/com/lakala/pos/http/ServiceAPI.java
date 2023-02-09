@@ -132,4 +132,34 @@ public interface ServiceAPI {
     @POST("agency/pay/queryOrder")
     @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
     Observable<String> queryOrder(@Body RequestBody requestBody);
+
+
+    /**
+     * 获取客服页地址
+     *
+     */
+
+    @POST("agency/common/customerService")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> customerService();
+//    Observable<String> customerService(@Body RequestBody requestBody);
+
+
+
+    /**
+     * 获取帮助页地址
+     *
+     */
+
+    @POST("agency/common/help")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> getHelp();
+//    Observable<String> getHelp(@Body RequestBody requestBody);
+
+
+
+
+
+
+
 }

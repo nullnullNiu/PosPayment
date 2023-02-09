@@ -260,4 +260,59 @@ public class ModelAPI implements IScanningApi {
             }
         });
     }
+
+
+    @Override
+    public void customerService(String info, DataListener<String> listener) {
+        BuildApi.getInstance().customerService(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "获取客服页地址 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
+
+
+    @Override
+    public void getHelp(String info, DataListener<String> listener) {
+        BuildApi.getInstance().getHelp(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "获取帮助页地址 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

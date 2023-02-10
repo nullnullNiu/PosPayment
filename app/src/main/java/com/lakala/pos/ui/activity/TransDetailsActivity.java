@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lakala.pos.R;
+import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.presente.TransPresenter;
 import com.lakala.pos.ui.MVPActivity;
@@ -76,10 +77,10 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
         }
     }
 
+
+
     @Override
-    public void versionAppUpdateView() {
+    public void queryOrdersResult(TranQueryBean bean) {
 
     }
-
-
 }

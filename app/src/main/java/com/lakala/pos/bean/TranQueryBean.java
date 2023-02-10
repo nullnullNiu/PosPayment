@@ -144,10 +144,10 @@ public class TranQueryBean {
         private String voucherNo;
         private String tradeType;
         private String scanUrl;
-        private Date createTime;
-        private Date updateTime;
+        private String createTime;
+        private String updateTime;
         private String details;
-        private int amount;
+        private double amount;
         private int pageNum;
         private int pageSize;
 
@@ -239,19 +239,19 @@ public class TranQueryBean {
             return scanUrl;
         }
 
-        public void setCreateTime(Date createTime) {
+        public void setCreateTime(String createTime) {
             this.createTime = createTime;
         }
 
-        public Date getCreateTime() {
+        public String getCreateTime() {
             return createTime;
         }
 
-        public void setUpdateTime(Date updateTime) {
+        public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
         }
 
-        public Date getUpdateTime() {
+        public String getUpdateTime() {
             return updateTime;
         }
 
@@ -263,11 +263,11 @@ public class TranQueryBean {
             return details;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(double amount) {
             this.amount = amount;
         }
 
-        public int getAmount() {
+        public double getAmount() {
             return amount;
         }
 

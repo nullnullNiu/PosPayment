@@ -1,14 +1,21 @@
 package com.lakala.pos.ui.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lakala.pos.R;
 import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.presente.TransPresenter;
 import com.lakala.pos.ui.MVPActivity;
+import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +30,7 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
     @BindView(R.id.next)
     LinearLayout next;
 
+    String orderNo = "";
 
     @Override
     protected TransPresenter createPresenter() {
@@ -36,6 +44,27 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
         setContentView(R.layout.activity_trans_details);
         ButterKnife.bind(this);
 
+
+        orderNo = getIntent().getStringExtra("orderNo");
+
+        queryOrderByOrderId(orderNo);
+    }
+
+
+    private void queryOrderByOrderId(String id){
+        LogUtil.i("orderNo :"  +orderNo);
+        if (TextUtils.isEmpty(orderNo)){
+            ToastUtil.showToast("查询订单详情失败");
+            return;
+        }
+
+        try {
+            JSONObject object = new JSONObject();
+            object.put("orderNo",orderNo);
+            mPresenter.queryOrderByOrderId(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -80,7 +109,10 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
 
 
     @Override
-    public void queryOrdersResult(TranQueryBean bean) {
+    public void queryOrdersDetailsResult(TransDetailsBean bean) {
+
+
+
 
     }
 }

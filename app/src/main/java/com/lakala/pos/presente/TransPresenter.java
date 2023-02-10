@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.utils.LogUtil;
@@ -14,22 +15,22 @@ public class TransPresenter extends BasePresenter<ITransView> {
 
 
     /**
-     * 根据订单状态查询订单
+     * 根据订单号查询订单详情
      */
-    public void queryOrders(String info) {
+    public void queryOrderByOrderId(String info) {
         if (noNetWork()) {
             return;
         }
-        modelAPI.queryOrders(info, new DataListener<String>() {
+        modelAPI.queryOrderByOrderId(info, new DataListener<String>() {
             @Override
             public void onSuccess(String result) {
-                LogUtil.e("根据订单状态查询订单 接口返回： " + result);
+                LogUtil.e("根据订单号查询订单详情 接口返回： " + result);
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
 
-                    TranQueryBean tranQueryBean =new Gson().fromJson(result,TranQueryBean.class);
-                    getView().queryOrdersResult(tranQueryBean);
+                    TransDetailsBean tranQueryBean =new Gson().fromJson(result,TransDetailsBean.class);
+                    getView().queryOrdersDetailsResult(tranQueryBean);
 
                 } else {
                     String msg = jsonObject.get("message").getAsString();

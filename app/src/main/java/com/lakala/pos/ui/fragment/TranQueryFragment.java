@@ -1,14 +1,16 @@
 package com.lakala.pos.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,12 +20,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lakala.pos.R;
+import com.lakala.pos.adapter.TranQueryAdapter;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.http.ModelAPI;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.http.net.IScanningApi;
-import com.lakala.pos.presente.TransPresenter;
-import com.lakala.pos.ui.activity.TranQueryActivity;
 import com.lakala.pos.ui.activity.TransDetailsActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.NetworkUtlis;
@@ -32,24 +33,28 @@ import com.lakala.pos.utils.ToastUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class TranQueryFragment extends Fragment implements AbsListView.OnScrollListener {
 
-    ListView list_view;
+public class TranQueryFragment extends Fragment implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
+
+
     private int state;
-    private int lineNum = 2;
     IScanningApi modelAPI = new ModelAPI();
-
-
-    private int pageNum = 1;
 
     View footerView, footerLoadView;
     private int totalItemCount; // 列表适配器中的项目数
     private int lastVisibleItem; // 数据集最后一项的索引
     private boolean isScrollLoad = true; // 滑动时是否要加载数据
 
+    private int pageNum = 1;
+    private int pageSiz = 10;
 
-    LinearLayout trans_list_layout;
+    ListView listView;
+
+    TranQueryAdapter tranQueryAdapter;
+    private List<TranQueryBean.Records> dataBeanList = new ArrayList<>();
 
     public static TranQueryFragment getInstance(int id) {
         TranQueryFragment sf = new TranQueryFragment();
@@ -61,19 +66,17 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tran_query_list, null);
-        list_view = v.findViewById(R.id.list_view);
-        list_view.setVerticalScrollBarEnabled(false);
-        list_view.setFastScrollEnabled(false);
+        listView = v.findViewById(R.id.list_view);
+        listView.setVerticalScrollBarEnabled(false);
+        listView.setFastScrollEnabled(false);
         footerView = inflater.inflate(R.layout.view_footer, null);
         footerLoadView = inflater.inflate(R.layout.view_footer_load, null);
 
-        trans_list_layout = v.findViewById(R.id.trans_list_layout);
-        trans_list_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), TransDetailsActivity.class));
-            }
-        });
+        listView.setSelector(new ColorDrawable(Color.TRANSPARENT));//取消点击阴影效果
+        listView.setOnItemClickListener(this);
+        listView.setOnScrollListener(this);
+
+
         return v;
     }
 
@@ -83,9 +86,12 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
 
     }
 
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
+            pageNum = 1;
+            dataBeanList.clear();
             queryOrders();
         }
     }
@@ -101,13 +107,13 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
         JSONObject object = null;
         try {
             object = new JSONObject();
-            object.put("status",state);//0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
-            object.put("pageNum",1);
-            object.put("pageSize",10);
+            object.put("status", state);//0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
+            object.put("pageNum", pageNum);
+            object.put("pageSize", pageSiz);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        LogUtil.i("加载 status :" + state + "     pageNum: " + pageNum);
         modelAPI.queryOrders(object.toString(), new DataListener<String>() {
             @Override
             public void onSuccess(String result) {
@@ -115,9 +121,9 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                    TranQueryBean tranQueryBean = gson.fromJson(result,TranQueryBean.class);
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
+                    TranQueryBean tranQueryBean = gson.fromJson(result, TranQueryBean.class);
+                    getQaCategoryList(tranQueryBean);
 
                 } else {
                     String msg = jsonObject.get("message").getAsString();
@@ -134,12 +140,42 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
     }
 
 
+    private void getQaCategoryList(TranQueryBean tranQueryBean) {
+
+        LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
+        listView.removeFooterView(footerLoadView);
+
+        LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
+        if (pageNum > 1 && totalItemCount < 10) {
+            listView.addFooterView(footerView);
+            tranQueryAdapter.notifyDataSetChanged();
+            isScrollLoad = false;
+            return;
+        }
+
+        LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
+        if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
+
+            dataBeanList.addAll(tranQueryBean.getData().getRecords());
+
+            if (tranQueryAdapter == null) {
+                tranQueryAdapter = new TranQueryAdapter(getActivity(), dataBeanList);
+            }
+
+            listView.setAdapter(tranQueryAdapter);
+
+            listView.setSelection(0);
+
+            tranQueryAdapter.notifyDataSetChanged();
 
 
+        } else {
 
+            ToastUtil.showToast("暂无交易信息");
 
+        }
 
-
+    }
 
 
     /**
@@ -148,10 +184,12 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         LogUtil.i("数据集最后一项的索引:  " + lastVisibleItem + "      列表适配器中的项目数:  " + totalItemCount + " isScroll=" + isScrollLoad);
+
         if (totalItemCount == lastVisibleItem && scrollState == SCROLL_STATE_IDLE && isScrollLoad) {
+            listView.addFooterView(footerLoadView);
             pageNum++;
             LogUtil.i("加载 第 " + pageNum + "  页。。。");
-//            getMediatelist(state, pageNum, true);
+            queryOrders();
         }
     }
 
@@ -165,8 +203,7 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
     }
 
 
-
-    public boolean noNetWork(){
+    public boolean noNetWork() {
         if (!NetworkUtlis.isNetworkAvailable()) {
             ToastUtil.showToast("网络异常请检查网络连接");
             return true;
@@ -175,4 +212,18 @@ public class TranQueryFragment extends Fragment implements AbsListView.OnScrollL
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        pageNum = 1;
+        LogUtil.e("===onDestroy===");
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LogUtil.e("订单号 = " + dataBeanList.get(position).getOrderNo());
+        Intent intent = new Intent(getActivity(), TransDetailsActivity.class);
+        intent.putExtra("orderNo", dataBeanList.get(position).getOrderNo());
+        startActivity(intent);
+    }
 }

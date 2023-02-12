@@ -107,6 +107,10 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
     }
 
 
+    @Override
+    public void countByDeviceIdResult(String result) {
+
+    }
 
     @Override
     public void queryOrdersDetailsResult(TransDetailsBean bean) {

@@ -160,6 +160,19 @@ public interface ServiceAPI {
 
 
 
+    /**
+     * 获取订单条数
+     *
+     */
+
+    @POST("agency/order/countByDeviceId")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> countByDeviceId(@Body RequestBody requestBody);
+
+
+
+
+
 
 
 }

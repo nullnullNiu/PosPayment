@@ -20,6 +20,20 @@
         android:scrollbars="none"
         android:divider="@android:color/transparent" />
 
-<!--    <include layout="@layout/item_tran_list" />-->
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:drawableTop="@mipmap/img_emptybox"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="暂无交易信息"
+        android:textColor="#BABDBF"
+        android:textSize="16dp"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

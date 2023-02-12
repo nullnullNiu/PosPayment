@@ -31,6 +31,8 @@ public interface IScanningApi {
 
     void getHelp(String info , DataListener<String> listener);
 
+    void countByDeviceId(String info , DataListener<String> listener);
+
 
 
 }

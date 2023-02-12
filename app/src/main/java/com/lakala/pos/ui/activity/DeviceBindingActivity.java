@@ -7,11 +7,14 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lakala.pos.R;
+import com.lakala.pos.adapter.SpinnerNameAdapter;
 import com.lakala.pos.bean.BindDeviceInfoBean;
 import com.lakala.pos.bean.EnterpriseInfoBean;
 import com.lakala.pos.bean.UserInfoBean;
@@ -27,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBindingPresenter> implements IDeviceBindView , TextWatcher {
+public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBindingPresenter> implements IDeviceBindView , TextWatcher, SpinnerNameAdapter.OnItemClickListion {
 
     @BindView(R.id.enterprise_name)
     EditText et_entName; // 企业名称
@@ -48,12 +51,22 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @BindView(R.id.et_phone)
     EditText et_phone; // 手机号
 
+    @BindView(R.id.back_tv)
+    TextView back_tv; // 返回
+
+    @BindView(R.id.sp_name)
+    Spinner spName;
+
     private String name = "";
 
     private String etPhone;
     private String etAdmin;
 
+    private int typeCode = 0;
     private Handler handler = new Handler();
+
+    SpinnerNameAdapter  spinnerDictAdapter;
+
 
     /**
      * 延迟线程，看是否还有下一个字符输入
@@ -81,10 +94,26 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         setContentView(R.layout.activity_device_binding);
         ButterKnife.bind(this);
 
+        if (getIntent().resolveActivity(getPackageManager()) != null){
+            if (getIntent().hasExtra("typeCode")){
+                typeCode = getIntent().getExtras().getInt("typeCode", 0);
+                if (typeCode == -1){
+                    back_tv.setVisibility(View.GONE);
+                    submit_modify.setText("绑定");
+                }
+            }
+        }
+
         et_entName.addTextChangedListener(this);
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (typeCode != -1){
+            super.onBackPressed();
+        }
+    }
 
     private void onCompanySearch(){
         if (TextUtils.isEmpty(name)){
@@ -99,10 +128,19 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @Override
     public void companySearch(EnterpriseInfoBean bean) {
         LogUtil.i("根据公司名称返回抬头信息:  " + bean);
-        tax_number.setText(bean.getData().get(0).getTaxId());
-        et_address.setText(bean.getData().get(0).getLocation());
+        spName.setVisibility(View.VISIBLE);
+
+        spinnerDictAdapter = new SpinnerNameAdapter(this, bean.getData());
+        spName.setAdapter(spinnerDictAdapter);
+        spinnerDictAdapter.setOnItemClickListener(this);
     }
 
+    @Override
+    public void onItemClick(String selectName, String selectTaxId, String selectLocation) {
+        et_entName.setText(selectName);
+        tax_number.setText(selectTaxId);
+        et_address.setText(selectLocation);
+    }
 
 
     @OnClick({R.id.back_tv, R.id.submit_modify})
@@ -114,9 +152,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
             case R.id.submit_modify:// 绑定、修改
 
-
                 bindDevice();
-
                 break;
 
         }
@@ -152,6 +188,11 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
        String etReviewed = et_reviewed.getText().toString();
        if (TextUtils.isEmpty(etReviewed)){
            ToastUtil.showToast("审核人不能为空");
+           return;
+       }
+
+       if (etDrawer.equals(etReviewed)){
+           ToastUtil.showToast("开票人不能与审核人相同");
            return;
        }
 
@@ -242,13 +283,19 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     @Override
     public void afterTextChanged(Editable s) {
         LogUtil.i("afterTextChanged 修改后"  + s );
-        if(delayRun!=null){
-            //每次editText有变化的时候，则移除上次发出的延迟线程
-            handler.removeCallbacks(delayRun);
-            LogUtil.i("移除上次发出的延迟线程" );
-        }
         name = s.toString();
-        //延迟800ms，如果不再输入字符，则执行该线程的run方法
-        handler.postDelayed(delayRun, 6000);
+        if (name.length()>=4){
+            onCompanySearch();
+        }
+//        if(delayRun!=null){
+//            //每次editText有变化的时候，则移除上次发出的延迟线程
+//            handler.removeCallbacks(delayRun);
+//            LogUtil.i("移除上次发出的延迟线程" );
+//        }
+//        name = s.toString();
+//        //延迟800ms，如果不再输入字符，则执行该线程的run方法
+//        handler.postDelayed(delayRun, 6000);
     }
+
+
 }

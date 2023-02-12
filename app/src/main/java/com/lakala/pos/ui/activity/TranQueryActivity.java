@@ -12,6 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lakala.pos.R;
+import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.presente.MainActivityPresenter;
@@ -137,9 +139,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
 
     @Override
-    public void versionAppUpdateView() {
+    public void queryOrdersDetailsResult(TransDetailsBean bean) {
 
     }
-
-
 }

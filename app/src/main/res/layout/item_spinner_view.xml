@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="8dp"
+        android:textSize="15sp"
+        android:background="@drawable/pressed_transparent_to_blue_background"
+        android:textColor="@drawable/textview_pressed_color_black_to_white"
+        android:hint="请选商户" />
+
+</RelativeLayout>

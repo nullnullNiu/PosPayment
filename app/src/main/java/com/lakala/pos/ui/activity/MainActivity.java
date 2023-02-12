@@ -2,13 +2,13 @@ package com.lakala.pos.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,13 +16,24 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+
 import com.lakala.pos.R;
+import com.lakala.pos.common.DeviceInfo;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
+
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +56,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     StringBuilder stringBuilder = new StringBuilder();
     private PopupWindow mPopupWindow;
+
     @Override
     protected MainActivityPresenter createPresenter() {
         return new MainActivityPresenter();
@@ -58,38 +70,35 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         ButterKnife.bind(this);
 
         checkToken();
+        try {
+            DeviceInfo.initDevice(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private void checkToken(){
-       String access_token  = PreferencesUtils.getPreferenceString("access_token", "");
-       if (TextUtils.isEmpty(access_token)){
-           startActivity(new Intent(this,DeviceBindingActivity.class));
-           return;
-       }
+    private void checkToken() {
+        String access_token = PreferencesUtils.getPreferenceString("access_token", "");
+        if (TextUtils.isEmpty(access_token)) {
+            Intent bindIntent = new Intent(this, DeviceBindingActivity.class);
+            bindIntent.putExtra("typeCode", -1);
+            startActivity(bindIntent);
+            return;
+        }
         getDeviceInfo();
-
     }
-
-
-
-
-
-
-
-
-
-
 
 
     @OnClick({R.id.im_more, R.id.shift_change, R.id.tv_deletd, R.id.previous_tv, R.id.next_tv, R.id.select_tv, R.id.revoke_tv
             , R.id.cash_receipt_tv, R.id.collection_code_tv, R.id.scan_tv, R.id.bank_card_tv,
-            R.id.spot_tv,R.id.zero_tv, R.id.one_tv, R.id.two_tv, R.id.three_tv, R.id.four_tv, R.id.five_tv, R.id.six_tv, R.id.seven_tv, R.id.eight_tv, R.id.nine_tv})
+            R.id.spot_tv, R.id.zero_tv, R.id.one_tv, R.id.two_tv, R.id.three_tv, R.id.four_tv, R.id.five_tv, R.id.six_tv, R.id.seven_tv, R.id.eight_tv, R.id.nine_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.im_more://菜单
-                if (mPopupWindow == null || !mPopupWindow.isShowing()){
+                if (mPopupWindow == null || !mPopupWindow.isShowing()) {
                     showMore(im_more);
-                }else {
+                } else {
                     mPopupWindow.dismiss();
                 }
 
@@ -98,7 +107,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
             case R.id.shift_change://换班
 
-                Intent i =new Intent(this,ShiftChangeActivity.class);
+                Intent i = new Intent(this, ShiftChangeActivity.class);
                 startActivity(i);
 
                 break;
@@ -118,19 +127,19 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
             case R.id.select_tv://查询
 
-                startActivity(new Intent(this,TranQueryActivity.class));
+                startActivity(new Intent(this, TranQueryActivity.class));
 
 
                 break;
             case R.id.revoke_tv://撤销
-                Intent revokeIntent =new Intent(this,RevokeActivity.class);
+                Intent revokeIntent = new Intent(this, RevokeActivity.class);
                 startActivity(revokeIntent);
                 break;
 
             case R.id.cash_receipt_tv://收现金
                 amount = money_et.getText().toString();
                 LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)){
+                if (TextUtils.isEmpty(amount)) {
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
@@ -139,38 +148,40 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             case R.id.collection_code_tv://收款码
                 amount = money_et.getText().toString();
                 LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)){
+                if (TextUtils.isEmpty(amount)) {
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
                 money = Double.parseDouble(amount);
 
-                Intent codeIntent =new Intent(this,CollectionCodeActivity.class);
-                codeIntent.putExtra("amount",money);
+                Intent codeIntent = new Intent(this, CollectionCodeActivity.class);
+                codeIntent.putExtra("amount", money);
                 startActivity(codeIntent);
                 break;
             case R.id.scan_tv://扫一扫
                 amount = money_et.getText().toString();
                 LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)){
+                if (TextUtils.isEmpty(amount)) {
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
                 money = Double.parseDouble(amount);
+                // TODO
+
                 break;
 
             case R.id.bank_card_tv: // 银行卡
                 amount = money_et.getText().toString();
                 LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)){
+                if (TextUtils.isEmpty(amount)) {
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
                 money = Double.parseDouble(amount);
 
 
-                Intent bankCardIntent =new Intent(this,BankCardActivity.class);
-                bankCardIntent.putExtra("amount",money);
+                Intent bankCardIntent = new Intent(this, BankCardActivity.class);
+                bankCardIntent.putExtra("amount", money);
                 startActivity(bankCardIntent);
 
                 break;
@@ -229,7 +240,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
      */
     private void showMore(View view) {
         View popupView = getLayoutInflater().inflate(R.layout.popup_more_item, null);
-        mPopupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        mPopupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 //        mPopupWindow.showAsDropDown(view, 0, 0);
         mPopupWindow.setTouchable(true);
 //        mPopupWindow.setFocusable(false);
@@ -296,36 +307,48 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
-
-
-
-    private void getDeviceInfo(){
-        ComponentName component = new ComponentName(
-                "com.lkl.cloudpos.payment",
-                "com.lkl.cloudpos.payment.activity.MainMenuActivity");
-        Intent intent = new Intent();
-        intent.setComponent(component);
-        Bundle bundle = new Bundle();
-        bundle.putString("msg_tp", "0000");
-        bundle.putString("proc_cd", "000000");
-        intent.putExtras(bundle);
-        this.startActivityForResult(intent,1);
-
+    private void getDeviceInfo() {
+        LogUtil.i("商终信息查询： ");
+        try {
+            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            Bundle bundle = new Bundle();
+            bundle.putString("msg_tp", "0000");
+            bundle.putString("proc_cd", "100000");
+            intent.putExtras(bundle);
+            this.startActivityForResult(intent, 1);
+        } catch (ActivityNotFoundException e){
+            ToastUtil.showToast("调用对象不存在，请检查设备。");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
-
-
-        @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.i(requestCode+"  " + resultCode  +" " + data);
+        LogUtil.i("商终信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
+
         switch (resultCode) {
-            // 支付成功
+            // 成功
             case Activity.RESULT_OK:
+                if (requestCode == 1) {
+                    if (data != null) {
+                        LogUtil.i("data != null： ");
+                        Global.MERCHANT_NO = data.getExtras().getString("merchant_no"); // 商户号
+                        Global.BANK_TERM_NO = data.getExtras().getString("bank_term_no"); // 银行卡终端号
+                        Global.CODE_TERM_NO = data.getExtras().getString("code_term_no"); // 扫码终端号
+                        Global.FBANK_TERM_NO = data.getExtras().getString("fbank_term_no"); // 外卡终端号
+                        Global.REASON = data.getExtras().getString("reason"); // 失败原因
+                    }
+                    LogUtil.i("商户号:" + Global.MERCHANT_NO + "   银行卡终端号:" + Global.BANK_TERM_NO + "    扫码终端号:" + Global.CODE_TERM_NO
+                              + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
+                }
 
                 break;
-            // 支付取消
+            // 取消
             case Activity.RESULT_CANCELED:
 
                 break;
@@ -336,6 +359,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 break;
         }
     }
+
+
+
 
 
 

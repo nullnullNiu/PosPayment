@@ -32,19 +32,19 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../keystore/AIDaniu.jks')  //路径
-            storePassword 'cn.aesec.aidaniu'
-            keyAlias 'aidaniu'
-            keyPassword 'cn.aesec.aidaniu'
+            storeFile file('../keystore/keystore.jks')  //路径
+            storePassword 'com.lakala.pos'
+            keyAlias 'pos'
+            keyPassword 'com.lakala.pos'
         }
 
 
 
         debug {
-            storeFile file('../keystore/AIDaniu.jks')//路径
-            storePassword 'cn.aesec.aidaniu'
-            keyAlias 'aidaniu'
-            keyPassword 'cn.aesec.aidaniu'
+            storeFile file('../keystore/keystore.jks')//路径
+            storePassword 'com.lakala.pos'
+            keyAlias 'pos'
+            keyPassword 'com.lakala.pos'
         }
 
     }

@@ -3,6 +3,7 @@ package com.lakala.pos.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -24,8 +25,7 @@ public abstract class MVPActivity<V, T extends BasePresenter<V>> extends BaseAct
     protected abstract T createPresenter();
 
     private String permissionInfo;
-
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +108,29 @@ public abstract class MVPActivity<V, T extends BasePresenter<V>> extends BaseAct
 
 
 
+
+    public void showProgress(String message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);//设置点击不消失
+        }
+        if (progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+        } else {
+            progressDialog.setMessage(message);
+            progressDialog.show();
+        }
+    }
+
+    public void removeProgress(){
+        if (progressDialog==null){
+            return;
+        }
+        if (progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+
+    }
 
 
 }

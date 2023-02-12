@@ -98,7 +98,7 @@ public class RevokeActivity extends MVPActivity<IRevokeView, RevokePresenter> im
         try {
             JSONObject object = new JSONObject();
             object.put("out_order_no","20230206000000000000000000000002");
-            object.put("merchant_no", "822290070111135");
+            object.put("merchant_no", Global.MERCHANT_NO);
 
 //            object.put("out_order_no",out_order_no);
 //          object.put("merchant_no", Global.MERCHANT_NO);

@@ -12,11 +12,8 @@ import java.util.UUID;
 
 public class DeviceInfo {
 
-//    public static String ip;
-    public static String deviceId;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public static void initDevice(Context context) {
         try {
             // 获取WIFI服务
@@ -35,13 +32,22 @@ public class DeviceInfo {
             LogUtil.i("DeviceInfo" + e.getMessage());
         }
 
-        deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
-        if (TextUtils.isEmpty(deviceId)) {
-            deviceId = "DN:" + UUID.randomUUID().toString();
+        Global.DEVICE_ID = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
+        if (TextUtils.isEmpty(Global.DEVICE_ID)) {
+            Global.DEVICE_ID = "DN:" + UUID.randomUUID().toString();
         }
 
-        LogUtil.i("DeviceInfo: " + deviceId);
+        LogUtil.i("DeviceID: " + Global.DEVICE_ID);
     }
+
+    public static String getAndroidId(Context context) {
+        String androidId = "";
+        androidId = android.provider.Settings.Secure.getString(
+                context.getContentResolver(),
+                android.provider.Settings.Secure.ANDROID_ID);
+        return androidId == null ? "" : androidId;
+    }
+
 
 
     private static String intToIp(int i) {

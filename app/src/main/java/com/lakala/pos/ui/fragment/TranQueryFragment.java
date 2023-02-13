@@ -26,6 +26,7 @@ import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.http.ModelAPI;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.http.net.IScanningApi;
+import com.lakala.pos.ui.activity.TranQueryActivity;
 import com.lakala.pos.ui.activity.TransDetailsActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.NetworkUtlis;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TranQueryFragment extends Fragment implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
+public class TranQueryFragment extends Fragment implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener, TranQueryActivity.OnScreenClickListion {
 
 
     private int state;
@@ -52,11 +53,13 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
     private int pageNum = 1;
     private int pageSiz = 10;
 
+
     TextView tvEmpty;
     ListView listView;
 
     TranQueryAdapter tranQueryAdapter;
     private List<TranQueryBean.Records> dataBeanList = new ArrayList<>();
+
 
     public static TranQueryFragment getInstance(int id) {
         TranQueryFragment sf = new TranQueryFragment();
@@ -79,6 +82,7 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         listView.setOnItemClickListener(this);
         listView.setOnScrollListener(this);
 
+        TranQueryActivity.getInstance().setOnScreenClickListion(this);
 
         return v;
     }
@@ -107,16 +111,21 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         if (noNetWork()) {
             return;
         }
+
         JSONObject object = null;
         try {
             object = new JSONObject();
             object.put("status", state);//0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
+//            object.put("deviceCode", Global.DEVICE_ID);//设备号
+            object.put("deviceCode", "123");//设备号
             object.put("pageNum", pageNum);
             object.put("pageSize", pageSiz);
+            object.put("startDate", TranQueryActivity.getInstance().sTime);
+            object.put("endDate", TranQueryActivity.getInstance().eTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.i("加载 status :" + state + "     pageNum: " + pageNum);
+        LogUtil.i("加载 status :" + state + "     pageNum: " + pageNum  +"  startDate: " + TranQueryActivity.getInstance().sTime + "    endDate: " + TranQueryActivity.getInstance().eTime);
         modelAPI.queryOrders(object.toString(), new DataListener<String>() {
             @Override
             public void onSuccess(String result) {
@@ -127,7 +136,6 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
                     Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
                     TranQueryBean tranQueryBean = gson.fromJson(result, TranQueryBean.class);
                     getQaCategoryList(tranQueryBean);
-
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);
@@ -144,12 +152,14 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
 
 
     private void getQaCategoryList(TranQueryBean tranQueryBean) {
-        tvEmpty.setVisibility(View.GONE);
+
         LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
         listView.removeFooterView(footerLoadView);
 
         LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
         if (pageNum > 1 && totalItemCount < 10) {
+            listView.setVisibility(View.VISIBLE);
+            tvEmpty.setVisibility(View.GONE);
             listView.addFooterView(footerView);
             tranQueryAdapter.notifyDataSetChanged();
             isScrollLoad = false;
@@ -158,6 +168,8 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
 
         LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
         if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
+            listView.setVisibility(View.VISIBLE);
+            tvEmpty.setVisibility(View.GONE);
 
             dataBeanList.addAll(tranQueryBean.getData().getRecords());
 
@@ -171,12 +183,10 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
 
             tranQueryAdapter.notifyDataSetChanged();
 
-
         } else {
             LogUtil.i("暂无交易信息");
             tvEmpty.setVisibility(View.VISIBLE);
-//            ToastUtil.showToast("暂无交易信息");
-
+            listView.setVisibility(View.GONE);
         }
 
     }
@@ -229,5 +239,13 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         Intent intent = new Intent(getActivity(), TransDetailsActivity.class);
         intent.putExtra("orderNo", dataBeanList.get(position).getOrderNo());
         startActivity(intent);
+    }
+
+    @Override
+    public void onScreenClick(String start, String end,boolean screen) {
+        LogUtil.i("onScreen 筛选开始日期：" + start + "      结束日期： " + end +"     screen : " + screen);
+        pageNum = 1;
+        dataBeanList.clear();
+        queryOrders();
     }
 }

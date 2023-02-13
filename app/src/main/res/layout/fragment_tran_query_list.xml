@@ -15,10 +15,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:background="@drawable/white_select_bg"
+        android:divider="@android:color/transparent"
         android:fadeScrollbars="true"
         android:layoutAnimation="@anim/main_list_layout_animation"
-        android:scrollbars="none"
-        android:divider="@android:color/transparent" />
+        android:scrollbars="none" />
 
 
     <TextView

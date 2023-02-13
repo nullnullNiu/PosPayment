@@ -14,12 +14,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lakala.pos.R;
-import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.adapter.SpinnerNameAdapter;
 import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.common.Global;
-import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.interfaces.ITransView;
-import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.presente.TransPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.fragment.TranQueryFragment;
@@ -58,15 +56,20 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     TextView endTime;
 
 
-    String sTime = "";
-    String eTime = "";
-
+    public String sTime = "";
+    public String eTime = "";
+    public boolean screen = false;
     private String[] mTitle = {"全部", "未开票", "待填报", "已开票"};
     private int[] mState = {0, 1, 2, 3};
 
     @Override
     protected TransPresenter createPresenter() {
         return new TransPresenter();
+    }
+    public static TranQueryActivity instance;
+
+    public static TranQueryActivity getInstance() {
+        return instance;
     }
 
 
@@ -75,6 +78,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tran_query);
         ButterKnife.bind(this);
+        instance = this;
         mViewPager.setOffscreenPageLimit(0);
         initTab();
 
@@ -82,7 +86,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
         getCountByDeviceId();
     }
 
-    private void getCountByDeviceId(){
+    private void getCountByDeviceId() {
         try {
             JSONObject object = new JSONObject();
             object.put("deviceCode", Global.DEVICE_ID);
@@ -93,7 +97,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
     }
 
-    @OnClick({R.id.back_tv, R.id.img_summary,R.id.img_select_more,R.id.start_time,R.id.end_time})
+    @OnClick({R.id.back_tv, R.id.img_summary, R.id.img_select_more, R.id.start_time, R.id.end_time, R.id.time_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_tv:// 返回
@@ -104,11 +108,11 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
             case R.id.img_summary:// 汇总
 
-                startActivity(new Intent(this,SummaryActivity.class));
+                startActivity(new Intent(this, SummaryActivity.class));
 
                 break;
             case R.id.img_select:// 搜索
-                if (TextUtils.isEmpty(tranNo.getText().toString())){
+                if (TextUtils.isEmpty(tranNo.getText().toString())) {
                     ToastUtil.showToast("请输入交易凭证号");
                     return;
                 }
@@ -117,19 +121,39 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
                 break;
 
-            case R.id.img_select_more:// 更多
-                if (time_layout.getVisibility() == View.GONE){
+            case R.id.img_select_more:// 时间筛选
+                if (time_layout.getVisibility() == View.GONE) {
                     time_layout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     time_layout.setVisibility(View.GONE);
+                    startTime.setText("");
+                    endTime.setText("");
+                    screen = false;
+                    sTime = "";
+                    eTime = "";
+                    onScreenClickListion.onScreenClick(sTime,eTime,false);
                 }
                 break;
             case R.id.start_time:
-                mPresenter.onDateSelection(this,1);
+                mPresenter.onDateSelection(this, 1);
                 break;
 
             case R.id.end_time:
-                mPresenter.onDateSelection(this,2);
+                mPresenter.onDateSelection(this, 2);
+                break;
+
+            case R.id.time_tv:
+                if (TextUtils.isEmpty(sTime) || TextUtils.isEmpty(startTime.getText().toString())) {
+                    ToastUtil.showToast("请选择开始日期");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(eTime) || TextUtils.isEmpty(endTime.getText().toString())) {
+                    ToastUtil.showToast("请选择结束日期");
+                    return;
+                }
+                screen = true;
+                onScreenClickListion.onScreenClick(sTime,eTime,true);
                 break;
         }
     }
@@ -146,9 +170,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
                 eTime = date;
                 break;
         }
-
     }
-
 
 
     private void initTab() {
@@ -162,8 +184,8 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
             @Override
             public Fragment getItem(int position) {
                 //创建Fragment并返回
-                TranQueryFragment fragment = TranQueryFragment.getInstance(mState[position % mTitle.length]);
-                LogUtil.e("切换ViewPager  getItem  " + mState[position % mTitle.length]);
+                TranQueryFragment fragment  = TranQueryFragment.getInstance(mState[position % mTitle.length]);
+                LogUtil.e("切换ViewPager  getItem  " + mState[position % mTitle.length] +"   screen: " +screen);
                 return fragment;
             }
 
@@ -205,5 +227,14 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     @Override
     public void queryOrdersDetailsResult(TransDetailsBean bean) {
 
+    }
+
+    public interface OnScreenClickListion {
+        void onScreenClick(String start,String end,boolean screen);
+    }
+    private OnScreenClickListion onScreenClickListion;
+
+    public void setOnScreenClickListion (OnScreenClickListion onScreenClickListion) {
+        this.onScreenClickListion = onScreenClickListion;
     }
 }

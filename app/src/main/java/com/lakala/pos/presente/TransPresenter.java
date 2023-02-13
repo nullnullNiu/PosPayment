@@ -8,8 +8,10 @@ import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.ITransView;
@@ -70,9 +72,8 @@ public class TransPresenter extends BasePresenter<ITransView> {
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-
-                    TransDetailsBean tranQueryBean =new Gson().fromJson(result,TransDetailsBean.class);
-                    getView().queryOrdersDetailsResult(tranQueryBean);
+                    TransDetailsBean transDetailsBean = new Gson().fromJson(result,TransDetailsBean.class);
+                    getView().queryOrdersDetailsResult(transDetailsBean);
 
                 } else {
                     String msg = jsonObject.get("message").getAsString();

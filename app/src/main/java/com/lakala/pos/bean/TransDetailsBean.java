@@ -2,169 +2,194 @@ package com.lakala.pos.bean;
 
 import java.util.List;
 
+
 public class TransDetailsBean {
 
 
-    public class JsonRootBean {
+    private int code;
+    private String message;
+    private Data data;
 
-        private int code;
-        private String message;
-        private Data data;
+    public void setCode(int code) {
+        this.code = code;
+    }
 
-        public void setCode(int code) {
-            this.code = code;
+    public int getCode() {
+        return code;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+
+    public class Data {
+
+        private String orderNo;
+        private String orderSort;
+        private String payee;
+        private String drawer;
+        private String checker;
+        private int invoiceMark;
+        private int status;
+        private String batchNo;
+        private String voucherNo;
+        private String tradeType;
+        private String scanUrl;
+        private double amount;
+        private double payAmount;
+        private String tradeTime;
+        private String createTime;
+        private String updateTime;
+
+        private List<Details> details;
+
+        public void setOrderNo(String orderNo) {
+            this.orderNo = orderNo;
         }
 
-        public int getCode() {
-            return code;
+        public String getOrderNo() {
+            return orderNo;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public void setOrderSort(String orderSort) {
+            this.orderSort = orderSort;
         }
 
-        public String getMessage() {
-            return message;
+        public String getOrderSort() {
+            return orderSort;
         }
 
-        public void setData(Data data) {
-            this.data = data;
+        public void setPayee(String payee) {
+            this.payee = payee;
         }
 
-        public Data getData() {
-            return data;
+        public String getPayee() {
+            return payee;
         }
 
+        public void setDrawer(String drawer) {
+            this.drawer = drawer;
+        }
 
-        public class Data {
+        public String getDrawer() {
+            return drawer;
+        }
 
-            private String orderNo;
-            private String orderSort;
-            private String payee;
-            private String drawer;
-            private String checker;
-            private int invoiceMark;
-            private int status;
-            private String batchNo;
-            private String voucherNo;
-            private String tradeType;
-            private String scanUrl;
-            private String createTime;
-            private String updateTime;
-            private List<Details> details;
+        public void setChecker(String checker) {
+            this.checker = checker;
+        }
 
-            public void setOrderNo(String orderNo) {
-                this.orderNo = orderNo;
-            }
+        public String getChecker() {
+            return checker;
+        }
 
-            public String getOrderNo() {
-                return orderNo;
-            }
+        public void setInvoiceMark(int invoiceMark) {
+            this.invoiceMark = invoiceMark;
+        }
 
-            public void setOrderSort(String orderSort) {
-                this.orderSort = orderSort;
-            }
+        public int getInvoiceMark() {
+            return invoiceMark;
+        }
 
-            public String getOrderSort() {
-                return orderSort;
-            }
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
-            public void setPayee(String payee) {
-                this.payee = payee;
-            }
+        public int getStatus() {
+            return status;
+        }
 
-            public String getPayee() {
-                return payee;
-            }
+        public void setBatchNo(String batchNo) {
+            this.batchNo = batchNo;
+        }
 
-            public void setDrawer(String drawer) {
-                this.drawer = drawer;
-            }
+        public String getBatchNo() {
+            return batchNo;
+        }
 
-            public String getDrawer() {
-                return drawer;
-            }
+        public void setVoucherNo(String voucherNo) {
+            this.voucherNo = voucherNo;
+        }
 
-            public void setChecker(String checker) {
-                this.checker = checker;
-            }
+        public String getVoucherNo() {
+            return voucherNo;
+        }
 
-            public String getChecker() {
-                return checker;
-            }
+        public void setTradeType(String tradeType) {
+            this.tradeType = tradeType;
+        }
 
-            public void setInvoiceMark(int invoiceMark) {
-                this.invoiceMark = invoiceMark;
-            }
+        public String getTradeType() {
+            return tradeType;
+        }
 
-            public int getInvoiceMark() {
-                return invoiceMark;
-            }
+        public void setScanUrl(String scanUrl) {
+            this.scanUrl = scanUrl;
+        }
 
-            public void setStatus(int status) {
-                this.status = status;
-            }
+        public String getScanUrl() {
+            return scanUrl;
+        }
 
-            public int getStatus() {
-                return status;
-            }
+        public void setAmount(double amount) {
+            this.amount = amount;
+        }
 
-            public void setBatchNo(String batchNo) {
-                this.batchNo = batchNo;
-            }
+        public double getAmount() {
+            return amount;
+        }
 
-            public String getBatchNo() {
-                return batchNo;
-            }
+        public void setPayAmount(double payAmount) {
+            this.payAmount = payAmount;
+        }
 
-            public void setVoucherNo(String voucherNo) {
-                this.voucherNo = voucherNo;
-            }
+        public double getPayAmount() {
+            return payAmount;
+        }
 
-            public String getVoucherNo() {
-                return voucherNo;
-            }
+        public void setTradeTime(String tradeTime) {
+            this.tradeTime = tradeTime;
+        }
 
-            public void setTradeType(String tradeType) {
-                this.tradeType = tradeType;
-            }
+        public String getTradeTime() {
+            return tradeTime;
+        }
 
-            public String getTradeType() {
-                return tradeType;
-            }
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
 
-            public void setScanUrl(String scanUrl) {
-                this.scanUrl = scanUrl;
-            }
+        public String getCreateTime() {
+            return createTime;
+        }
 
-            public String getScanUrl() {
-                return scanUrl;
-            }
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
+        }
 
-            public void setCreateTime(String createTime) {
-                this.createTime = createTime;
-            }
+        public String getUpdateTime() {
+            return updateTime;
+        }
 
-            public String getCreateTime() {
-                return createTime;
-            }
+        public void setDetails(List<Details> details) {
+            this.details = details;
+        }
 
-            public void setUpdateTime(String updateTime) {
-                this.updateTime = updateTime;
-            }
-
-            public String getUpdateTime() {
-                return updateTime;
-            }
-
-            public void setDetails(List<Details> details) {
-                this.details = details;
-            }
-
-            public List<Details> getDetails() {
-                return details;
-            }
-
+        public List<Details> getDetails() {
+            return details;
         }
 
 
@@ -304,6 +329,7 @@ public class TransDetailsBean {
             }
 
             public String getCreateTime() {
+
                 return createTime;
             }
 
@@ -312,20 +338,10 @@ public class TransDetailsBean {
             }
 
             public String getUpdateTime() {
+
                 return updateTime;
             }
-
-        }
-
-        @Override
-        public String toString() {
-            return "JsonRootBean{" +
-                    "code=" + code +
-                    ", message='" + message + '\'' +
-                    ", data=" + data +
-                    '}';
         }
     }
-
 
 }

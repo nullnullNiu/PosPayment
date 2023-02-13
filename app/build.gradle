@@ -120,4 +120,6 @@ dependencies {
 
     implementation project(':pickerview')
     implementation project(':wheelview')
+
+    implementation 'com.google.zxing:core:latest.release'
 }

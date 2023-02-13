@@ -7,8 +7,10 @@
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/pressed_true_blue.xml" value="0.334" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/switch_custom_track_off.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_brown_bg_r10.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_white_bg_r4.xml" value="0.334" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_pressed_true_yellow_bg_r10.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_background_r21.xml" value="0.3" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_background_r4.xml" value="0.334" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_pressed_true_bg_r21.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/drawable/textview_white_to_black_color.xml" value="0.3" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/activity_bank_card.xml" value="0.33" />
@@ -33,6 +35,7 @@
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/query_failed_dialog.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_footer.xml" value="0.5057291666666667" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_login_dialog.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/pickerview/src/main/res/layout/include_pickerview_topbar.xml" value="0.5046875" />
       </map>
     </option>
   </component>

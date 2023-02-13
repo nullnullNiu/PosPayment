@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv_topbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pickerview_bg_topbar">
+
+    <RelativeLayout
+        android:id="@+id/btnCancel_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#00000000"
+            android:gravity="center|center_vertical"
+            android:paddingLeft="@dimen/pickerview_topbar_padding"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="@string/pickerview_cancel"
+            android:textSize="16sp" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
+        android:text=""
+        android:textColor="@color/pickerview_topbar_title"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/btnSubmit_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        android:gravity="center|center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/pickerview_topbar_padding"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:background="#00000000"
+        android:text="@string/pickerview_submit"
+        android:textSize="16sp" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -39,6 +41,18 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     @BindView(R.id.et_transaction_no)
     EditText tranNo;
 
+    @BindView(R.id.time_layout)
+    ConstraintLayout time_layout;
+
+    @BindView(R.id.start_time)
+    TextView startTime;
+
+    @BindView(R.id.end_time)
+    TextView endTime;
+
+
+    String sTime = "";
+    String eTime = "";
 
     private String[] mTitle = {"全部", "未开票", "待填报", "已开票"};
     private int[] mState = {0, 1, 2, 3};
@@ -59,7 +73,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     }
 
 
-    @OnClick({R.id.back_tv, R.id.img_summary,R.id.img_select_more})
+    @OnClick({R.id.back_tv, R.id.img_summary,R.id.img_select_more,R.id.start_time,R.id.end_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_tv:// 返回
@@ -84,13 +98,37 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
                 break;
 
             case R.id.img_select_more:// 更多
-
-                ToastUtil.showToast("更多");
-
+                if (time_layout.getVisibility() == View.GONE){
+                    time_layout.setVisibility(View.VISIBLE);
+                }else {
+                    time_layout.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.start_time:
+                mPresenter.onDateSelection(this,1);
                 break;
 
+            case R.id.end_time:
+                mPresenter.onDateSelection(this,2);
+                break;
         }
     }
+
+    @Override
+    public void getDate(String date, int type) {
+        switch (type) {
+            case 1:
+                startTime.setText(date);
+                sTime = date;
+                break;
+            case 2:
+                endTime.setText(date);
+                eTime = date;
+                break;
+        }
+
+    }
+
 
 
     private void initTab() {
@@ -142,4 +180,6 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     public void queryOrdersDetailsResult(TransDetailsBean bean) {
 
     }
+
+
 }

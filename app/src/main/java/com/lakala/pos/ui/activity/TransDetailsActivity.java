@@ -115,4 +115,9 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
 
 
     }
+
+    @Override
+    public void getDate(String date, int type) {
+
+    }
 }

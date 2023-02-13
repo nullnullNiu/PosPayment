@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "PosPayment"
-include ':app'
+include ':app',':pickerview', ':wheelview'

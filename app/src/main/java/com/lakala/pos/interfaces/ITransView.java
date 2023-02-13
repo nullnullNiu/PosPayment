@@ -8,5 +8,6 @@ import com.lakala.pos.bean.TransDetailsBean;
 public interface ITransView {
 
     void queryOrdersDetailsResult(TransDetailsBean bean);
+    void getDate(String date ,int type);
 
 }

@@ -106,8 +106,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="交易时间:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,8 +148,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="交易类型:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -191,8 +191,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="批次号:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -232,8 +232,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="凭证号:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -314,8 +314,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="订单金额:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -355,8 +355,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="实付金额:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -396,8 +396,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="生成开票码:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -437,8 +437,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="完成开发票:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -460,94 +460,93 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal">
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:orientation="horizontal">-->
 
-        <LinearLayout
-            android:id="@+id/previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_bg"
-            android:orientation="horizontal"
-            android:layout_alignParentLeft="true"
-            android:paddingStart="15dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="15dp"
-            android:visibility="gone"
-            android:paddingBottom="5dp"
-            android:gravity="center">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/previous"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/border_bg"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:paddingStart="15dp"-->
+<!--            android:paddingTop="5dp"-->
+<!--            android:paddingEnd="15dp"-->
+<!--            android:paddingBottom="5dp"-->
+<!--            android:gravity="center">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@mipmap/up_img"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="上一页"
-                android:textColor="@color/black" />
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@mipmap/up_img"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="3dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:paddingBottom="5dp"-->
+<!--                android:text="上一页"-->
+<!--                android:textColor="@color/black" />-->
 
-        </LinearLayout>
-
+<!--        </LinearLayout>-->
 
 
 
-        <LinearLayout
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_bg"
-            android:orientation="horizontal"
-            android:layout_alignParentRight="true"
-            android:paddingStart="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:visibility="gone"
-            android:paddingEnd="15dp"
-            android:gravity="center">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@mipmap/down"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="下一页"
-                android:textColor="@color/black" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/next"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/border_bg"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:paddingStart="15dp"-->
+<!--            android:paddingTop="5dp"-->
+<!--            android:paddingBottom="5dp"-->
 
-        </LinearLayout>
+<!--            android:paddingEnd="15dp"-->
+<!--            android:gravity="center">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@mipmap/down"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="3dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:paddingBottom="5dp"-->
+<!--                android:text="下一页"-->
+<!--                android:textColor="@color/black" />-->
+
+<!--        </LinearLayout>-->
 
 
-        <TextView
-            android:id="@+id/submit_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:background="@drawable/textview_blue_background_r4"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:gravity="center"
-            android:text="查询交易状态"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-    </RelativeLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/submit_tv"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/textview_blue_background_r4"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:text="查询交易状态"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="20sp" />-->
+<!--    </RelativeLayout>-->
 
 
 </LinearLayout>

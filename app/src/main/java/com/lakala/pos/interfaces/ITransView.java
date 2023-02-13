@@ -9,6 +9,7 @@ public interface ITransView {
     void countByDeviceIdResult(String result);
 
     void queryOrdersDetailsResult(TransDetailsBean bean);
+
     void getDate(String date ,int type);
 
 }

@@ -26,12 +26,6 @@ import butterknife.OnClick;
 
 public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter> implements ITransView {
 
-    @BindView(R.id.previous)
-    LinearLayout previous;
-
-    @BindView(R.id.next)
-    LinearLayout next;
-
     @BindView(R.id.trans_data)
     TextView trans_data; //交易时间
 
@@ -99,7 +93,7 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
     }
 
 
-    @OnClick({R.id.back_tv, R.id.reprint_tv, R.id.draw_bill_tv, R.id.previous, R.id.next,R.id.submit_tv,R.id.invoicing_code})
+    @OnClick({R.id.back_tv, R.id.reprint_tv, R.id.draw_bill_tv,R.id.invoicing_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_tv:// 返回
@@ -113,19 +107,12 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
                 break;
             case R.id.draw_bill_tv:// 开发票
 
-                break;
-
-
-            case R.id.previous:// 上一页
-
-                break;
-
-
-            case R.id.next:// 下一页
-
-                break;
-            case R.id.submit_tv: // 确定
-
+                if (TextUtils.isEmpty(billingCode)){
+                    ToastUtil.showToast("开票码为空！");
+                    return;
+                }
+                billingCodeDialog = new BillingCodeDialog().newInstance(billingCode);
+                billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
                 break;
 
             case R.id.invoicing_code: // 开票码

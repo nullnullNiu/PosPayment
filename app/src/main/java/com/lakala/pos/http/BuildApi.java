@@ -348,4 +348,20 @@ public class BuildApi {
 
 
 
+    /**
+     * 交易汇总
+     */
+    public void census(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.census(body)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
+
 }

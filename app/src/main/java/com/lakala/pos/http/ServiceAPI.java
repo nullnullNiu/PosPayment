@@ -173,6 +173,19 @@ public interface ServiceAPI {
 
 
 
+    /**
+     * 交易汇总
+     *
+     */
+
+    @POST("agency/pay/census")
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
+    Observable<String> census(@Body RequestBody requestBody);
+
+
+
+
+
 
 
 }

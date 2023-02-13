@@ -331,6 +331,32 @@ public class ModelAPI implements IScanningApi {
 
 
 
+    @Override
+    public void census(String info, DataListener<String> listener) {
+        BuildApi.getInstance().census(info, new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listener.onFailure(e, "交易汇总 失败: " + e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                listener.onSuccess(s);
+            }
+        });
+    }
+
+
+
+
+
+
+
 
 
 

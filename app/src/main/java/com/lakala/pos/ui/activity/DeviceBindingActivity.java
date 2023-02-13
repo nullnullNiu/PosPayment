@@ -18,6 +18,7 @@ import com.lakala.pos.adapter.SpinnerNameAdapter;
 import com.lakala.pos.bean.BindDeviceInfoBean;
 import com.lakala.pos.bean.EnterpriseInfoBean;
 import com.lakala.pos.bean.UserInfoBean;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IDeviceBindView;
 import com.lakala.pos.presente.DeviceBindingPresenter;
 import com.lakala.pos.ui.MVPActivity;
@@ -226,13 +227,13 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 //        bean.setBossName("张三");
 //        bean.setBossPhone("13231917723");
 
-        bean.setDeviceCode("123");
+        bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);
         bean.setAddress(etAddress);
         bean.setDrawer(etDrawer);
         bean.setChecker(etReviewed);
         bean.setSellerName(entName);
-        bean.setSellerNo("2111");
+        bean.setSellerNo(Global.MERCHANT_NO);
         bean.setBossName(etAdmin);
         bean.setBossPhone(etPhone);
 

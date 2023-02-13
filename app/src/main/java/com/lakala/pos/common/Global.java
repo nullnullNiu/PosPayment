@@ -9,5 +9,6 @@ public class Global {
     public static  String FBANK_TERM_NO = "";//外卡终端号
     public static  String REASON = "";//失败原因
     public static  String IP = "";//设备IP
+    public static  String DEVICE_ID = "";//设备号
 
 }

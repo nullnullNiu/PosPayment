@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
     private int pageNum = 1;
     private int pageSiz = 10;
 
+    TextView tvEmpty;
     ListView listView;
 
     TranQueryAdapter tranQueryAdapter;
@@ -67,6 +69,7 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tran_query_list, null);
         listView = v.findViewById(R.id.list_view);
+        tvEmpty = v.findViewById(R.id.tv_empty);
         listView.setVerticalScrollBarEnabled(false);
         listView.setFastScrollEnabled(false);
         footerView = inflater.inflate(R.layout.view_footer, null);
@@ -141,7 +144,7 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
 
 
     private void getQaCategoryList(TranQueryBean tranQueryBean) {
-
+        tvEmpty.setVisibility(View.GONE);
         LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
         listView.removeFooterView(footerLoadView);
 
@@ -170,8 +173,9 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
 
 
         } else {
-
-            ToastUtil.showToast("暂无交易信息");
+            LogUtil.i("暂无交易信息");
+            tvEmpty.setVisibility(View.VISIBLE);
+//            ToastUtil.showToast("暂无交易信息");
 
         }
 

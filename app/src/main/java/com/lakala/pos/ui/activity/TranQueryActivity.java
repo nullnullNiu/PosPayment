@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.bean.TransDetailsBean;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.interfaces.ITransView;
 import com.lakala.pos.presente.MainActivityPresenter;
@@ -24,6 +25,9 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.fragment.TranQueryFragment;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +44,9 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
     @BindView(R.id.et_transaction_no)
     EditText tranNo;
+
+    @BindView(R.id.tran_numb)
+    TextView tran_numb;
 
     @BindView(R.id.time_layout)
     ConstraintLayout time_layout;
@@ -70,8 +77,21 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
         ButterKnife.bind(this);
         mViewPager.setOffscreenPageLimit(0);
         initTab();
+
+
+        getCountByDeviceId();
     }
 
+    private void getCountByDeviceId(){
+        try {
+            JSONObject object = new JSONObject();
+            object.put("deviceCode", Global.DEVICE_ID);
+            mPresenter.countByDeviceId(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @OnClick({R.id.back_tv, R.id.img_summary,R.id.img_select_more,R.id.start_time,R.id.end_time})
     public void onViewClicked(View view) {
@@ -177,9 +197,13 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
 
     @Override
+    public void countByDeviceIdResult(String result) {
+        LogUtil.i("获取订单笔数： " + result);
+        tran_numb.setText("共" + result + "笔交易");
+    }
+
+    @Override
     public void queryOrdersDetailsResult(TransDetailsBean bean) {
 
     }
-
-
 }

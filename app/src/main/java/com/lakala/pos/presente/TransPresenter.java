@@ -10,7 +10,6 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.bean.TransDetailsBean;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.ITransView;
@@ -26,6 +25,38 @@ public class TransPresenter extends BasePresenter<ITransView> {
     public TimePickerView mDatePicker = null;
 
     /**
+     * 获取订单条数
+     */
+    public void countByDeviceId(String info) {
+        if (noNetWork()) {
+            return;
+        }
+        modelAPI.countByDeviceId(info, new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("获取订单条数 接口返回： " + result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+                    String data = jsonObject.get("data").getAsString();
+                    getView().countByDeviceIdResult(data);
+                } else {
+                    String msg = jsonObject.get("message").getAsString();
+                    ToastUtil.showToast(msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
+            }
+        });
+    }
+
+
+
+ /**
      * 根据订单号查询订单详情
      */
     public void queryOrderByOrderId(String info) {

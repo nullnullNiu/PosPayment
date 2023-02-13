@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -68,15 +70,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        DeviceInfo.initDevice(this);
 
         checkToken();
-        try {
-            DeviceInfo.initDevice(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
+
+
 
     private void checkToken() {
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
@@ -88,6 +87,10 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         }
         getDeviceInfo();
     }
+
+
+
+
 
 
     @OnClick({R.id.im_more, R.id.shift_change, R.id.tv_deletd, R.id.previous_tv, R.id.next_tv, R.id.select_tv, R.id.revoke_tv
@@ -305,7 +308,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     public void versionAppUpdateView() {
 
     }
-
 
     private void getDeviceInfo() {
         LogUtil.i("商终信息查询： ");

@@ -332,5 +332,20 @@ public class BuildApi {
 
 
 
+    /**
+     * 获取订单条数
+     */
+    public void countByDeviceId(String info, Subscriber<String> stringSubscriber) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), info);
+        mServiceAPI.countByDeviceId(body)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
+    }
+
+
+
+
 
 }

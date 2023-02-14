@@ -38,9 +38,11 @@
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/item_spinner_view.xml" value="0.5057291666666667" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/item_summary.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/item_tran_list.xml" value="0.5057291666666667" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/popup_more_item.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/query_failed_dialog.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_footer.xml" value="0.5057291666666667" />
         <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_login_dialog.xml" value="0.5046875" />
+        <entry key="..\:/fly/PosPayment/app/src/main/res/layout/view_revoke_dialog.xml" value="0.5046875" />
         <entry key="..\:/fly/PosPayment/pickerview/src/main/res/layout/include_pickerview_topbar.xml" value="0.5046875" />
       </map>
     </option>

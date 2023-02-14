@@ -179,7 +179,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     // 登录
     private void onLogin(String name,String pwd){
         if (TextUtils.isEmpty(name)){
-            ToastUtil.showToast("密码输入名字！");
+            ToastUtil.showToast("请输入名字！");
         }else if (TextUtils.isEmpty(pwd)){
             ToastUtil.showToast("请输入密码！");
         }else {

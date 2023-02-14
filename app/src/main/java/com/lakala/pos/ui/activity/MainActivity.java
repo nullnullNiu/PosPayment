@@ -2,26 +2,28 @@ package com.lakala.pos.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-
 import com.lakala.pos.R;
+import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.common.DeviceInfo;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
@@ -30,12 +32,6 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
-
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +46,15 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     @BindView(R.id.money_et)
     TextView money_et;
 
+    @BindView(R.id.status)
+    TextView status;
+
+    @BindView(R.id.voucher_no)
+    TextView voucher_no;
+
+    @BindView(R.id.time_tv)
+    TextView time_tv;
+
     @BindView(R.id.im_more)
     ImageView im_more;
 
@@ -58,6 +63,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     StringBuilder stringBuilder = new StringBuilder();
     private PopupWindow mPopupWindow;
+
+    private int pageNum = 1;
+    private int maxPageNum = 0;
+    private int indext = 0;
+
+    TranQueryBean listBean;
 
     @Override
     protected MainActivityPresenter createPresenter() {
@@ -72,9 +83,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         ButterKnife.bind(this);
         DeviceInfo.initDevice(this);
 
+
         checkToken();
     }
-
 
 
     private void checkToken() {
@@ -86,11 +97,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             return;
         }
         getDeviceInfo();
+        mPresenter.queryOrders(pageNum);
     }
-
-
-
-
 
 
     @OnClick({R.id.im_more, R.id.shift_change, R.id.tv_deletd, R.id.previous_tv, R.id.next_tv, R.id.select_tv, R.id.revoke_tv
@@ -120,12 +128,21 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
                 break;
             case R.id.previous_tv://上一条
-
-
+                if (indext <= 1) {
+                    ToastUtil.showToast("当前已经是第一条记录了！");
+                    return;
+                }
+                indext--;
+                setQaCategoryListInfo(indext);
                 break;
             case R.id.next_tv://下一条
 
-
+                if (maxPageNum != 0 && indext >= maxPageNum - 1) {
+                    ToastUtil.showToast("当前已经是最后一条记录了！");
+                    return;
+                }
+                indext++;
+                setQaCategoryListInfo(indext);
                 break;
 
             case R.id.select_tv://查询
@@ -135,8 +152,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
                 break;
             case R.id.revoke_tv://撤销
-                Intent revokeIntent = new Intent(this, RevokeActivity.class);
-                startActivity(revokeIntent);
+                showRevokeDialog();
                 break;
 
             case R.id.cash_receipt_tv://收现金
@@ -293,21 +309,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 startActivity(new Intent(MainActivity.this, CustomerServiceActivity.class));
             }
         });
-//        if (mPopupWindow.isShowing()){
-//            LogUtil.i("11111111");
-//            mPopupWindow.dismiss();
-//        } else {
-//            LogUtil.i("222222222");
-//            mPopupWindow.showAsDropDown(view, 0, 0);
-//        }
-
 
     }
 
-    @Override
-    public void versionAppUpdateView() {
-
-    }
 
     private void getDeviceInfo() {
         LogUtil.i("商终信息查询： ");
@@ -320,7 +324,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             bundle.putString("proc_cd", "100000");
             intent.putExtras(bundle);
             this.startActivityForResult(intent, 1);
-        } catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             ToastUtil.showToast("调用对象不存在，请检查设备。");
         } catch (Exception e) {
             e.printStackTrace();
@@ -346,7 +350,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                         Global.REASON = data.getExtras().getString("reason"); // 失败原因
                     }
                     LogUtil.i("商户号:" + Global.MERCHANT_NO + "   银行卡终端号:" + Global.BANK_TERM_NO + "    扫码终端号:" + Global.CODE_TERM_NO
-                              + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
+                            + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
                 }
 
                 break;
@@ -363,9 +367,113 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
+    // 撤销窗口
+    private AlertDialog dialog;
+
+    private void showRevokeDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View layout = inflater.inflate(R.layout.view_revoke_dialog, null);
+        // 对话框
+        dialog = new android.app.AlertDialog.Builder(this).create();
+        dialog.show();
+        dialog.getWindow().setContentView(layout);
+        dialog.setCancelable(false);
+
+        Window dialogWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        dialogWindow.setGravity(Gravity.CENTER);
+        dialogWindow.setAttributes(lp);
+        dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+        EditText et_pwd = layout.findViewById(R.id.et_password);
+        TextView tv_cancel = layout.findViewById(R.id.tv_developer_cancel);
+        TextView tv_login = layout.findViewById(R.id.tv_developer_login);
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tv_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRevoke(et_pwd.getText().toString());
+            }
+        });
+    }
+
+    // 进入撤销页面
+    private void onRevoke(String pwd) {
+        if (TextUtils.isEmpty(pwd)) {
+            ToastUtil.showToast("请输入密码！");
+        } else {
+            if (pwd.equals("")) {
+                dialog.dismiss();
+                Intent revokeIntent = new Intent(this, RevokeActivity.class);
+                startActivity(revokeIntent);
+            } else {
+                ToastUtil.showToast("密码输入有误。");
+            }
+        }
+    }
+
+    @Override
+    public void getQaCategoryList(TranQueryBean tranQueryBean) {
+        LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
+        indext = 0;
+        maxPageNum = tranQueryBean.getData().getTotal();
+        listBean = tranQueryBean;
+//        if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
+//            voucher_no.setText(tranQueryBean.getData().getRecords().get(0).getOrderNo());
+////            time_tv.setText(tranQueryBean.getData().getRecords().get(0).getCreateTime());
+//           String time = tranQueryBean.getData().getRecords().get(0).getCreateTime();
+//           String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
+//           LogUtil.e(time+"=================" + t);
+//            time_tv.setText(t);
+//            switch (tranQueryBean.getData().getRecords().get(0).getStatus()){
+//                case 0: // 0已收款/未开票
+//                    status.setText("未开票");
+//                    break;
+//                case 1:// 1已上送订单/已填报
+//                    status.setText("已填报");
+//                    break;
+//                case 2:// 2已开票
+//                    status.setText("已开票");
+//                    break;
+//                case 3:// 3已退单
+//                    status.setText("已退单");
+//                    break;
+//            }
+//        }else {
+//            maxPageNum = pageNum;
+//        }
+    }
 
 
-
-
-
+    // 更新上一条下一条数据
+    public void setQaCategoryListInfo(int numb) {
+        LogUtil.e("numb ===========" + numb);
+        if (null != listBean && null != listBean.getData() && 0 < listBean.getData().getRecords().size()) {
+            voucher_no.setText(listBean.getData().getRecords().get(numb).getOrderNo());
+            String time = listBean.getData().getRecords().get(numb).getCreateTime();
+            String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
+            LogUtil.e(time + "=================" + t);
+            time_tv.setText(t);
+            switch (listBean.getData().getRecords().get(numb).getStatus()) {
+                case 0: // 0已收款/未开票
+                    status.setText("未开票");
+                    break;
+                case 1:// 1已上送订单/已填报
+                    status.setText("已填报");
+                    break;
+                case 2:// 2已开票
+                    status.setText("已开票");
+                    break;
+                case 3:// 3已退单
+                    status.setText("已退单");
+                    break;
+            }
+        }
+    }
 }

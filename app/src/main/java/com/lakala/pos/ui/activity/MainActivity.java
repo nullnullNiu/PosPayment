@@ -74,8 +74,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     private List<TranQueryBean.Records> listBean = new ArrayList<>();
 
 
-//    TranQueryBean listBean;
-
     @Override
     protected MainActivityPresenter createPresenter() {
         return new MainActivityPresenter();
@@ -88,7 +86,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         DeviceInfo.initDevice(this);
-
 
         checkToken();
     }
@@ -139,7 +136,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                     return;
                 }
                 indext--;
-                setQaCategoryListInfo(indext);
+                switchTitleItem(indext);
                 break;
             case R.id.next_tv://下一条
                 LogUtil.e(maxIndext +"   " +indext +"   " +maxIndext);
@@ -154,7 +151,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 }
 
                 indext++;
-                setQaCategoryListInfo(indext);
+                switchTitleItem(indext);
                 break;
 
             case R.id.select_tv://查询
@@ -434,68 +431,19 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     public void getQaCategoryList(TranQueryBean tranQueryBean) {
         LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
         maxIndext = tranQueryBean.getData().getTotal();
-//        listBean = tranQueryBean;
         allPageNum = tranQueryBean.getData().getPages();
         if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
             listBean.addAll(tranQueryBean.getData().getRecords());
         }
-//        if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
-//            voucher_no.setText(tranQueryBean.getData().getRecords().get(0).getOrderNo());
-////            time_tv.setText(tranQueryBean.getData().getRecords().get(0).getCreateTime());
-//           String time = tranQueryBean.getData().getRecords().get(0).getCreateTime();
-//           String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
-//           LogUtil.e(time+"=================" + t);
-//            time_tv.setText(t);
-//            switch (tranQueryBean.getData().getRecords().get(0).getStatus()){
-//                case 0: // 0已收款/未开票
-//                    status.setText("未开票");
-//                    break;
-//                case 1:// 1已上送订单/已填报
-//                    status.setText("已填报");
-//                    break;
-//                case 2:// 2已开票
-//                    status.setText("已开票");
-//                    break;
-//                case 3:// 3已退单
-//                    status.setText("已退单");
-//                    break;
-//            }
-//        }else {
-//            maxPageNum = pageNum;
-//        }
     }
 
-//
-//    // 更新上一条下一条数据
-//    public void setQaCategoryListInfo(int numb) {
-//        LogUtil.e("numb ===========" + numb);
-//        list.get(numb).getOrderNo()
-//        if (null != listBean && null != listBean.getData() && 0 < listBean.getData().getRecords().size()) {
-//            voucher_no.setText(listBean.getData().getRecords().get(numb).getOrderNo());
-//            String time = listBean.getData().getRecords().get(numb).getCreateTime();
-//            String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
-//            LogUtil.e(time + "=================" + t);
-//            time_tv.setText(t);
-//            switch (listBean.getData().getRecords().get(numb).getStatus()) {
-//                case 0: // 0已收款/未开票
-//                    status.setText("未开票");
-//                    break;
-//                case 1:// 1已上送订单/已填报
-//                    status.setText("已填报");
-//                    break;
-//                case 2:// 2已开票
-//                    status.setText("已开票");
-//                    break;
-//                case 3:// 3已退单
-//                    status.setText("已退单");
-//                    break;
-//            }
-//        }
-//    }
-
     // 更新上一条下一条数据
-    public void setQaCategoryListInfo(int numb) {
+    public void switchTitleItem(int numb) {
         LogUtil.e("numb ===========" + numb);
+        if (listBean == null){
+            ToastUtil.showToast("没有数据了");
+            return;
+        }
         voucher_no.setText(listBean.get(numb).getOrderNo());
         String time = listBean.get(numb).getCreateTime();
         String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
@@ -516,6 +464,5 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 break;
         }
     }
-
 
 }

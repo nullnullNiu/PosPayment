@@ -143,419 +143,452 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp">
-
-        <TextView
-            android:id="@+id/collection_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="当前批次收款"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/domestic_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="境内卡"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/domestic_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/collection_tv"
-            app:layout_constraintTop_toBottomOf="@+id/collection_tv" />
-
-        <TextView
-            android:id="@+id/domestic_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/domestic_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/domestic_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/domestic_card_tv"
-            app:layout_constraintTop_toTopOf="@id/domestic_card_tv" />
-
-        <TextView
-            android:id="@+id/domestic_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/domestic_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/domestic_no_tv"
-            app:layout_constraintTop_toTopOf="@id/domestic_no_tv" />
-
-
-        <TextView
-            android:id="@+id/overseas_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="境内卡"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/overseas_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/domestic_card_tv"
-            app:layout_constraintTop_toBottomOf="@+id/domestic_card_tv" />
-
-        <TextView
-            android:id="@+id/overseas_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/overseas_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/overseas_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/overseas_card_tv"
-            app:layout_constraintTop_toTopOf="@id/overseas_card_tv" />
-
-        <TextView
-            android:id="@+id/overseas_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/overseas_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/overseas_no_tv"
-            app:layout_constraintTop_toTopOf="@id/overseas_no_tv" />
-
-
-        <TextView
-            android:id="@+id/scan_code_trans_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="扫码交易"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/scan_code_trans_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/overseas_card_tv"
-            app:layout_constraintTop_toBottomOf="@+id/overseas_card_tv" />
-
-        <TextView
-            android:id="@+id/scan_code_trans_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/scan_code_trans_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/scan_code_trans_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/scan_code_trans_card_tv"
-            app:layout_constraintTop_toTopOf="@id/scan_code_trans_card_tv" />
-
-        <TextView
-            android:id="@+id/scan_code_trans_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/scan_code_trans_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/scan_code_trans_no_tv"
-            app:layout_constraintTop_toTopOf="@id/scan_code_trans_no_tv" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        style="@style/ZoomItemRecyclerView_style"
+        android:layoutAnimation="@anim/main_list_layout_animation"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="50dp"
+        android:scrollbars="none"
+        android:fadeScrollbars="true"
+        android:background="@color/transparent"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:drawableTop="@mipmap/img_emptybox"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="暂无交易汇总信息"
+        android:textColor="#BABDBF"
+        android:visibility="gone"
+        android:textSize="16dp"/>
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/refund_collection_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="当前批次退款"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="15dp">-->
 
-
-        <TextView
-            android:id="@+id/refund_domestic_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="境内卡"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/refund_domestic_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/refund_collection_tv"
-            app:layout_constraintTop_toBottomOf="@+id/refund_collection_tv" />
-
-        <TextView
-            android:id="@+id/refund_domestic_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_domestic_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/refund_domestic_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_domestic_card_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_domestic_card_tv" />
-
-        <TextView
-            android:id="@+id/refund_domestic_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_domestic_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_domestic_no_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_domestic_no_tv" />
+<!--        <TextView-->
+<!--            android:id="@+id/collection_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:text="当前批次收款"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
-        <TextView
-            android:id="@+id/refund_overseas_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="境内卡"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/refund_overseas_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/refund_domestic_card_tv"
-            app:layout_constraintTop_toBottomOf="@+id/refund_domestic_card_tv" />
+<!--        <TextView-->
+<!--            android:id="@+id/domestic_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="境内卡"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/domestic_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/collection_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/collection_tv" />-->
 
-        <TextView
-            android:id="@+id/refund_overseas_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_overseas_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/refund_overseas_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_overseas_card_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_overseas_card_tv" />
+<!--        <TextView-->
+<!--            android:id="@+id/domestic_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/domestic_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/domestic_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/domestic_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/domestic_card_tv" />-->
 
-        <TextView
-            android:id="@+id/refund_overseas_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_overseas_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_overseas_no_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_overseas_no_tv" />
-
-
-        <TextView
-            android:id="@+id/refund_scan_code_trans_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="扫码交易"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/refund_scan_code_trans_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/refund_overseas_card_tv"
-            app:layout_constraintTop_toBottomOf="@+id/refund_overseas_card_tv" />
-
-        <TextView
-            android:id="@+id/refund_scan_code_trans_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_scan_code_trans_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/refund_scan_code_trans_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_scan_code_trans_card_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_scan_code_trans_card_tv" />
-
-        <TextView
-            android:id="@+id/refund_scan_code_trans_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/refund_scan_code_trans_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/refund_scan_code_trans_no_tv"
-            app:layout_constraintTop_toTopOf="@id/refund_scan_code_trans_no_tv" />
+<!--        <TextView-->
+<!--            android:id="@+id/domestic_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/domestic_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/domestic_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/domestic_no_tv" />-->
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/overseas_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="境内卡"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/overseas_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/domestic_card_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/domestic_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/overseas_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/overseas_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/overseas_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/overseas_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/overseas_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/overseas_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/overseas_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/overseas_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/overseas_no_tv" />-->
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp">
+<!--        <TextView-->
+<!--            android:id="@+id/scan_code_trans_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="扫码交易"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/scan_code_trans_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/overseas_card_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/overseas_card_tv" />-->
 
-        <TextView
-            android:id="@+id/other_collection_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="当前批次其他交易"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/scan_code_trans_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/scan_code_trans_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/scan_code_trans_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/scan_code_trans_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/scan_code_trans_card_tv" />-->
 
-
-        <TextView
-            android:id="@+id/ins_tran_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="分期交易"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/ins_tran_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/other_collection_tv"
-            app:layout_constraintTop_toBottomOf="@+id/other_collection_tv" />
-
-        <TextView
-            android:id="@+id/ins_tran_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/ins_tran_tv"
-            app:layout_constraintEnd_toStartOf="@+id/ins_tran_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/ins_tran_tv"
-            app:layout_constraintTop_toTopOf="@id/ins_tran_tv" />
-
-        <TextView
-            android:id="@+id/ins_tran_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/ins_tran_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/ins_tran_no_tv"
-            app:layout_constraintTop_toTopOf="@id/ins_tran_no_tv" />
+<!--        <TextView-->
+<!--            android:id="@+id/scan_code_trans_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/scan_code_trans_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/scan_code_trans_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/scan_code_trans_no_tv" />-->
 
 
-        <TextView
-            android:id="@+id/other_overseas_card_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="分期撤销"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/other_overseas_no_tv"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@id/ins_tran_tv"
-            app:layout_constraintTop_toBottomOf="@+id/ins_tran_tv" />
-
-        <TextView
-            android:id="@+id/other_overseas_no_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0笔"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/other_overseas_card_tv"
-            app:layout_constraintEnd_toStartOf="@+id/other_overseas_amount_tv"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/other_overseas_card_tv"
-            app:layout_constraintTop_toTopOf="@id/other_overseas_card_tv" />
-
-        <TextView
-            android:id="@+id/other_overseas_amount_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/other_overseas_no_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/other_overseas_no_tv"
-            app:layout_constraintTop_toTopOf="@id/other_overseas_no_tv" />
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="15dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_collection_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:text="当前批次退款"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_domestic_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="境内卡"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/refund_domestic_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/refund_collection_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/refund_collection_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_domestic_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_domestic_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/refund_domestic_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_domestic_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_domestic_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_domestic_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_domestic_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_domestic_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_domestic_no_tv" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_overseas_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="境内卡"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/refund_overseas_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/refund_domestic_card_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/refund_domestic_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_overseas_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_overseas_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/refund_overseas_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_overseas_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_overseas_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_overseas_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_overseas_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_overseas_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_overseas_no_tv" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_scan_code_trans_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="扫码交易"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/refund_scan_code_trans_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/refund_overseas_card_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/refund_overseas_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_scan_code_trans_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_scan_code_trans_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/refund_scan_code_trans_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_scan_code_trans_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_scan_code_trans_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/refund_scan_code_trans_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/refund_scan_code_trans_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/refund_scan_code_trans_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/refund_scan_code_trans_no_tv" />-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="15dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/other_collection_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:text="当前批次其他交易"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/ins_tran_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="分期交易"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/ins_tran_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/other_collection_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/other_collection_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/ins_tran_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/ins_tran_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/ins_tran_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/ins_tran_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/ins_tran_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/ins_tran_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/ins_tran_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/ins_tran_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/ins_tran_no_tv" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/other_overseas_card_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="分期撤销"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/other_overseas_no_tv"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/ins_tran_tv"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/ins_tran_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/other_overseas_no_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="0笔"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/other_overseas_card_tv"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/other_overseas_amount_tv"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/other_overseas_card_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/other_overseas_card_tv" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/other_overseas_amount_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="right"-->
+<!--            android:text="0.00"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/other_overseas_no_tv"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/other_overseas_no_tv"-->
+<!--            app:layout_constraintTop_toTopOf="@id/other_overseas_no_tv" />-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 <!--    <RelativeLayout-->

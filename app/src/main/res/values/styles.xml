@@ -69,4 +69,15 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="ZoomItemRecyclerView_style">
+        <item name="android:scrollbarThumbVertical">@color/lightgray</item>
+        <item name="android:scrollbarTrackVertical">@color/gray9</item>
+        <item name="android:layout_marginRight">10px</item>
+        <item name="android:layout_marginLeft">10px</item>
+        <item name="android:scrollbarSize">15px</item>
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarStyle">insideOverlay</item>
+    </style>
+
 </resources>

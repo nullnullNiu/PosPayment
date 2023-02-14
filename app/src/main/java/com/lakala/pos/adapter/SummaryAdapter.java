@@ -1,6 +1,7 @@
 package com.lakala.pos.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lakala.pos.R;
 import com.lakala.pos.bean.SummaryBean;
+import com.lakala.pos.utils.LogUtil;
 
 
 import java.util.List;
 
 public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHolder> {
-    private List<SummaryBean.Data> list;
+    private List<SummaryBean.Data> listdata;
+    private SummaryBean.Data list;
     private Context mContext;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,9 +44,9 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
         }
     }
 
-    public SummaryAdapter(List<SummaryBean.Data> list, Context context) {
-        this.list = list;
+    public SummaryAdapter(Context context ,SummaryBean.Data list) {
         this.mContext = context;
+        this.list = list;
     }
 
     @Override
@@ -57,15 +60,36 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.service_name.setText(list.get(position).getTitle());
-        holder.fee_tv.setText(list.get(position).getFee());
-        holder.time_tv.setText(list.get(position).getAdd_time());
 
+        // 收款
+        if (list.getREFUND().get(position).getType().equals("WECHAT ")){ // 微信
+            holder.domestic_no_tv.setText(list.getREFUND().get(position).getNum());
+            holder.domestic_amount_tv.setText(list.getREFUND().get(position).getAmount());
+
+        } else {
+            holder.overseas_no_tv.setText(list.getREFUND().get(position).getNum());
+            holder.overseas_amount_tv.setText(list.getREFUND().get(position).getAmount());
+        }
+
+
+        // 退款
+        if (list.getSUCCESS().get(position).getType().equals("WECHAT ")) { // 微信
+
+            holder.refund_domestic_no_tv.setText(list.getSUCCESS().get(position).getNum());
+            holder.refund_domestic_amount_tv.setText(list.getSUCCESS().get(position).getAmount());
+        } else {
+
+            holder.refund_overseas_no_tv.setText(list.getSUCCESS().get(position).getNum());
+            holder.refund_overseas_amount_tv.setText(list.getSUCCESS().get(position).getAmount());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list.getSUCCESS().size() > list.getREFUND().size()){
+            return list.getSUCCESS().size();
+        }
+        return list.getREFUND().size();
     }
 
 

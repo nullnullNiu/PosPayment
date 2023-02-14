@@ -5,7 +5,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lakala.pos.R;
+import com.lakala.pos.adapter.SummaryAdapter;
 import com.lakala.pos.bean.SummaryBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
@@ -18,6 +23,8 @@ import com.lakala.pos.utils.ToastUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,15 +32,24 @@ import butterknife.OnClick;
 
 public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter> implements ISummaryView {
 
+    @BindView(R.id.tv_empty)
+    TextView tvEmpty;
+
     @BindView(R.id.start_time)
     TextView startTime;
 
     @BindView(R.id.end_time)
     TextView endTime;
 
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
     public String sTime = "";
     public String eTime = "";
 
+    SummaryAdapter summaryAdapter;
+
+    List<SummaryBean.Data> list;
 
     @Override
     protected SummaryPresenter createPresenter() {
@@ -73,10 +89,10 @@ public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter>
 
                 try {
                     JSONObject object = new JSONObject();
-//                    object.put("deviceCode", Global.DEVICE_ID);
-                    object.put("deviceCode", "D9587314");
-                    object.put("startDate",sTime);
-                    object.put("endDate",eTime);
+                    object.put("deviceCode", Global.DEVICE_ID);
+//                    object.put("deviceCode", "D9587314");
+                    object.put("startDate",sTime.replace("-",""));
+                    object.put("endDate",eTime.replace("-",""));
                     mPresenter.onCensus(object.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,7 +128,17 @@ public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter>
     @Override
     public void onCensusResult(SummaryBean summaryBean) {
 
+        if (summaryBean.getData() == null) {
+            tvEmpty.setVisibility(View.VISIBLE);
+            return;
+        }
+        tvEmpty.setVisibility(View.GONE);
 
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
+        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        summaryAdapter = new SummaryAdapter(this, summaryBean.getData());
+        recyclerView.setAdapter(summaryAdapter);
 
     }
 

@@ -23,12 +23,9 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     @SuppressLint({"UseSwitchCompatOrMaterialCode", "NonConstantResourceId"})
     @BindView(R.id.sw_collection_code)
     Switch swCollection;
-
-
     @SuppressLint({"NonConstantResourceId", "UseSwitchCompatOrMaterialCode"})
     @BindView(R.id.sw_scan_code)
     Switch swScan;
-
     @SuppressLint({"UseSwitchCompatOrMaterialCode", "NonConstantResourceId"})
     @BindView(R.id.sw_cash_code)
     Switch swCash;

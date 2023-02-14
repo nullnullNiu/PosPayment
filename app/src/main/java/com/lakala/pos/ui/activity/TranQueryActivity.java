@@ -2,7 +2,10 @@ package com.lakala.pos.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> implements ITransView {
+public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> implements ITransView, TextWatcher {
 
     @BindView(R.id.tablayout)
     TabLayout mTabLayout;
@@ -55,12 +58,12 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     @BindView(R.id.end_time)
     TextView endTime;
 
-
+    public String voucherNo = "";
     public String sTime = "";
     public String eTime = "";
     public boolean screen = false;
-    private String[] mTitle = {"全部", "未开票", "待填报", "已开票"};
-    private int[] mState = {0, 1, 2, 3};
+    private String[] mTitle = {"全部", "未开票", "待填报", "已开票","已退单"};
+    private int[] mState = {-1,0, 1, 2, 3};
 
     @Override
     protected TransPresenter createPresenter() {
@@ -82,7 +85,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
         mViewPager.setOffscreenPageLimit(0);
         initTab();
 
-
+        tranNo.addTextChangedListener(this);
         getCountByDeviceId();
     }
 
@@ -97,7 +100,7 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
     }
 
-    @OnClick({R.id.back_tv, R.id.img_summary, R.id.img_select_more, R.id.start_time, R.id.end_time, R.id.time_tv})
+    @OnClick({R.id.back_tv, R.id.img_summary,R.id.img_select, R.id.img_select_more, R.id.start_time, R.id.end_time, R.id.time_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_tv:// 返回
@@ -112,13 +115,14 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
 
                 break;
             case R.id.img_select:// 搜索
-                if (TextUtils.isEmpty(tranNo.getText().toString())) {
+                if (TextUtils.isEmpty(voucherNo)) {
                     ToastUtil.showToast("请输入交易凭证号");
                     return;
                 }
-
-                ToastUtil.showToast("搜索");
-
+//                TranQueryFragment.getInstance(-1);
+//                ToastUtil.showToast("搜索");
+                LogUtil.i("凭证号搜索： " + voucherNo);
+                onScreenClickListion.onScreenClick(sTime,eTime,true);
                 break;
 
             case R.id.img_select_more:// 时间筛选
@@ -228,6 +232,25 @@ public class TranQueryActivity extends MVPActivity<ITransView, TransPresenter> i
     public void queryOrdersDetailsResult(TransDetailsBean bean) {
 
     }
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        LogUtil.i("beforeTextChanged  修改前 " + s  );
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        LogUtil.i("onTextChanged 修改中" );
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        LogUtil.i("afterTextChanged 修改后"  + s );
+        voucherNo = s.toString();
+    }
+
 
     public interface OnScreenClickListion {
         void onScreenClick(String start,String end,boolean screen);

@@ -115,17 +115,18 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         JSONObject object = null;
         try {
             object = new JSONObject();
-            object.put("status", state);//0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
+            object.put("status", state);//-1 全部 0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
 //            object.put("deviceCode", Global.DEVICE_ID);//设备号
             object.put("deviceCode", "123");//设备号
             object.put("pageNum", pageNum);
+            object.put("voucherNo", TranQueryActivity.getInstance().voucherNo);
             object.put("pageSize", pageSiz);
             object.put("startDate", TranQueryActivity.getInstance().sTime);
             object.put("endDate", TranQueryActivity.getInstance().eTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.i("加载 status :" + state + "     pageNum: " + pageNum  +"  startDate: " + TranQueryActivity.getInstance().sTime + "    endDate: " + TranQueryActivity.getInstance().eTime);
+        LogUtil.i("加载 status :" + state +"    voucherNo :" + TranQueryActivity.getInstance().voucherNo+ "     pageNum: " + pageNum  +"  startDate: " + TranQueryActivity.getInstance().sTime + "    endDate: " + TranQueryActivity.getInstance().eTime);
         modelAPI.queryOrders(object.toString(), new DataListener<String>() {
             @Override
             public void onSuccess(String result) {

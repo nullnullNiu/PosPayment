@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.sqlite.MyDatabaseHelper;
+import com.lakala.pos.utils.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

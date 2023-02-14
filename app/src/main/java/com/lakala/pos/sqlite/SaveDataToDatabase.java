@@ -28,9 +28,9 @@ public class SaveDataToDatabase {
             LogUtil.i("===========================================数据库存储，用户信息========================================" + "[" + Thread.currentThread().getName() + "线程--");
             try {
                 ContentValues values = new ContentValues();
-                values.put("type", type);
-                values.put("name",name);
-                values.put("password",pwd);
+                values.put("Name",name);
+                values.put("Password",pwd);
+                values.put("Type", type);
 
                 //insert（）方法中第一个参数是表名，第二个参数是表示给表中未指定数据的自动赋值为NULL。第三个参数是一个ContentValues对象
                 MyApplication.db.insert("User_Info",null,values);

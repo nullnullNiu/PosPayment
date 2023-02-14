@@ -1,6 +1,7 @@
 package com.lakala.pos.ui.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -20,8 +21,11 @@ import com.lakala.pos.bean.EnterpriseInfoBean;
 import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IDeviceBindView;
+import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.presente.DeviceBindingPresenter;
+import com.lakala.pos.sqlite.SaveDataToDatabase;
 import com.lakala.pos.ui.MVPActivity;
+import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
@@ -264,6 +268,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         PreferencesUtils.setPreference("phone", etPhone);
         PreferencesUtils.setPreference("possword", "123456");
         PreferencesUtils.setPreference("access_token", token);
+        PreferencesUtils.setPreferenceBoolean("role_boss", true);
         ToastUtil.showToast("绑定成功。");
         startActivity(new Intent(this,MainActivity.class));
         this.finish();
@@ -299,4 +304,47 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     }
 
 
+    public void onInspectUser(int type,String in_name ,String in_pwd) {
+        LogUtil.i("输入的名字 = "+ in_name  +"          输入的密码 = "  + in_pwd );
+        ThreadPoolManager.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                Cursor cursor = null;
+                try {
+                    cursor = MyApplication.db.query("User_Info", null, null, null, null, null, null);
+                    //调用moveToFirst()将数据指针移动到第一行的位置。
+                    String name = "";
+                    String pwd = "";
+
+                    if (cursor.moveToFirst()) {
+                        do {
+                            //然后通过Cursor的getColumnIndex()获取某一列中所对应的位置的索引
+                            name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
+                            pwd = cursor.getString(cursor.getColumnIndexOrThrow("Password"));
+
+                            LogUtil.i(name  +"  "  + pwd);
+                            if (in_name.equals(name) && in_pwd.equals(pwd)){
+                                LogUtil.i(name  +"  "  + pwd +"   数据库中有");
+                            }else {
+                                LogUtil.i(name  +"  "  + pwd +"   数据库中没有");
+                                SaveDataToDatabase.getInstance().onSaveData(type,in_name,in_pwd);
+                            }
+
+                        } while (cursor.moveToNext());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtil.e("查询数据库失败：" + e.getMessage());
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                    LogUtil.i("onMonitorWifi    finally      cursor.close()");
+                }
+
+            }
+        });
+    }
 }

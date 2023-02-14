@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.lakala.pos'
-    compileSdk 32
+    compileSdk 31
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "com.lakala.pos"
         minSdk 19
-        targetSdk
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 

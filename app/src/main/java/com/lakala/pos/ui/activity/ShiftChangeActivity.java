@@ -184,18 +184,17 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
             ToastUtil.showToast("请输入密码！");
         }else {
             dialog.dismiss();
-            onInspectUser(name,pwd);
+            onInspectUser(0,name,pwd);
         }
     }
 
 
 
-    public void onInspectUser(String in_name ,String in_pwd) {
+    public void onInspectUser(int type,String in_name ,String in_pwd) {
         LogUtil.i("输入的名字 = "+ in_name  +"          输入的密码 = "  + in_pwd );
         ThreadPoolManager.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-
 
                         Cursor cursor = null;
                         try {
@@ -219,7 +218,6 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                                         SaveDataToDatabase.getInstance().onSaveData(1,in_name,in_pwd);
                                     }
 
-
                                 } while (cursor.moveToNext());
                             }
 
@@ -232,8 +230,6 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                             }
                             LogUtil.i("onMonitorWifi    finally      cursor.close()");
                         }
-
-
 
             }
         });

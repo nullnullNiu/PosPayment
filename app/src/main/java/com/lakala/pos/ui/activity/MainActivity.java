@@ -1,5 +1,6 @@
 package com.lakala.pos.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -85,20 +86,32 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getDownladPermis();
         DeviceInfo.initDevice(this);
-
         checkToken();
     }
 
 
+    // 判断储存权限
+    public boolean getDownladPermis() {
+        PermisName = "储存";
+        isNeedCheck = false;
+        onCheckPermis(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        return isNeedCheck;
+    }
+
+
+
+
     private void checkToken() {
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
-        if (TextUtils.isEmpty(access_token)) {
-            Intent bindIntent = new Intent(this, DeviceBindingActivity.class);
-            bindIntent.putExtra("typeCode", -1);
-            startActivity(bindIntent);
-            return;
-        }
+//        if (TextUtils.isEmpty(access_token)) {
+//            Intent bindIntent = new Intent(this, DeviceBindingActivity.class);
+//            bindIntent.putExtra("typeCode", -1);
+//            startActivity(bindIntent);
+//            return;
+//        }
         getDeviceInfo();
         mPresenter.queryOrders(pageNum);
     }
@@ -283,25 +296,38 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         TextView tv_help = popupView.findViewById(R.id.tv_help);
         TextView tv_service = popupView.findViewById(R.id.tv_service);
 
+       boolean role_boss = PreferencesUtils.getPreferenceBoolean("role_boss", false);
         tv_binding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPopupWindow.dismiss();
-                startActivity(new Intent(MainActivity.this, DeviceBindingActivity.class));
+                if (!role_boss){
+                    ToastUtil.showToast("当前人员没有绑定权限，请换班为老板进行绑定。");
+                }else {
+                    mPopupWindow.dismiss();
+                    startActivity(new Intent(MainActivity.this, DeviceBindingActivity.class));
+                }
             }
         });
         tv_chang_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPopupWindow.dismiss();
-                startActivity(new Intent(MainActivity.this, ChangePwdActivity.class));
+                if (!role_boss){
+                    ToastUtil.showToast("当前人员没有修改密码权限，请换班为老板进行修改密码。");
+                }else {
+                    mPopupWindow.dismiss();
+                    startActivity(new Intent(MainActivity.this, ChangePwdActivity.class));
+                }
             }
         });
         tv_seting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPopupWindow.dismiss();
-                startActivity(new Intent(MainActivity.this, SetingActivity.class));
+//                if (!role_boss){
+//                    ToastUtil.showToast("当前人员没有设置权限，请换班为老板进行设置。");
+//                }else {
+                    mPopupWindow.dismiss();
+                    startActivity(new Intent(MainActivity.this, SetingActivity.class));
+//                }
             }
         });
         tv_help.setOnClickListener(new View.OnClickListener() {

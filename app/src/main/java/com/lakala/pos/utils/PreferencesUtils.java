@@ -73,12 +73,9 @@ public class PreferencesUtils {
     }
 
     /**
-     * 设置用户个人喜好
      *
-     * @param key
-     * @param value
      */
-    public static final void setPreferenceLike(String key, boolean value) {
+    public static final void setPreferenceBoolean(String key, boolean value) {
         Editor editor = getPreferences().edit();
         editor.putBoolean(key, value);
         editor.apply();

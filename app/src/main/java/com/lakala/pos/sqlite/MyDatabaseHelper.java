@@ -6,20 +6,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.lakala.pos.utils.LogUtil;
 
-/**
- * Created by jh03 on 2018/9/18.
- */
 
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     public static final String CREATE_USER_INFO = "create table User_Info(" +
             //primary key 将id列设为主键    autoincrement表示id列是自增长的
             "id integer primary key autoincrement," +
-            "name text,"+
-            "password real," +
-            "DataTime real,"+
-            "type text,"+
-            "Other text)";
+            "Name text,"+
+            "Password real," +
+            "Type real)";
+
+
+//    public static final String CREATE_USER_INFO = "create table User_Info(" +
+//            //primary key 将id列设为主键    autoincrement表示id列是自增长的
+//            "id integer primary key autoincrement," +
+//            "name text,"+
+//            "password real," +
+//            "DataTime real,"+
+//            "type real,"+
+//            "Other text)";
 
 
     private Context mContext;
@@ -35,8 +40,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         //调用SQLiteDatabase中的execSQL（）执行建表语句。
         db.execSQL(CREATE_USER_INFO);
         //创建成功
-      //  Toast.makeText(mContext, "创建数据库 成功！", Toast.LENGTH_SHORT).show();
-        LogUtil.i("MyDatabaseHelper","创建数据库 成功！");
+        LogUtil.i("MyDatabaseHelper"+"创建数据库 成功！");
     }
 
     @Override

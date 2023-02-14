@@ -36,7 +36,7 @@ public class MainActivityPresenter extends BasePresenter<IHomeView> {
             object.put("deviceCode", "123");//设备号
             object.put("pageNum", pageNum);
             object.put("voucherNo", "");
-            object.put("pageSize", 100);
+            object.put("pageSize", 50);
             object.put("startDate", "");
             object.put("endDate", "");
         } catch (JSONException e) {

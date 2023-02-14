@@ -33,6 +33,9 @@ import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,10 +68,13 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     private PopupWindow mPopupWindow;
 
     private int pageNum = 1;
-    private int maxPageNum = 0;
+    private int maxIndext = 0;
     private int indext = 0;
+    private int allPageNum = 0;
+    private List<TranQueryBean.Records> listBean = new ArrayList<>();
 
-    TranQueryBean listBean;
+
+//    TranQueryBean listBean;
 
     @Override
     protected MainActivityPresenter createPresenter() {
@@ -128,7 +134,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
                 break;
             case R.id.previous_tv://上一条
-                if (indext <= 1) {
+                if (indext < 1) {
                     ToastUtil.showToast("当前已经是第一条记录了！");
                     return;
                 }
@@ -136,11 +142,17 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 setQaCategoryListInfo(indext);
                 break;
             case R.id.next_tv://下一条
-
-                if (maxPageNum != 0 && indext >= maxPageNum - 1) {
-                    ToastUtil.showToast("当前已经是最后一条记录了！");
+                LogUtil.e(maxIndext +"   " +indext +"   " +maxIndext);
+                if (maxIndext != 0 && indext >= maxIndext - 1 || indext >= listBean.size()-1) {
+                    if (allPageNum > pageNum) {
+                        pageNum++;
+                        mPresenter.queryOrders(pageNum);
+                    } else {
+                        ToastUtil.showToast("当前已经是最后一条记录了！");
+                    }
                     return;
                 }
+
                 indext++;
                 setQaCategoryListInfo(indext);
                 break;
@@ -421,9 +433,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     @Override
     public void getQaCategoryList(TranQueryBean tranQueryBean) {
         LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
-        indext = 0;
-        maxPageNum = tranQueryBean.getData().getTotal();
-        listBean = tranQueryBean;
+        maxIndext = tranQueryBean.getData().getTotal();
+//        listBean = tranQueryBean;
+        allPageNum = tranQueryBean.getData().getPages();
+        if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
+            listBean.addAll(tranQueryBean.getData().getRecords());
+        }
 //        if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
 //            voucher_no.setText(tranQueryBean.getData().getRecords().get(0).getOrderNo());
 ////            time_tv.setText(tranQueryBean.getData().getRecords().get(0).getCreateTime());
@@ -450,30 +465,57 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 //        }
     }
 
+//
+//    // 更新上一条下一条数据
+//    public void setQaCategoryListInfo(int numb) {
+//        LogUtil.e("numb ===========" + numb);
+//        list.get(numb).getOrderNo()
+//        if (null != listBean && null != listBean.getData() && 0 < listBean.getData().getRecords().size()) {
+//            voucher_no.setText(listBean.getData().getRecords().get(numb).getOrderNo());
+//            String time = listBean.getData().getRecords().get(numb).getCreateTime();
+//            String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
+//            LogUtil.e(time + "=================" + t);
+//            time_tv.setText(t);
+//            switch (listBean.getData().getRecords().get(numb).getStatus()) {
+//                case 0: // 0已收款/未开票
+//                    status.setText("未开票");
+//                    break;
+//                case 1:// 1已上送订单/已填报
+//                    status.setText("已填报");
+//                    break;
+//                case 2:// 2已开票
+//                    status.setText("已开票");
+//                    break;
+//                case 3:// 3已退单
+//                    status.setText("已退单");
+//                    break;
+//            }
+//        }
+//    }
 
     // 更新上一条下一条数据
     public void setQaCategoryListInfo(int numb) {
         LogUtil.e("numb ===========" + numb);
-        if (null != listBean && null != listBean.getData() && 0 < listBean.getData().getRecords().size()) {
-            voucher_no.setText(listBean.getData().getRecords().get(numb).getOrderNo());
-            String time = listBean.getData().getRecords().get(numb).getCreateTime();
-            String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
-            LogUtil.e(time + "=================" + t);
-            time_tv.setText(t);
-            switch (listBean.getData().getRecords().get(numb).getStatus()) {
-                case 0: // 0已收款/未开票
-                    status.setText("未开票");
-                    break;
-                case 1:// 1已上送订单/已填报
-                    status.setText("已填报");
-                    break;
-                case 2:// 2已开票
-                    status.setText("已开票");
-                    break;
-                case 3:// 3已退单
-                    status.setText("已退单");
-                    break;
-            }
+        voucher_no.setText(listBean.get(numb).getOrderNo());
+        String time = listBean.get(numb).getCreateTime();
+        String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
+        LogUtil.e(time + "=================" + t);
+        time_tv.setText(t);
+        switch (listBean.get(numb).getStatus()) {
+            case 0: // 0已收款/未开票
+                status.setText("未开票");
+                break;
+            case 1:// 1已上送订单/已填报
+                status.setText("已填报");
+                break;
+            case 2:// 2已开票
+                status.setText("已开票");
+                break;
+            case 3:// 3已退单
+                status.setText("已退单");
+                break;
         }
     }
+
+
 }

@@ -446,24 +446,28 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             ToastUtil.showToast("没有数据了");
             return;
         }
-        voucher_no.setText(listBean.get(numb).getOrderNo());
-        String time = listBean.get(numb).getCreateTime();
-        String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
-        LogUtil.e(time + "=================" + t);
-        time_tv.setText(t);
-        switch (listBean.get(numb).getStatus()) {
-            case 0: // 0已收款/未开票
-                status.setText("未开票");
-                break;
-            case 1:// 1已上送订单/已填报
-                status.setText("已填报");
-                break;
-            case 2:// 2已开票
-                status.setText("已开票");
-                break;
-            case 3:// 3已退单
-                status.setText("已退单");
-                break;
+        try {
+            voucher_no.setText(listBean.get(numb).getOrderNo());
+            String time = listBean.get(numb).getCreateTime();
+            String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
+            LogUtil.e(time + "=================" + t);
+            time_tv.setText(t);
+            switch (listBean.get(numb).getStatus()) {
+                case 0: // 0已收款/未开票
+                    status.setText("未开票");
+                    break;
+                case 1:// 1已上送订单/已填报
+                    status.setText("已填报");
+                    break;
+                case 2:// 2已开票
+                    status.setText("已开票");
+                    break;
+                case 3:// 3已退单
+                    status.setText("已退单");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

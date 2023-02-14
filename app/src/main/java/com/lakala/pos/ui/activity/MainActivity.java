@@ -143,6 +143,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 if (maxIndext != 0 && indext >= maxIndext - 1 || indext >= listBean.size()-1) {
                     if (allPageNum > pageNum) {
                         pageNum++;
+                        indext++;
                         mPresenter.queryOrders(pageNum);
                     } else {
                         ToastUtil.showToast("当前已经是最后一条记录了！");
@@ -434,6 +435,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         allPageNum = tranQueryBean.getData().getPages();
         if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
             listBean.addAll(tranQueryBean.getData().getRecords());
+            switchTitleItem(indext);
         }
     }
 

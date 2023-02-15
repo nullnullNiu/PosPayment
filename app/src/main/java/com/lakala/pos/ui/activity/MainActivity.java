@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -32,6 +33,7 @@ import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
+import com.lakala.pos.utils.EditTextUtils;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
@@ -46,14 +48,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView {
+public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> implements IHomeView, CompoundButton.OnCheckedChangeListener {
 
     @SuppressLint({"UseSwitchCompatOrMaterialCode", "NonConstantResourceId"})
     @BindView(R.id.swichbutton_invoicing)
     Switch btnSwitch;
 
     @BindView(R.id.money_et)
-    TextView money_et;
+    EditText money_et;
 
     @BindView(R.id.status)
     TextView status;
@@ -94,6 +96,13 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         getDownladPermis();
         DeviceInfo.initDevice(this);
         checkToken();
+        money_et.setFocusable(false);
+        money_et.setFocusableInTouchMode(false);
+
+        EditTextUtils.afterDotTwo(money_et);
+
+        btnSwitch.setChecked(PreferencesUtils.getPreferenceBoolean("invoice_switch",false));
+        btnSwitch.setOnCheckedChangeListener(this);
     }
 
 
@@ -106,6 +115,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         return isNeedCheck;
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        PreferencesUtils.setPreferenceBoolean("invoice_switch", isChecked);
+        LogUtil.i("开发开关：     " + isChecked);
+    }
 
     private void checkToken() {
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
@@ -188,20 +202,37 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
-                money = Double.parseDouble(amount);
-                break;
-            case R.id.collection_code_tv://收款码
-                amount = money_et.getText().toString();
-                LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)) {
-                    ToastUtil.showToast("请输入金额");
+                try {
+                    money = Double.parseDouble(amount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showToast("金额格式输入错误！");
+                    stringBuilder.setLength(0);
+                    money_et.setText("");
                     return;
                 }
-                money = Double.parseDouble(amount);
 
-                Intent codeIntent = new Intent(this, CollectionCodeActivity.class);
-                codeIntent.putExtra("amount", money);
-                startActivity(codeIntent);
+                break;
+            case R.id.collection_code_tv://收款码
+//                amount = money_et.getText().toString();
+//                LogUtil.i("收款金额：" + money);
+//                if (TextUtils.isEmpty(amount)) {
+//                    ToastUtil.showToast("请输入金额");
+//                    return;
+//                }
+//                try {
+//                    money = Double.parseDouble(amount);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ToastUtil.showToast("金额格式输入错误！");
+//                    stringBuilder.setLength(0);
+//                    money_et.setText("");
+//                    return;
+//                }
+
+//                Intent codeIntent = new Intent(this, CollectionCodeActivity.class);
+//                codeIntent.putExtra("amount", money);
+//                startActivity(codeIntent);
                 break;
             case R.id.scan_tv://扫一扫
                 amount = money_et.getText().toString();
@@ -210,7 +241,17 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
-                money = Double.parseDouble(amount);
+
+                try {
+                    money = Double.parseDouble(amount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showToast("金额格式输入错误！");
+                    stringBuilder.setLength(0);
+                    money_et.setText("");
+                    return;
+                }
+
                 // TODO
                 onCreateOrder(2);
                 break;
@@ -222,7 +263,16 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                     ToastUtil.showToast("请输入金额");
                     return;
                 }
-                money = Double.parseDouble(amount);
+
+                try {
+                    money = Double.parseDouble(amount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showToast("金额格式输入错误！");
+                    stringBuilder.setLength(0);
+                    money_et.setText("");
+                    return;
+                }
 
                 onCreateOrder(1);
 
@@ -562,7 +612,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             bankCardIntent.putExtras(bundle);
             startActivity(bankCardIntent);
         } else if (term_type == 2) { // 扫码
-
 
 
         }

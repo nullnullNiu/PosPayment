@@ -1,6 +1,7 @@
 package com.lakala.pos.interfaces;
 
 
+import com.lakala.pos.bean.CreateOrderResultBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.interfaces.base.ILoadingView;
 
@@ -8,5 +9,7 @@ import com.lakala.pos.interfaces.base.ILoadingView;
 public interface IHomeView {
 
     void getQaCategoryList(TranQueryBean bean);
+
+    void getCreateQrderResult(int term_type , CreateOrderResultBean bean);
 
 }

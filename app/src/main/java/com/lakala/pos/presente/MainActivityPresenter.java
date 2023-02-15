@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.lakala.pos.bean.CreateOrderResultBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.IDeviceBindView;
@@ -53,6 +54,40 @@ public class MainActivityPresenter extends BasePresenter<IHomeView> {
                     Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
                     TranQueryBean tranQueryBean = gson.fromJson(result, TranQueryBean.class);
                     getView().getQaCategoryList(tranQueryBean);
+                } else {
+                    String msg = jsonObject.get("message").getAsString();
+                    ToastUtil.showToast(msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
+            }
+        });
+    }
+
+
+
+    /**
+     * 创建订单
+     */
+    public void onCreateOrder(int term_type,String info) {
+        if (noNetWork()) {
+            return;
+        }
+        modelAPI.createOrder(info, new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("请求创建订单 接口返回： " + result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+//                    Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
+                    CreateOrderResultBean bean = new Gson().fromJson(result,CreateOrderResultBean.class);
+                    getView().getCreateQrderResult(term_type,bean);
+
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);

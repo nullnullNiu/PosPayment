@@ -2,6 +2,7 @@ package com.lakala.pos.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.lakala.pos.R;
 import com.lakala.pos.adapter.ViewPagerAdapter;
 import com.lakala.pos.interfaces.IBankCardView;
-import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.BankCardPresenter;
-import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
+import com.lakala.pos.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +42,20 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
 
     @BindView(R.id.dot_3)
     RadioButton dot3;
-    List<View> pages =  new ArrayList<>();
-    View first,second,third;
+    List<View> pages = new ArrayList<>();
+    View first, second, third;
     LayoutInflater layoutInflater;
     ViewPagerAdapter viewPagerAdapter;
 
     double amount = 0;
+
+    String payOrderNo = "";
+    String createTime = "";
+    String merchantOrderNo = "";
+    String channelId = "";
+    String merchantNo = "";
+
+
     @Override
     protected BankCardPresenter createPresenter() {
         return new BankCardPresenter();
@@ -60,22 +68,58 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
         setContentView(R.layout.activity_bank_card);
         ButterKnife.bind(this);
 
-        amount = getIntent().getDoubleExtra("amount",0);
-        money.setText("￥" + amount);
-
+        setOrderInfo();
         showProposalView(this);
 
         initView();
     }
 
 
-    private void initView(){
-        setDot(true,false,false);
+    // 获取传过来的值
+    private void setOrderInfo() {
+        Intent intent = getIntent();
+        if (intent == null) {
+            return;
+        }
+
+        Bundle bundle = intent.getExtras();
+        LogUtil.i("获取传过来的值 ：  " + bundle.toString());
+        if (intent.hasExtra("orderInfo")) {
+            payOrderNo = bundle.getString("payOrderNo");
+        }
+
+        if (intent.hasExtra("createTime")) {
+            createTime = bundle.getString("createTime");
+        }
+
+        if (intent.hasExtra("merchantOrderNo")) {
+            merchantOrderNo = bundle.getString("merchantOrderNo");
+        }
+
+        if (intent.hasExtra("channelId")) {
+            channelId = bundle.getString("channelId");
+        }
+
+        if (intent.hasExtra("merchantNo")) {
+            merchantNo = bundle.getString("merchantNo");
+        }
+
+        if (getIntent().hasExtra("amount")) {
+            amount = getIntent().getDoubleExtra("amount", 0);
+            money.setText("￥" + amount);
+            LogUtil.i("金额 ： " + amount + "");
+        }
+
+    }
+
+
+    private void initView() {
+        setDot(true, false, false);
         //获取布局填充
-        layoutInflater  = getLayoutInflater();
-        first = layoutInflater.inflate(R.layout.fragment_first,null);//第一个页面
-        second = layoutInflater.inflate(R.layout.fragment_second,null);//第二个页面
-        third = layoutInflater.inflate(R.layout.fragment_third,null);//第三个页面
+        layoutInflater = getLayoutInflater();
+        first = layoutInflater.inflate(R.layout.fragment_first, null);//第一个页面
+        second = layoutInflater.inflate(R.layout.fragment_second, null);//第二个页面
+        third = layoutInflater.inflate(R.layout.fragment_third, null);//第三个页面
         //创建一个集合来存放这三个页面
         pages.add(first);
         pages.add(second);
@@ -89,18 +133,19 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             //页面选中
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0 :
-                        setDot(true,false,false);
+                    case 0:
+                        setDot(true, false, false);
                         break;
                     case 1:
-                        setDot(false,true,false);
+                        setDot(false, true, false);
                         break;
                     case 2:
-                        setDot(false,false,true);
+                        setDot(false, false, true);
                         break;
                 }
 
@@ -131,7 +176,6 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
     public void versionAppUpdateView() {
 
     }
-
 
 
     /**
@@ -168,17 +212,17 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
     //当圆点在选中与未选中时的背景（可以自己设置)
     private void setDot(boolean selectA, boolean selectB, boolean selectC) {
 
-        if (selectA)  {
+        if (selectA) {
             dot1.setBackgroundResource(R.mipmap.dot_select);
         } else {
             dot1.setBackgroundResource(R.mipmap.dot_unchecked);
         }
-        if (selectB)  {
+        if (selectB) {
             dot2.setBackgroundResource(R.mipmap.dot_select);
         } else {
             dot2.setBackgroundResource(R.mipmap.dot_unchecked);
         }
-        if (selectC)  {
+        if (selectC) {
             dot3.setBackgroundResource(R.mipmap.dot_select);
         } else {
             dot3.setBackgroundResource(R.mipmap.dot_unchecked);

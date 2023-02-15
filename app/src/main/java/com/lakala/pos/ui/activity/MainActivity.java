@@ -24,6 +24,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.lakala.pos.R;
+import com.lakala.pos.bean.CreateOrderBean;
+import com.lakala.pos.bean.CreateOrderResultBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.common.DeviceInfo;
 import com.lakala.pos.common.Global;
@@ -33,6 +35,9 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +107,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
-
-
     private void checkToken() {
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
 //        if (TextUtils.isEmpty(access_token)) {
@@ -152,8 +155,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 switchTitleItem(indext);
                 break;
             case R.id.next_tv://下一条
-                LogUtil.e(maxIndext +"   " +indext +"   " +maxIndext);
-                if (maxIndext != 0 && indext >= maxIndext - 1 || indext >= listBean.size()-1) {
+                LogUtil.e(maxIndext + "   " + indext + "   " + maxIndext);
+                if (maxIndext != 0 && indext >= maxIndext - 1 || indext >= listBean.size() - 1) {
                     if (allPageNum > pageNum) {
                         pageNum++;
                         indext++;
@@ -209,7 +212,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 }
                 money = Double.parseDouble(amount);
                 // TODO
-
+                onCreateOrder(2);
                 break;
 
             case R.id.bank_card_tv: // 银行卡
@@ -221,10 +224,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 }
                 money = Double.parseDouble(amount);
 
+                onCreateOrder(1);
 
-                Intent bankCardIntent = new Intent(this, BankCardActivity.class);
-                bankCardIntent.putExtra("amount", money);
-                startActivity(bankCardIntent);
 
                 break;
 
@@ -296,13 +297,13 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         TextView tv_help = popupView.findViewById(R.id.tv_help);
         TextView tv_service = popupView.findViewById(R.id.tv_service);
 
-       boolean role_boss = PreferencesUtils.getPreferenceBoolean("role_boss", false);
+        boolean role_boss = PreferencesUtils.getPreferenceBoolean("role_boss", false);
         tv_binding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!role_boss){
+                if (!role_boss) {
                     ToastUtil.showToast("当前人员没有绑定权限，请换班为老板进行绑定。");
-                }else {
+                } else {
                     mPopupWindow.dismiss();
                     startActivity(new Intent(MainActivity.this, DeviceBindingActivity.class));
                 }
@@ -311,9 +312,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         tv_chang_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!role_boss){
+                if (!role_boss) {
                     ToastUtil.showToast("当前人员没有修改密码权限，请换班为老板进行修改密码。");
-                }else {
+                } else {
                     mPopupWindow.dismiss();
                     startActivity(new Intent(MainActivity.this, ChangePwdActivity.class));
                 }
@@ -325,8 +326,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 //                if (!role_boss){
 //                    ToastUtil.showToast("当前人员没有设置权限，请换班为老板进行设置。");
 //                }else {
-                    mPopupWindow.dismiss();
-                    startActivity(new Intent(MainActivity.this, SetingActivity.class));
+                mPopupWindow.dismiss();
+                startActivity(new Intent(MainActivity.this, SetingActivity.class));
 //                }
             }
         });
@@ -444,7 +445,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("请输入密码！");
         } else {
-          String rP = PreferencesUtils.getPreferenceString("revoke_pwd", "");
+            String rP = PreferencesUtils.getPreferenceString("revoke_pwd", "");
             if (pwd.equals(rP)) {
                 dialog.dismiss();
                 Intent revokeIntent = new Intent(this, RevokeActivity.class);
@@ -466,10 +467,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         }
     }
 
+
     // 更新上一条下一条数据
     public void switchTitleItem(int numb) {
         LogUtil.e("numb ===========" + numb);
-        if (listBean == null){
+        if (listBean == null) {
             ToastUtil.showToast("没有数据了");
             return;
         }
@@ -497,5 +499,74 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             e.printStackTrace();
         }
     }
+
+
+    private void onCreateOrder(int term_type) {
+        String term_no = "";
+        String busiType = "";
+
+        if (term_type == 1) { //银行卡终端号
+            term_no = Global.BANK_TERM_NO;
+            busiType = "UPCARD";
+        } else if (term_type == 2) { // 扫码终端号
+            term_no = Global.CODE_TERM_NO;
+            busiType = "SCPAY";
+        }
+
+        CreateOrderBean createOrderBean = new CreateOrderBean();
+        createOrderBean.setTermId("A0010000");
+        createOrderBean.setBusiType(busiType);
+
+        try {
+            JSONObject object = new JSONObject();
+//            object.put("merchantNo", Global.MERCHANT_NO); //结算商户号 必传
+            object.put("merchantNo", "822290070111135"); //结算商户号 必传
+            object.put("termId", term_no); //终端号
+            object.put("orderInfo", "测试"); //订单信息
+            object.put("channelId", "2021052614391"); //渠道编号 必传
+            object.put("busiTypeInfo", createOrderBean.toString()); //业务大类信息 必传 UPCARD刷卡  SCPAY扫码交易
+            object.put("amount", (money * 100)); //订单金额，单位：分 必传
+            mPresenter.onCreateOrder(term_type, object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void getCreateQrderResult(int term_type, CreateOrderResultBean bean) {
+
+        LogUtil.i(bean.toString());
+
+        String payOrderNo = bean.getData().getPayOrderNo();
+        String createTime = bean.getData().getCreateTime();
+        String merchantOrderNo = bean.getData().getMerchantOrderNo();
+        String channelId = bean.getData().getChannelId();
+        String merchantNo = bean.getData().getMerchantNo();
+
+        if (bean == null || bean.getData() == null) {
+            ToastUtil.showToast("创建订单失败");
+            LogUtil.i("创建订单失败" + bean.toString());
+            return;
+        }
+
+        if (term_type == 1) { //银行卡
+            Intent bankCardIntent = new Intent(this, BankCardActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("payOrderNo", payOrderNo);
+            bundle.putString("createTime", createTime);
+            bundle.putString("merchantOrderNo", merchantOrderNo);
+            bundle.putString("channelId", channelId);
+            bundle.putString("merchantNo", merchantNo);
+            bundle.putDouble("amount", money);
+            bankCardIntent.putExtras(bundle);
+            startActivity(bankCardIntent);
+        } else if (term_type == 2) { // 扫码
+
+
+
+        }
+    }
+
 
 }

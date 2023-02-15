@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.multidex.MultiDex;
 
 import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.sqlite.MyDatabaseHelper;
@@ -49,6 +50,8 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
         onInfoDatabase(); //子线程中创建数据库
+        // 初始化MultiDex
+        MultiDex.install(this);
     }
 
 

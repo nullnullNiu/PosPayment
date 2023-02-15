@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 
 import com.lakala.pos.R;
 import com.lakala.pos.bean.UserInfoBean;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.ISetingView;
 import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.presente.SetPresenter;
@@ -27,6 +28,8 @@ import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
@@ -63,6 +66,7 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
 
     StringBuilder  builderAcc = new StringBuilder();
     StringBuilder  builderCas = new StringBuilder();
+    StringBuilder  builderBoss = new StringBuilder();
 
     private MyHandler handler = new MyHandler(this);
 
@@ -109,7 +113,27 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     public void onResume() {
         super.onResume();
         onGetVlucoInfoDatabase();
+        getBossInfo();
     }
+
+
+    private void getBossInfo(){
+        try {
+            JSONObject object = new JSONObject();
+            object.put("deviceCode", Global.DEVICE_ID);
+//            object.put("deviceCode", "D9587314");
+            mPresenter.queryByDivice(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addBossInfoResult(String result, int statues) {
+//        builderBoss.append();
+    }
+
+
 
     @OnClick({R.id.back_tv, R.id.boss, R.id.accounting, R.id.cashier})
     public void onViewClicked(View view) {
@@ -140,11 +164,6 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
         LogUtil.e("清楚Builder" +builderAcc +"  "  +builderCas);
     }
 
-
-    @Override
-    public void versionAppUpdateView() {
-
-    }
 
 
     @Override
@@ -228,6 +247,8 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
             handler.removeCallbacksAndMessages(null);
         }
     }
+
+
 
     private class MyHandler extends Handler {
         WeakReference<SetingActivity> activityWeakReference;

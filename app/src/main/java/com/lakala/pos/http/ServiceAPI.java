@@ -185,6 +185,26 @@ public interface ServiceAPI {
 
 
 
+    /**
+     * 添加老板信息
+     *
+     */
+
+    @POST("agency/boss/add")
+    Observable<String> addBossInfo(@Header("TOKEN") String token,
+                                   @Body RequestBody requestBody);
+
+
+
+    /**
+     * 根据设备号查询账户列表
+     *
+     *
+     */
+    @POST("agency/boss/queryByDivice")
+    Observable<String> queryByDivice(@Header("TOKEN") String token,
+                                     @Body RequestBody requestBody);
+
 
 
 

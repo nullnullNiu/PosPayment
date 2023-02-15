@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.lakala.pos'
-    compileSdk 31
+    compileSdk 32
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
@@ -15,11 +15,11 @@ android {
 
     defaultConfig {
         applicationId "com.lakala.pos"
-        minSdk 19
-        targetSdkVersion 31
+        minSdkVersion 19
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -122,4 +122,7 @@ dependencies {
     implementation project(':wheelview')
 
     implementation 'com.google.zxing:core:latest.release'
+
+    // 引入multidex库
+    implementation 'com.android.support:multidex:1.0.3'
 }

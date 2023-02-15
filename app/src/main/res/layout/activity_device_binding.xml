@@ -426,6 +426,8 @@
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
+            android:maxLength="11"
+            android:inputType="phone"
             android:singleLine="true"
             android:textColor="#333333"
             android:textColorHint="#999999"

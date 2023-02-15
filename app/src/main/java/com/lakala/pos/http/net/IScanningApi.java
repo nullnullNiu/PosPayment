@@ -35,6 +35,8 @@ public interface IScanningApi {
 
     void census(String info , DataListener<String> listener);
 
+    void addBossInfo(String token,String info, DataListener<String> listener);
 
+    void queryByDivice(String token,String info, DataListener<String> listener);
 
 }

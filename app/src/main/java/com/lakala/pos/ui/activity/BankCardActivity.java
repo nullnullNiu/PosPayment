@@ -1,9 +1,14 @@
 package com.lakala.pos.ui.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -16,7 +21,10 @@ import com.lakala.pos.adapter.ViewPagerAdapter;
 import com.lakala.pos.interfaces.IBankCardView;
 import com.lakala.pos.presente.BankCardPresenter;
 import com.lakala.pos.ui.MVPActivity;
+import com.lakala.pos.utils.DateTimeUtil;
 import com.lakala.pos.utils.LogUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +77,7 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
         ButterKnife.bind(this);
 
         setOrderInfo();
-        showProposalView(this);
+//        showProposalView(this);
 
         initView();
     }
@@ -109,9 +117,138 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
             money.setText("￥" + amount);
             LogUtil.i("金额 ： " + amount + "");
         }
+        pay();
+    }
+
+    private void pay(){
+        LogUtil.i(" 消费-================ " );
+        try {
+            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            Bundle bundle = new Bundle();
+            bundle.putString("msg_tp", "0200");
+            bundle.putString("pay_tp", "0");
+            bundle.putString("proc_tp", "00");
+            bundle.putString("proc_cd", "000000 ");
+            bundle.putString("amt", amount+"");
+            bundle.putString("order_no", merchantOrderNo);
+            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+//            bundle.putString("pay_order_no", payOrderNo);
+            bundle.putString("order_info", "订单信息");
+//            bundle.putString("print_info", "打印信息");
+//            bundle.putString("remarkinfo", "备注信息");
+            intent.putExtras(bundle);
+
+            startActivityForResult(intent, 1);
+        } catch (ActivityNotFoundException e) {
+            LogUtil.e( e.toString());
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+
+//        try {
+//            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+//            Intent intent = new Intent();
+//            intent.setComponent(component);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("msg_tp", "0200");
+//            bundle.putString("pay_tp", "0");
+//            bundle.putString("proc_tp", "00");
+//            bundle.putString("proc_cd", "003000 ");
+//            bundle.putString("amt", amount+"");
+//            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+//            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+////            bundle.putString("order_no", merchantOrderNo);
+////            bundle.putString("pay_order_no", payOrderNo);
+////            bundle.putString("order_info", "12345");
+////            bundle.putString("print_info", "打印信息");
+////            bundle.putString("remarkinfo", "备注信息");
+//            intent.putExtras(bundle);
+//
+//            startActivityForResult(intent, 1);
+//        } catch (ActivityNotFoundException e) {
+//            LogUtil.e( e.toString());
+//        } catch (Exception e) {
+//            LogUtil.e(e.toString());
+//        }
+
+
+        // 扫码支付
+//        try {
+//            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+//            Intent intent = new Intent();
+//            intent.setComponent(component);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("msg_tp", "0200");
+//            bundle.putString("pay_tp", "1");
+//            bundle.putString("proc_tp", "00");
+//            bundle.putString("proc_cd", "960000  ");
+//            bundle.putString("amt", amount+"");
+//            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+//            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+//            bundle.putString("order_no", merchantOrderNo);
+//            bundle.putString("pay_order_no", payOrderNo);
+//            bundle.putString("order_info", "12345");
+////            bundle.putString("print_info", "打印信息");
+////            bundle.putString("remarkinfo", "备注信息");
+//            intent.putExtras(bundle);
+//
+//            startActivityForResult(intent, 1);
+//        } catch (ActivityNotFoundException e) {
+//            LogUtil.e( e.toString());
+//        } catch (Exception e) {
+//            LogUtil.e(e.toString());
+//        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i("支付信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
+
+        switch (resultCode) {
+            // 成功
+            case Activity.RESULT_OK:
+                if (requestCode == 1) {
+                    if (data != null) {
+                        LogUtil.i("data != null： ");
+                        String msg_tp = data.getExtras().getString("msg_tp"); // 商户号
+
+                        LogUtil.i("msg_tp:" + msg_tp);
+                    }
+                }
+
+                break;
+            // 取消
+            case Activity.RESULT_CANCELED:
+                showProposalView(this);
+                break;
+            case -2:
+
+                break;
+            default:
+                break;
+        }
+    }
 
     private void initView() {
         setDot(true, false, false);

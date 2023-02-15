@@ -125,7 +125,7 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
 
                 if (!addV) {
                     onInspectUser(type, account.getText().toString(), pwd.getText().toString());
-                    finish();
+//                    finish();
                     return;
                 }
 
@@ -142,7 +142,7 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
 
                 onInspectUser(type, inAccount.getText().toString(), inPwd.getText().toString());
 
-                finish();
+//                finish();
                 break;
         }
     }
@@ -197,40 +197,42 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
     }
 
 
-    public void onInspectUser(int type, String in_name, String in_pwd) {
+    public void onInspectUser(int in_type, String in_name, String in_pwd) {
         if (type == 1) {
-            return;
+            return ;
         }
-        LogUtil.i("输入的名字 = " + in_name + "          输入的密码 = " + in_pwd);
+        LogUtil.i("输入的名字 = " + in_name + "          输入的密码 = " + in_pwd +"     类型 = " + in_type);
         ThreadPoolManager.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-
+                boolean isSave = true;
                 Cursor cursor = null;
                 try {
                     cursor = MyApplication.db.query("User_Info", null, null, null, null, null, null);
                     //调用moveToFirst()将数据指针移动到第一行的位置。
                     String name = "";
-                    String pwd = "";
+                    int type = 0;
 
                     if (cursor.moveToFirst()) { //将光标移到第一行。如果光标为空，此方法将返回false。
                         do {
                             //然后通过Cursor的getColumnIndex()获取某一列中所对应的位置的索引
                             name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
-                            pwd = cursor.getString(cursor.getColumnIndexOrThrow("Password"));
+                            type = cursor.getInt(cursor.getColumnIndexOrThrow("Type"));
 
-                            LogUtil.i(name + "  " + pwd);
-                            if (in_name.equals(name) && in_pwd.equals(pwd)) {
-                                LogUtil.i(name + "  " + pwd + "   数据库中有");
-                            } else {
-                                LogUtil.i(name + "  " + pwd + "   数据库中没有");
-                                SaveDataToDatabase.getInstance().onSaveData(type, in_name, in_pwd);
+                            if (in_name.equals(name) && in_type == type) {
+                                isSave = false;
                             }
 
                         } while (cursor.moveToNext());
-                    }else{
-                        LogUtil.i(name + "  " + pwd + "   数据库中没有2");
-                        SaveDataToDatabase.getInstance().onSaveData(type, in_name, in_pwd);
+                    } else {
+                        LogUtil.i(name + "  " + type + "   数据库中没有数据 ");
+                    }
+
+                    if (isSave){
+                        LogUtil.i(in_type+"      "+in_name + "  " + in_pwd + "   数据库中没有,需要保存到数据库");
+                        SaveDataToDatabase.getInstance().onSaveData(in_type, in_name, in_pwd);
+                    } else {
+                        LogUtil.i(in_type+"      "+in_name + "  " + in_pwd + "   数据库中有，无需保存。");
                     }
 
                 } catch (Exception e) {
@@ -241,9 +243,61 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
                         cursor.close();
                     }
                     LogUtil.i("finally      cursor.close()");
-                }
 
+                    finish();
+                }
             }
         });
+
     }
+
+//    public void onInspectUser(int type, String in_name, String in_pwd) {
+//        if (type == 1) {
+//            return;
+//        }
+//        LogUtil.i("输入的名字 = " + in_name + "          输入的密码 = " + in_pwd);
+//        ThreadPoolManager.getInstance().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Cursor cursor = null;
+//                try {
+//                    cursor = MyApplication.db.query("User_Info", null, null, null, null, null, null);
+//                    //调用moveToFirst()将数据指针移动到第一行的位置。
+//                    String name = "";
+//                    String pwd = "";
+//
+//                    if (cursor.moveToFirst()) { //将光标移到第一行。如果光标为空，此方法将返回false。
+//                        do {
+//                            //然后通过Cursor的getColumnIndex()获取某一列中所对应的位置的索引
+//                            name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
+//                            pwd = cursor.getString(cursor.getColumnIndexOrThrow("Password"));
+//
+//                            LogUtil.i(name + "  " + pwd);
+//                            if (in_name.equals(name) && in_pwd.equals(pwd)) {
+//                                LogUtil.i(name + "  " + pwd + "   数据库中有");
+//                            } else {
+//                                LogUtil.i(name + "  " + pwd + "   数据库中没有");
+//                                SaveDataToDatabase.getInstance().onSaveData(type, in_name, in_pwd);
+//                            }
+//
+//                        } while (cursor.moveToNext());
+//                    }else{
+//                        LogUtil.i(name + "  " + pwd + "   数据库中没有2");
+//                        SaveDataToDatabase.getInstance().onSaveData(type, in_name, in_pwd);
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    LogUtil.e("查询数据库失败：" + e.getMessage());
+//                } finally {
+//                    if (cursor != null) {
+//                        cursor.close();
+//                    }
+//                    LogUtil.i("finally      cursor.close()");
+//                }
+//
+//            }
+//        });
+//    }
 }

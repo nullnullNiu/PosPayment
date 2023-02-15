@@ -4,12 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.lakala.pos.R;
 import com.lakala.pos.bean.UserInfoBean;
@@ -19,17 +25,20 @@ import com.lakala.pos.presente.SetPresenter;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.PreferencesUtils;
 
 import org.w3c.dom.Text;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
-        implements ISetingView, CompoundButton.OnCheckedChangeListener {
+        implements ISetingView, CompoundButton.OnCheckedChangeListener , TextWatcher {
 
     @SuppressLint({"UseSwitchCompatOrMaterialCode", "NonConstantResourceId"})
     @BindView(R.id.sw_collection_code)
@@ -54,6 +63,10 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
 
     StringBuilder  builderAcc = new StringBuilder();
     StringBuilder  builderCas = new StringBuilder();
+
+    private MyHandler handler = new MyHandler(this);
+
+
     @Override
     protected SetPresenter createPresenter() {
         return new SetPresenter();
@@ -67,8 +80,30 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
         swCollection.setOnCheckedChangeListener(this);
         swScan.setOnCheckedChangeListener(this);
         swCash.setOnCheckedChangeListener(this);
-
+        undoPassword.addTextChangedListener(this);
     }
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        LogUtil.i("beforeTextChanged  修改前 " + s  );
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        LogUtil.i("onTextChanged 修改中" );
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        LogUtil.i("afterTextChanged 修改后"  + s );
+       String pw = s.toString();
+        if (pw.length()>=6){
+            PreferencesUtils.setPreference("revoke_pwd", pw);
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -156,19 +191,22 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
             //扫描数据库,将数据库信息放入infolist
             cursor = MyApplication.db.query("User_Info", null, null, null, null, null, null);
             //调用moveToFirst()将数据指针移动到第一行的位置。
+            LogUtil.i("扫描数据库,数据数量 " + cursor.getColumnCount());
             while (cursor.moveToNext()) {
                 int type = cursor.getInt(cursor.getColumnIndexOrThrow("Type"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
 //                String pwd = cursor.getString(cursor.getColumnIndexOrThrow("Password"));
                 if (type==2){
-                    builderAcc.append(name+"   ");
+                    builderAcc.append(name).append("   ");
                 } else if (type==3){
-                    builderCas.append(name+"   ");
+                    builderCas.append(name).append("   ");
                 }
             }
-            LogUtil.i("扫描数据库,将数据库信息放入  会计 " + builderAcc.toString() +"   ////////////// 收银 "  +builderCas.toString());
-            accounting.setText(builderAcc.toString());
-            cashier.setText(builderCas.toString());
+            LogUtil.i("扫描数据库,获取数据库信息  会计 =" + builderAcc.toString() +"           收银 = "  +builderCas.toString());
+
+            Message message = new Message();
+            message.what = 1;
+            handler.sendMessage(message);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,6 +218,33 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
             LogUtil.i("finally      cursor.close()");
         }
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null){
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    private class MyHandler extends Handler {
+        WeakReference<SetingActivity> activityWeakReference;
+        public MyHandler(SetingActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            SetingActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                if (msg.what == 1) {
+                    accounting.setText(builderAcc.toString());
+                    cashier.setText(builderCas.toString());
+                }
+            }
+        }
     }
 
 }

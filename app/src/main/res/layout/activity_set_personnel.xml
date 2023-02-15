@@ -152,6 +152,8 @@
             android:gravity="center|left"
             android:hint="请输入数字密码（6位）"
             android:lines="6"
+            android:inputType="number"
+            android:maxLength="6"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:singleLine="true"

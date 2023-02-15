@@ -422,8 +422,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
         EditText et_pwd = layout.findViewById(R.id.et_password);
-        TextView tv_cancel = layout.findViewById(R.id.tv_developer_cancel);
-        TextView tv_login = layout.findViewById(R.id.tv_developer_login);
+        TextView tv_cancel = layout.findViewById(R.id.tv_cancel);
+        TextView tv_submit = layout.findViewById(R.id.tv_submit);
 
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -431,7 +431,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 dialog.dismiss();
             }
         });
-        tv_login.setOnClickListener(new View.OnClickListener() {
+        tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRevoke(et_pwd.getText().toString());
@@ -444,7 +444,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("请输入密码！");
         } else {
-            if (pwd.equals("")) {
+          String rP = PreferencesUtils.getPreferenceString("revoke_pwd", "");
+            if (pwd.equals(rP)) {
                 dialog.dismiss();
                 Intent revokeIntent = new Intent(this, RevokeActivity.class);
                 startActivity(revokeIntent);

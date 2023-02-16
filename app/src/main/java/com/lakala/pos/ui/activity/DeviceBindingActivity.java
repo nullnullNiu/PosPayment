@@ -67,6 +67,9 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     private String etPhone;
     private String etAdmin;
 
+    String etDrawer;
+    String etReviewed ;
+
     private int typeCode = 0;
     private Handler handler = new Handler();
 
@@ -183,14 +186,14 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
            return;
        }
 
-       String etDrawer = et_drawer.getText().toString();
+       etDrawer = et_drawer.getText().toString();
        if (TextUtils.isEmpty(etDrawer)){
            ToastUtil.showToast("开票人不能为空");
            return;
        }
 
 
-       String etReviewed = et_reviewed.getText().toString();
+       etReviewed = et_reviewed.getText().toString();
        if (TextUtils.isEmpty(etReviewed)){
            ToastUtil.showToast("审核人不能为空");
            return;
@@ -261,14 +264,18 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         mPresenter.onLogin(user);
     }
 
+
     @Override
     public void loginResult(String token) {
         LogUtil.i("tk" + token);
+        PreferencesUtils.setPreference("checker", etReviewed); //复核人
+        PreferencesUtils.setPreference("drawer", etDrawer); //开票人
         PreferencesUtils.setPreference("admin", etAdmin);
         PreferencesUtils.setPreference("phone", etPhone);
         PreferencesUtils.setPreference("possword", "123456");
         PreferencesUtils.setPreference("access_token", token);
         PreferencesUtils.setPreferenceBoolean("role_boss", true);
+
         ToastUtil.showToast("绑定成功。");
         startActivity(new Intent(this,MainActivity.class));
         this.finish();

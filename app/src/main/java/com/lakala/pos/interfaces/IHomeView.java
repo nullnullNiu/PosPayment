@@ -12,4 +12,6 @@ public interface IHomeView {
 
     void getCreateQrderResult(int term_type , CreateOrderResultBean bean);
 
+    void uploaduploadOrderResult(String result);
+
 }

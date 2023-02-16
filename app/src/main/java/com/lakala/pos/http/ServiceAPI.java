@@ -90,7 +90,7 @@ public interface ServiceAPI {
      */
 
     @POST("order/uploaduploadOrder")
-    @Headers({"TOKEN:XGYQRSQJKDYXGPQJPBQV"})
+    @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
     Observable<String> uploaduploadOrder(@Body RequestBody requestBody);
 
 

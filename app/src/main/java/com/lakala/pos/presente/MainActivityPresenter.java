@@ -103,4 +103,37 @@ public class MainActivityPresenter extends BasePresenter<IHomeView> {
     }
 
 
+
+
+
+    /**
+     * 上送订单
+     */
+    public void uploaduploadOrder(String info) {
+        if (noNetWork()) {
+            return;
+        }
+        modelAPI.uploaduploadOrder(info, new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("请求上送订单 接口返回： " + result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+                    getView().uploaduploadOrderResult(result);
+                } else {
+                    String msg = jsonObject.get("message").getAsString();
+                    ToastUtil.showToast(msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
+            }
+        });
+    }
+
+
 }

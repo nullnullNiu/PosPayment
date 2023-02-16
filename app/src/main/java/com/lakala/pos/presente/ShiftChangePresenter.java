@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.lakala.pos.bean.BossInfoBean;
 import com.lakala.pos.bean.LoginInfo;
 import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.http.net.DataListener;
@@ -39,8 +40,8 @@ public class ShiftChangePresenter extends BasePresenter<IShiftChangeView> {
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-                    UserInfoBean userInfoBean = new Gson().fromJson(result,UserInfoBean.class);
-                    getView().getBossInfoResult(userInfoBean);
+                    BossInfoBean bean = new Gson().fromJson(result,BossInfoBean.class);
+                    getView().getBossInfoResult(bean);
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);

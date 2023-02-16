@@ -10,5 +10,6 @@ public class Global {
     public static  String REASON = "";//失败原因
     public static  String IP = "";//设备IP
     public static  String DEVICE_ID = "";//设备号
+    public static  int ORDER_SORT = 1;//该设备下订单序号
 
 }

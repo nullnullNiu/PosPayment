@@ -36,6 +36,7 @@ public class PreferencesUtils {
         editor.apply();
     }
 
+
     /**
      * 获取long
      *
@@ -99,6 +100,18 @@ public class PreferencesUtils {
         editor.putStringSet(key, value);
         editor.apply();
         editor.clear();
+    }
+
+    /**
+     * int  類型
+     *
+     * @param key
+     * @param value
+     */
+    public static final void setPreferenceInt(String key, int value) {
+        Editor editor = getPreferences().edit();
+        editor.putInt(key, value);
+        editor.apply();
     }
 
     public static final Integer getPreferenceInt(String key, int defaultvalue) {

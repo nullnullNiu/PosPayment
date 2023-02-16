@@ -9,15 +9,14 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lakala.pos.R;
-import com.lakala.pos.bean.SummaryBean;
+import com.lakala.pos.bean.BossInfoBean;
 import com.lakala.pos.bean.UserInfoBean;
-import com.lakala.pos.utils.LogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PersonnelAdapter extends RecyclerView.Adapter<PersonnelAdapter.ViewHolder> {
-    private List<UserInfoBean> listdata;
+public class BossPersonnelAdapter extends RecyclerView.Adapter<BossPersonnelAdapter.ViewHolder> {
+    private List<BossInfoBean.Data> listdata;
+
     private Context mContext;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -29,25 +28,22 @@ public class PersonnelAdapter extends RecyclerView.Adapter<PersonnelAdapter.View
         }
     }
 
-    public PersonnelAdapter(Context context ,  List<UserInfoBean> list) {
+    public BossPersonnelAdapter(Context context , List<BossInfoBean.Data> list) {
         this.mContext = context;
         this.listdata = list;
     }
 
     @Override
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_personnel_view, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-        LogUtil.i(listdata.get(position).getLoginName());
-        holder.name.setText(listdata.get(position).getLoginName());
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
-
+        holder.name.setText(listdata.get(position).getBossName());
     }
 
     @Override

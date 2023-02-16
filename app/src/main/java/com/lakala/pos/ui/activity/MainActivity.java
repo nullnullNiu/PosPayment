@@ -30,6 +30,7 @@ import com.lakala.pos.bean.CreateOrderResultBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.common.DeviceInfo;
 import com.lakala.pos.common.Global;
+import com.lakala.pos.dialog.BillingCodeDialog;
 import com.lakala.pos.interfaces.IHomeView;
 import com.lakala.pos.presente.MainActivityPresenter;
 import com.lakala.pos.ui.MVPActivity;
@@ -66,6 +67,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     @BindView(R.id.time_tv)
     TextView time_tv;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     @BindView(R.id.im_more)
     ImageView im_more;
 
@@ -80,6 +84,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     private int indext = 0;
     private int allPageNum = 0;
     private List<TranQueryBean.Records> listBean = new ArrayList<>();
+
+    BillingCodeDialog billingCodeDialog;
+
+    private boolean invoiceSwitch  = false;
+    private boolean cashPayment = false;
 
 
     @Override
@@ -100,9 +109,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         money_et.setFocusableInTouchMode(false);
 
         EditTextUtils.afterDotTwo(money_et);
-
-        btnSwitch.setChecked(PreferencesUtils.getPreferenceBoolean("invoice_switch",false));
+        invoiceSwitch = PreferencesUtils.getPreferenceBoolean("invoice_switch",false);
+        btnSwitch.setChecked(invoiceSwitch);
         btnSwitch.setOnCheckedChangeListener(this);
+        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
+        time_tv.setText("00" + Global.ORDER_SORT);
     }
 
 
@@ -117,6 +128,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        invoiceSwitch = isChecked;
         PreferencesUtils.setPreferenceBoolean("invoice_switch", isChecked);
         LogUtil.i("开发开关：     " + isChecked);
     }
@@ -196,24 +208,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 break;
 
             case R.id.cash_receipt_tv://收现金
-                amount = money_et.getText().toString();
-                LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)) {
-                    ToastUtil.showToast("请输入金额");
-                    return;
-                }
-                try {
-                    money = Double.parseDouble(amount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtil.showToast("金额格式输入错误！");
-                    stringBuilder.setLength(0);
-                    money_et.setText("");
-                    return;
-                }
+                cashPayment = true;
+                uploaduploadOrder();
 
                 break;
             case R.id.collection_code_tv://收款码
+//                cashPayment = false;
 //                amount = money_et.getText().toString();
 //                LogUtil.i("收款金额：" + money);
 //                if (TextUtils.isEmpty(amount)) {
@@ -235,47 +235,51 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 //                startActivity(codeIntent);
                 break;
             case R.id.scan_tv://扫一扫
-                amount = money_et.getText().toString();
-                LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)) {
-                    ToastUtil.showToast("请输入金额");
-                    return;
-                }
-
-                try {
-                    money = Double.parseDouble(amount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtil.showToast("金额格式输入错误！");
-                    stringBuilder.setLength(0);
-                    money_et.setText("");
-                    return;
-                }
-
-                // TODO
-                onCreateOrder(2);
+                cashPayment = false;
+                toPay(2);
+//                amount = money_et.getText().toString();
+//                LogUtil.i("收款金额：" + money);
+//                if (TextUtils.isEmpty(amount)) {
+//                    ToastUtil.showToast("请输入金额");
+//                    return;
+//                }
+//
+//                try {
+//                    money = Double.parseDouble(amount);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ToastUtil.showToast("金额格式输入错误！");
+//                    stringBuilder.setLength(0);
+//                    money_et.setText("");
+//                    return;
+//                }
+//
+//                // TODO
+//                onCreateOrder(2);
                 break;
 
             case R.id.bank_card_tv: // 银行卡
-                amount = money_et.getText().toString();
-                LogUtil.i("收款金额：" + money);
-                if (TextUtils.isEmpty(amount)) {
-                    ToastUtil.showToast("请输入金额");
-                    return;
-                }
-
-                try {
-                    money = Double.parseDouble(amount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtil.showToast("金额格式输入错误！");
-                    stringBuilder.setLength(0);
-                    money_et.setText("");
-                    return;
-                }
-
-                onCreateOrder(1);
-
+                cashPayment = false;
+                toPay(1);
+//                amount = money_et.getText().toString();
+//                LogUtil.i("收款金额：" + money);
+//                if (TextUtils.isEmpty(amount)) {
+//                    ToastUtil.showToast("请输入金额");
+//                    return;
+//                }
+//
+//                try {
+//                    money = Double.parseDouble(amount);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ToastUtil.showToast("金额格式输入错误！");
+//                    stringBuilder.setLength(0);
+//                    money_et.setText("");
+//                    return;
+//                }
+//
+//                onCreateOrder(1);
+//
 
                 break;
 
@@ -550,6 +554,27 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         }
     }
 
+    // 支付
+    private void toPay(int type){
+        amount = money_et.getText().toString();
+        LogUtil.i("收款金额：" + money);
+        if (TextUtils.isEmpty(amount)) {
+            ToastUtil.showToast("请输入金额");
+            return;
+        }
+        try {
+            money = Double.parseDouble(amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastUtil.showToast("金额格式输入错误！");
+            stringBuilder.setLength(0);
+            money_et.setText("");
+            return;
+        }
+        onCreateOrder(type);
+    }
+
+
 
     private void onCreateOrder(int term_type) {
         String term_no = "";
@@ -616,6 +641,47 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
         }
     }
+    // 上送订单
+    private void uploaduploadOrder(){
+
+       String reviewed =  PreferencesUtils.getPreferenceString("checker", "");//复核人
+       String drawer =  PreferencesUtils.getPreferenceString("drawer", "");//开票人
+       String admin =  PreferencesUtils.getPreferenceString("admin", "");
+
+        try {
+            JSONObject object = new JSONObject();
+            object.put("checker",reviewed);//复核人
+            object.put("payee",admin);//收款人
+            object.put("drawer",drawer);//开票人
+            object.put("orderNo","");//卡拉卡生成的订单号
+            object.put("deviceCode",Global.DEVICE_ID);//设备号
+            object.put("orderSort", Global.ORDER_SORT);//该设备下订单序号
+            object.put("invoiceMark",invoiceSwitch ? 1 : 0);//0不开发票 1开发票
+            object.put("batchNo","");//批次号
+            object.put("voucherNo","");//凭证号
+
+            mPresenter.uploaduploadOrder(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    // 上送订单返回
+    @Override
+    public void uploaduploadOrderResult(String result) {
+        Global.ORDER_SORT ++;
+        PreferencesUtils.setPreferenceInt("ORDER_SORT",Global.ORDER_SORT);
+        time_tv.setText("00" + Global.ORDER_SORT);
+
+        if (cashPayment && invoiceSwitch){ //现金支付 且 开票开关开着 弹出开票码
+            billingCodeDialog = new BillingCodeDialog().newInstance("billingCode");
+            billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
+        }
+    }
+
 
 
 }

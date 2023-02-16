@@ -146,20 +146,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        style="@style/ZoomItemRecyclerView_style"
-        android:layoutAnimation="@anim/main_list_layout_animation"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingBottom="50dp"
-        android:scrollbars="none"
-        android:fadeScrollbars="true"
-        android:background="@color/transparent"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            style="@style/ZoomItemRecyclerView_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:fadeScrollbars="true"
+            android:layoutAnimation="@anim/main_list_layout_animation"
+            android:paddingBottom="50dp"
+            android:scrollbars="none" />
 
     <TextView
         android:id="@+id/tv_empty"

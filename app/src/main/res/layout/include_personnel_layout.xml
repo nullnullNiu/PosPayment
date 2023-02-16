@@ -150,6 +150,7 @@
             android:hint="请输入数字密码（6位）"
             android:lines="6"
             android:paddingTop="10dp"
+            android:inputType="numberPassword"
             android:paddingBottom="10dp"
             android:singleLine="true"
             android:textColor="#333333"

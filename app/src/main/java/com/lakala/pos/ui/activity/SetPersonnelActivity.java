@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.lakala.pos.R;
+import com.lakala.pos.bean.BossInfoBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.ISetingView;
 import com.lakala.pos.manager.ThreadPoolManager;
@@ -121,9 +124,11 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
                 if (isLook) {
                     isLook = false;
                     ivLook.setImageResource(R.mipmap.no_look);
+                    pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 } else {
                     isLook = true;
                     ivLook.setImageResource(R.mipmap.look);
+                    pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
                 break;
             case R.id.submit_tv:
@@ -262,9 +267,11 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
                 if (inIsLook) {
                     inIsLook = false;
                     inIvLook.setImageResource(R.mipmap.no_look);
+                    inPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 } else {
                     inIsLook = true;
                     inIvLook.setImageResource(R.mipmap.look);
+                    inPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
                 break;
 
@@ -391,6 +398,12 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
 
 
     }
+
+    @Override
+    public void getBossInfoResult(String result) {
+
+    }
+
 
 //    public void onInspectUser(int type, String in_name, String in_pwd) {
 //        if (type == 1) {

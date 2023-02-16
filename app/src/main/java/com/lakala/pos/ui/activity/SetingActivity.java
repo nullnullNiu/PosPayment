@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.lakala.pos.R;
+import com.lakala.pos.bean.BossInfoBean;
 import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.ISetingView;
@@ -28,6 +29,7 @@ import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -54,6 +56,9 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     Switch swCash;
 
     boolean collection, scan, cash;
+
+    @BindView(R.id.boss)
+    TextView bossName;
 
     @BindView(R.id.accounting)
     TextView accounting;
@@ -130,9 +135,31 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
 
     @Override
     public void addBossInfoResult(String result, int statues) {
-//        builderBoss.append();
     }
 
+    @Override
+    public void getBossInfoResult(String result) {
+        LogUtil.i("解析JSON字符串:" + "result=" + result );
+        builderBoss.setLength(0);
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            if (jsonArray == null || jsonArray.length() < 1){
+                return;
+            }
+            for (int i = 0; i < jsonArray.length(); i++) {
+               String name  = jsonArray.getJSONObject(i).getString("bossName");
+               builderBoss.append(name).append("   ");
+               LogUtil.i("解析JSON字符串:" + "name=" + name );
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        bossName.setText(builderBoss.toString());
+
+    }
 
 
     @OnClick({R.id.back_tv, R.id.boss, R.id.accounting, R.id.cashier})

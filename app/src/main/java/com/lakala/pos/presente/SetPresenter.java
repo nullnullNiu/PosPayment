@@ -1,8 +1,11 @@
 package com.lakala.pos.presente;
 
 import android.text.TextUtils;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.lakala.pos.bean.BossInfoBean;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.interfaces.ISetingView;
 import com.lakala.pos.utils.LogUtil;
@@ -69,7 +72,7 @@ public class SetPresenter extends BasePresenter<ISetingView> {
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-                    getView().addBossInfoResult(result, 0);
+                    getView().getBossInfoResult(result);
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);

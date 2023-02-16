@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.LoginInfo;
 import com.lakala.pos.bean.UserInfoBean;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IShiftChangeView;
 import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.presente.ShiftChangePresenter;
@@ -24,6 +25,9 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -67,8 +71,6 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                 String userJson = new Gson().toJson(userInfoBean);
 
 
-                mPresenter.onLogin(userJson);
-
                 onLogin();
                 break;
 
@@ -76,28 +78,27 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     }
 
 
+
+// 获取老板
+    private void getBossInfo(){
+        try {
+            JSONObject object = new JSONObject();
+            object.put("deviceCode", Global.DEVICE_ID);
+//            object.put("deviceCode", "D9587314");
+            mPresenter.queryByDivice(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
-    public void onLoginResult(LoginInfo info) {
-        LogUtil.i(info.getData().getAccess_token() + "  =========");
+    public void getBossInfoResult(UserInfoBean bean) {
+
+
 
     }
 
-    @Override
-    public void showLoading() {
 
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void fetchedData(String result) {
-
-    }
-
-
+    // 获取员工
     public void onGetVlucoInfoDatabase() {
         ThreadPoolManager.getInstance().execute(new Runnable() {
             @Override
@@ -236,34 +237,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     }
 
 
-    private boolean wifiName(String wifiName) {
 
-        Cursor cur = null;
-        try {
-            cur = MyApplication.db.query("User_Info", null, "ssid=?",
-                    new String[]{wifiName}, null, null, null);
-            while (cur.moveToNext()) {
-                String user = cur.getString(1);
-                if (user.equals(wifiName)) {
-                    LogUtil.i("wifi", wifiName + "数据库中有这个wifi   当前的等于数据库中的    当前的:" + wifiName + "  ==        数据库中的：" + user);
-                    return false;
-                } else
-                    LogUtil.i("wifi", wifiName + "数据库中没有这个wifi  当前的不等于数据库中的    当前的:" + wifiName + "  !=        数据库中的：" + user);
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtil.i("wifi", wifiName + "请求数据库失败 看有无当前wifi" + e.getMessage());
-        } finally {
-            if (cur != null) {
-                cur.close();
-            }
-            LogUtil.i("wifi", wifiName + "finally      cur.close()");
-        }
-
-
-        return true;
-    }
 
 
 }

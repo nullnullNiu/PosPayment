@@ -122,31 +122,31 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
 
     private void pay(){
         LogUtil.i(" 消费-================ " );
-        try {
-            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
-            Intent intent = new Intent();
-            intent.setComponent(component);
-            Bundle bundle = new Bundle();
-            bundle.putString("msg_tp", "0200");
-            bundle.putString("pay_tp", "0");
-            bundle.putString("proc_tp", "00");
-            bundle.putString("proc_cd", "000000 ");
-            bundle.putString("amt", amount+"");
-            bundle.putString("order_no", merchantOrderNo);
-            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
-            bundle.putString("time_stamp", System.currentTimeMillis() + "");
-//            bundle.putString("pay_order_no", payOrderNo);
-            bundle.putString("order_info", "订单信息");
-//            bundle.putString("print_info", "打印信息");
-//            bundle.putString("remarkinfo", "备注信息");
-            intent.putExtras(bundle);
-
-            startActivityForResult(intent, 1);
-        } catch (ActivityNotFoundException e) {
-            LogUtil.e( e.toString());
-        } catch (Exception e) {
-            LogUtil.e(e.toString());
-        }
+//        try {
+//            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+//            Intent intent = new Intent();
+//            intent.setComponent(component);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("msg_tp", "0200");
+//            bundle.putString("pay_tp", "0");
+//            bundle.putString("proc_tp", "00");
+//            bundle.putString("proc_cd", "000000");
+//            bundle.putString("amt", amount+"");
+//            bundle.putString("order_no", merchantOrderNo);
+//            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+//            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+////            bundle.putString("pay_order_no", payOrderNo);
+//            bundle.putString("order_info", "订单信息");
+////            bundle.putString("print_info", "打印信息");
+////            bundle.putString("remarkinfo", "备注信息");
+//            intent.putExtras(bundle);
+//
+//            startActivityForResult(intent, 1);
+//        } catch (ActivityNotFoundException e) {
+//            LogUtil.e( e.toString());
+//        } catch (Exception e) {
+//            LogUtil.e(e.toString());
+//        }
 
 //        try {
 //            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
@@ -156,7 +156,7 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
 //            bundle.putString("msg_tp", "0200");
 //            bundle.putString("pay_tp", "0");
 //            bundle.putString("proc_tp", "00");
-//            bundle.putString("proc_cd", "003000 ");
+//            bundle.putString("proc_cd", "003000");
 //            bundle.putString("amt", amount+"");
 //            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
 //            bundle.putString("time_stamp", System.currentTimeMillis() + "");
@@ -176,32 +176,32 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
 
 
         // 扫码支付
-//        try {
-//            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
-//            Intent intent = new Intent();
-//            intent.setComponent(component);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("msg_tp", "0200");
-//            bundle.putString("pay_tp", "1");
-//            bundle.putString("proc_tp", "00");
-//            bundle.putString("proc_cd", "960000  ");
-//            bundle.putString("amt", amount+"");
-//            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
-//            bundle.putString("time_stamp", System.currentTimeMillis() + "");
-//            bundle.putString("order_no", merchantOrderNo);
-//            bundle.putString("pay_order_no", payOrderNo);
-//            bundle.putString("order_info", "12345");
-////            bundle.putString("print_info", "打印信息");
-////            bundle.putString("remarkinfo", "备注信息");
-//            intent.putExtras(bundle);
-//
-//            startActivityForResult(intent, 1);
-//        } catch (ActivityNotFoundException e) {
-//            LogUtil.e( e.toString());
-//        } catch (Exception e) {
-//            LogUtil.e(e.toString());
-//        }
+        try {
+            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            Bundle bundle = new Bundle();
+            bundle.putString("msg_tp", "0200");
+            bundle.putString("pay_tp", "1");
+            bundle.putString("proc_tp", "00");
+            bundle.putString("proc_cd", "660000");
+            bundle.putString("amt", amount+"");
+            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+            bundle.putString("order_no", merchantOrderNo);
+            bundle.putString("pay_order_no", payOrderNo);
+            bundle.putString("order_info", "12345");
+//            bundle.putString("print_info", "打印信息");
+//            bundle.putString("remarkinfo", "备注信息");
+            intent.putExtras(bundle);
 
+            startActivityForResult(intent, 1);
+        } catch (ActivityNotFoundException e) {
+            LogUtil.e( e.toString());
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+//
 
 
 
@@ -224,6 +224,10 @@ public class BankCardActivity extends MVPActivity<IBankCardView, BankCardPresent
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i("支付信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
+        String code = data.getExtras().getString("rescode");
+        String reason = data.getExtras().getString("reason");
+        LogUtil.i("信息：  code=" + code + "  reason =" + reason);
+
 
         switch (resultCode) {
             // 成功

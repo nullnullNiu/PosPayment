@@ -61,7 +61,7 @@ public class SetPresenter extends BasePresenter<ISetingView> {
         }
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
         if (TextUtils.isEmpty(access_token)) {
-            ToastUtil.showToast("添加失败，请重新绑定设备。");
+//            ToastUtil.showToast("添加失败，请重新绑定设备。");
             return;
         }
         modelAPI.queryByDivice(access_token, info, new DataListener<String>() {

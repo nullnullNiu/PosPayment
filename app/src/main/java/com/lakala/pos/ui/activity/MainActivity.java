@@ -112,8 +112,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         invoiceSwitch = PreferencesUtils.getPreferenceBoolean("invoice_switch",false);
         btnSwitch.setChecked(invoiceSwitch);
         btnSwitch.setOnCheckedChangeListener(this);
-        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
-        time_tv.setText("00" + Global.ORDER_SORT);
+        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",1);
+        time_tv.setText("000" + Global.ORDER_SORT);
     }
 
 
@@ -135,12 +135,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     private void checkToken() {
         String access_token = PreferencesUtils.getPreferenceString("access_token", "");
-//        if (TextUtils.isEmpty(access_token)) {
-//            Intent bindIntent = new Intent(this, DeviceBindingActivity.class);
-//            bindIntent.putExtra("typeCode", -1);
-//            startActivity(bindIntent);
-//            return;
-//        }
+        if (TextUtils.isEmpty(access_token)) {
+            Intent bindIntent = new Intent(this, DeviceBindingActivity.class);
+            bindIntent.putExtra("typeCode", -1);
+            startActivity(bindIntent);
+            return;
+        }
         getDeviceInfo();
         mPresenter.queryOrders(pageNum);
     }
@@ -499,7 +499,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("请输入密码！");
         } else {
-            String rP = PreferencesUtils.getPreferenceString("revoke_pwd", "");
+            String rP = PreferencesUtils.getPreferenceString("revoke_pwd", "123456");
+            LogUtil.i(rP);
             if (pwd.equals(rP)) {
                 dialog.dismiss();
                 Intent revokeIntent = new Intent(this, RevokeActivity.class);
@@ -594,10 +595,10 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
         try {
             JSONObject object = new JSONObject();
-//            object.put("merchantNo", Global.MERCHANT_NO); //结算商户号 必传
-            object.put("merchantNo", "822290070111135"); //结算商户号 必传
+            object.put("merchantNo", Global.MERCHANT_NO); //结算商户号 必传
+//            object.put("merchantNo", "822290070111135"); //结算商户号 必传
             object.put("termId", term_no); //终端号
-            object.put("orderInfo", "测试"); //订单信息
+            object.put("orderInfo", "消费支出"); //订单信息
             object.put("channelId", "2021052614391"); //渠道编号 必传
             object.put("busiTypeInfo", createOrderBean.toString()); //业务大类信息 必传 UPCARD刷卡  SCPAY扫码交易
             object.put("amount", (money * 100)); //订单金额，单位：分 必传
@@ -655,10 +656,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             object.put("drawer",drawer);//开票人
             object.put("orderNo","");//卡拉卡生成的订单号
             object.put("deviceCode",Global.DEVICE_ID);//设备号
-            object.put("orderSort", Global.ORDER_SORT);//该设备下订单序号
+            object.put("orderSort", "000"+Global.ORDER_SORT);//该设备下订单序号
             object.put("invoiceMark",invoiceSwitch ? 1 : 0);//0不开发票 1开发票
             object.put("batchNo","");//批次号
             object.put("voucherNo","");//凭证号
+            object.put("payType","11");//凭证号
 
             mPresenter.uploaduploadOrder(object.toString());
         } catch (JSONException e) {
@@ -674,7 +676,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     public void uploaduploadOrderResult(String result) {
         Global.ORDER_SORT ++;
         PreferencesUtils.setPreferenceInt("ORDER_SORT",Global.ORDER_SORT);
-        time_tv.setText("00" + Global.ORDER_SORT);
+        time_tv.setText("000" + Global.ORDER_SORT);
 
         if (cashPayment && invoiceSwitch){ //现金支付 且 开票开关开着 弹出开票码
             billingCodeDialog = new BillingCodeDialog().newInstance("billingCode");

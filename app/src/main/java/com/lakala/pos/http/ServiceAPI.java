@@ -89,7 +89,7 @@ public interface ServiceAPI {
      *
      */
 
-    @POST("order/uploaduploadOrder")
+    @POST("agency/order/uploadOrder")
     @Headers({"API_KEY:ABC", "API_SECURITY_CODE:XYZ"})
     Observable<String> uploaduploadOrder(@Body RequestBody requestBody);
 

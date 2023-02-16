@@ -195,14 +195,15 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
             bundle.putString("pay_tp", "0");//            支付方式
             bundle.putString("proc_tp", "00");//            交易类型
             bundle.putString("proc_cd", "700006");//            交易处理码
-            bundle.putString("order_no", "700008");//            订单号
+//            bundle.putString("order_no", "700008");//            订单号
             bundle.putString("appid", "com.lakala.pos");//            应用包名
-            bundle.putString("time_stamp", DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));//            交易时间戳
+//            bundle.putString("time_stamp", DateTimeUtil.getCurrentDate("yyyyMMddhhmmss"));//
+            bundle.putString("time_stamp", System.currentTimeMillis() + "");//           交易时间戳
             bundle.putString("print_info", "重新打印");//            打印信息
-            bundle.putString("return_type", "1");//                    打单页面是否自动关闭
-            bundle.putString("reserve", "0");//                    扩展参数
-            bundle.putString("batchbillno", "0");//                    批次流水号
-            bundle.putString("pay_order_no", "0");//                    拉卡拉订单号
+//            bundle.putString("return_type", "1");//                    打单页面是否自动关闭
+//            bundle.putString("reserve", "0");//                    扩展参数
+//            bundle.putString("batchbillno", "0");//                    批次流水号
+//            bundle.putString("pay_order_no", "0");//                    拉卡拉订单号
             intent.putExtras(bundle);
             startActivityForResult(intent, 1);
         } catch (ActivityNotFoundException e) {
@@ -312,7 +313,9 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i("打印信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
-
+        String code = data.getExtras().getString("rescode");
+        String reason = data.getExtras().getString("reason");
+        LogUtil.i("信息：  code=" + code + "  reason =" + reason);
         switch (resultCode) {
             // 成功
             case Activity.RESULT_OK:

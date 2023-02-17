@@ -90,7 +90,6 @@ public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter>
                 try {
                     JSONObject object = new JSONObject();
                     object.put("deviceCode", Global.DEVICE_ID);
-//                    object.put("deviceCode", "D9587314");
                     object.put("startDate",sTime.replace("-",""));
                     object.put("endDate",eTime.replace("-",""));
                     mPresenter.onCensus(object.toString());

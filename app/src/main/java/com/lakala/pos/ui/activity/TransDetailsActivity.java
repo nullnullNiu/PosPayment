@@ -73,7 +73,6 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
         setContentView(R.layout.activity_trans_details);
         ButterKnife.bind(this);
 
-
         orderNo = getIntent().getStringExtra("orderNo");
 
         queryOrderByOrderId(orderNo);
@@ -189,7 +188,6 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
         }
 
         if (payType == 0) {
-
             //    银行卡交易重打印
             try {
                 LogUtil.e(" 打印 ==============");

@@ -23,6 +23,7 @@ import com.google.gson.JsonParser;
 import com.lakala.pos.R;
 import com.lakala.pos.adapter.TranQueryAdapter;
 import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.common.Global;
 import com.lakala.pos.http.ModelAPI;
 import com.lakala.pos.http.net.DataListener;
 import com.lakala.pos.http.net.IScanningApi;
@@ -116,8 +117,7 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         try {
             object = new JSONObject();
             object.put("status", state);//-1 全部 0已收款/未开票 1已上送订单/已填报 2已开票 3已退单
-//            object.put("deviceCode", Global.DEVICE_ID);//设备号
-            object.put("deviceCode", "123");//设备号
+            object.put("deviceCode", Global.DEVICE_ID);//设备号
             object.put("pageNum", pageNum);
             object.put("voucherNo", TranQueryActivity.getInstance().voucherNo);
             object.put("pageSize", pageSiz);

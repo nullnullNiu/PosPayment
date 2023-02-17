@@ -214,7 +214,6 @@ public class SetPersonnelActivity extends MVPActivity<ISetingView, SetPresenter>
                 object.put("bossPhone",phone);
                 object.put("password",pwd);
                 object.put("deviceCode", Global.DEVICE_ID);
-//                object.put("deviceCode", "D9587314");
                 mPresenter.addBossInfo(object.toString(),statues);
             } catch (JSONException e) {
                 e.printStackTrace();

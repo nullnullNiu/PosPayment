@@ -229,16 +229,6 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
 
         BindDeviceInfoBean bean = new BindDeviceInfoBean();
-//        bean.setDeviceCode("123");
-//        bean.setTaxNo("12312313123");
-//        bean.setAddress("门店地址");
-//
-//        bean.setDrawer("开票人");
-//        bean.setChecker("审核人");
-//        bean.setSellerName("商户名称");
-//        bean.setSellerNo("2111");
-//        bean.setBossName("张三");
-//        bean.setBossPhone("13231917723");
 
         bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);

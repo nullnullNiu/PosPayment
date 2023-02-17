@@ -126,7 +126,6 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
         try {
             JSONObject object = new JSONObject();
             object.put("deviceCode", Global.DEVICE_ID);
-//            object.put("deviceCode", "D9587314");
             mPresenter.queryByDivice(object.toString());
         } catch (JSONException e) {
             e.printStackTrace();

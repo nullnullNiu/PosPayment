@@ -232,12 +232,13 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
         bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);
-        bean.setTaxNo(goodsName);
+        bean.setGoodsName(goodsName);
         bean.setAddress(etAddress);
         bean.setDrawer(etDrawer);
         bean.setChecker(etReviewed);
         bean.setSellerName(entName);
         bean.setSellerNo(Global.MERCHANT_NO);
+//        bean.setSellerNo("2112");
         bean.setBossName(etAdmin);
         bean.setBossPhone(etPhone);
 

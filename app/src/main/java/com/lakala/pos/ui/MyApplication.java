@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.multidex.MultiDex;
-
+import androidx.multidex.MultiDex;
 import com.lakala.pos.manager.ThreadPoolManager;
 import com.lakala.pos.sqlite.MyDatabaseHelper;
-import com.lakala.pos.utils.LogUtil;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

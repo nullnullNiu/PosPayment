@@ -18,8 +18,6 @@ public class ShiftChangePresenter extends BasePresenter<IShiftChangeView> {
 
 
 
-
-
     /**
      * 根据设备号查询账户列表
      */
@@ -56,6 +54,39 @@ public class ShiftChangePresenter extends BasePresenter<IShiftChangeView> {
         });
 
     }
+
+
+    /**
+     * 登录
+     */
+    public void onLogin(String info,String name,String phone,String pwd) {
+        if (noNetWork()){
+            return;
+        }
+        modelAPI.onLogin(info,new DataListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e("登录 成功" + result);
+                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                int code = jsonObject.get("code").getAsInt();
+                if (code == 0) {
+                    String token = jsonObject.get("data").getAsJsonObject().get("access_token").getAsString();
+                    getView().loginResult(token,name, phone, pwd);
+                } else {
+                    String msg = jsonObject.get("message").getAsString();
+                    ToastUtil.showToast(msg);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable e, String s) {
+                LogUtil.e("error,throwable:" + e.getMessage() + ",message:" + s);
+                ToastUtil.showToast("服务端数据异常：" + s);
+            }
+        });
+    }
+
 
 
 }

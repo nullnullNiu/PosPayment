@@ -10,5 +10,6 @@ import com.lakala.pos.interfaces.base.ILoadingView;
 public interface IShiftChangeView {
 
     void getBossInfoResult(BossInfoBean bean);
+    void loginResult(String token,String name, String phone, String pwd);
 
 }

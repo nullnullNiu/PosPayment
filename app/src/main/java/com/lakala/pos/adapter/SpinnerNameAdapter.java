@@ -14,12 +14,9 @@ import java.util.List;
 
 public class SpinnerNameAdapter extends BaseAdapter {
 
-//    List list;
-//    EnterpriseInfoBean.Data data;
     ViewHolder viewHolder;
     private List<EnterpriseInfoBean.Data> data;
     private Context context;
-    private int type;
 
     public SpinnerNameAdapter(Context context,  List<EnterpriseInfoBean.Data> data) {
         this.context = context;

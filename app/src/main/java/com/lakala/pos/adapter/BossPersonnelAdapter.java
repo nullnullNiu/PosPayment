@@ -45,12 +45,12 @@ public class BossPersonnelAdapter extends RecyclerView.Adapter<BossPersonnelAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         String name = listdata.get(position).getBossName();
-        String pwd = listdata.get(position).getPassword();
+        String phone = listdata.get(position).getBossPhone();
         holder.name.setText(name);
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(name,pwd);
+                mOnItemClickListener.onItemClick(name,phone);
             }
         });
     }
@@ -64,7 +64,7 @@ public class BossPersonnelAdapter extends RecyclerView.Adapter<BossPersonnelAdap
 
 
     public interface OnItemClickListion {
-        void onItemClick(String name, String pwd);
+        void onItemClick(String name,String phone);
     }
     private OnItemClickListion mOnItemClickListener;
 

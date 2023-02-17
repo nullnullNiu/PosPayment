@@ -380,12 +380,12 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         tv_seting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!role_boss){
-//                    ToastUtil.showToast("当前人员没有设置权限，请换班为老板进行设置。");
-//                }else {
+                if (!role_boss){
+                    ToastUtil.showToast("当前人员没有设置权限，请换班为老板进行设置。");
+                }else {
                 mPopupWindow.dismiss();
                 startActivity(new Intent(MainActivity.this, SetingActivity.class));
-//                }
+                }
             }
         });
         tv_help.setOnClickListener(new View.OnClickListener() {

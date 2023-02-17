@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -14,6 +16,7 @@
         android:layout_weight="1"
         android:background="@drawable/textview_white_background_r21"
         android:gravity="center"
+        android:layout_gravity="center"
         android:paddingTop="12dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"

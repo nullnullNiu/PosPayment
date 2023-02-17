@@ -20,9 +20,7 @@ import com.google.gson.Gson;
 import com.lakala.pos.R;
 import com.lakala.pos.adapter.BossPersonnelAdapter;
 import com.lakala.pos.adapter.PersonnelAdapter;
-import com.lakala.pos.adapter.SummaryAdapter;
 import com.lakala.pos.bean.BossInfoBean;
-import com.lakala.pos.bean.LoginInfo;
 import com.lakala.pos.bean.UserInfoBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.interfaces.IShiftChangeView;
@@ -45,7 +43,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChangePresenter> implements IShiftChangeView ,BossPersonnelAdapter.OnItemClickListion{
+public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChangePresenter> implements IShiftChangeView, BossPersonnelAdapter.OnItemClickListion
+        , PersonnelAdapter.OnItemClickListion {
 
 
     BossPersonnelAdapter bossPersonnelAdapter;
@@ -59,7 +58,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     @BindView(R.id.recycler_cas)
     RecyclerView recycler_cas; // 收银
 
-
+    private AlertDialog dialog;
 
     @Override
     protected ShiftChangePresenter createPresenter() {
@@ -110,12 +109,14 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
         recycler_boss.setLayoutManager(gridLayoutManager);
         bossPersonnelAdapter = new BossPersonnelAdapter(this, bean.getData());
         recycler_boss.setAdapter(bossPersonnelAdapter);
+        bossPersonnelAdapter.setOnItemClickListener(this);
     }
 
+
     @Override
-    public void onItemClick(String name, String pwd) {
-        LogUtil.i("换班为 ： "+name );
-        onChangePerson(true,name,pwd);
+    public void onItemClick(String name, String phone) {
+        LogUtil.i("换班为 ： " + name + "   " + phone);
+        onChangePerson(true, name, phone);
     }
 
 
@@ -129,11 +130,11 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
         });
     }
 
-    //    ArrayList<UserInfoBean> infolist;
+
     private void getUserInfo() {
         LogUtil.i("===========================================读取数据库里的数据========================================" + "[" + Thread.currentThread().getName() + "线程--");
         ArrayList<UserInfoBean> accInfolist = new ArrayList<>();
-        ArrayList<UserInfoBean> casInfolist =  new ArrayList<>();
+        ArrayList<UserInfoBean> casInfolist = new ArrayList<>();
         int type = 0;
         Cursor cursor = null;
         try {
@@ -141,7 +142,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
             cursor = MyApplication.db.query("User_Info", null, null, null, null, null, null);
             //调用moveToFirst()将数据指针移动到第一行的位置。
             while (cursor.moveToNext()) {
-//                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+
                 type = cursor.getInt(cursor.getColumnIndexOrThrow("Type"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
                 String pwd = cursor.getString(cursor.getColumnIndexOrThrow("Password"));
@@ -150,57 +151,61 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                 if (type == 2) {
                     UserInfoBean infoBean = new UserInfoBean(type, name, pwd);
                     accInfolist.add(infoBean);//把数据库的每一行加入数组中
-                    LogUtil.i("  会计  扫描数据库,将数据库信息放入infolist " + infoBean.toString());
-                    LogUtil.i("  会计  扫描数据库,将数据库信息放入infolist " + accInfolist.toString());
+                    LogUtil.i("  会计  扫描数据库,将数据库信息放入accInfolist " + accInfolist.toString());
                 }
                 if (type == 3) {
                     UserInfoBean infoBean = new UserInfoBean(type, name, pwd);
                     casInfolist.add(infoBean);//把数据库的每一行加入数组中
-                    LogUtil.i(" 收银   扫描数据库,将数据库信息放入infolist " + infoBean.toString());
+                    LogUtil.i(" 收银   扫描数据库,将数据库信息放入casInfolist " + casInfolist.toString());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.i("请求数据库 中压缩机故障停机信息失败" + e.getMessage());
+            LogUtil.i("请求数据库 信息失败" + e.getMessage());
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
             LogUtil.i("finally      cursor.close()");
 
-                setAccAdapter(accInfolist);
-                setCasAdapter(casInfolist);
-
+            setAccAdapter(accInfolist);
+            setCasAdapter(casInfolist);
         }
     }
 
 
-    private void setAccAdapter( ArrayList<UserInfoBean> accInfolist) {
+    // 会计
+    private void setAccAdapter(ArrayList<UserInfoBean> accInfolist) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_acc.setLayoutManager(gridLayoutManager);
 
-            adapter = new PersonnelAdapter(this, accInfolist);
-            recycler_acc.setAdapter(adapter);
-
+        adapter = new PersonnelAdapter(this, accInfolist);
+        recycler_acc.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
     }
 
-    private void setCasAdapter(ArrayList<UserInfoBean> casInfolist ) {
+    // 收银
+    private void setCasAdapter(ArrayList<UserInfoBean> casInfolist) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recycler_cas.setLayoutManager(gridLayoutManager);
 
-            adapter = new PersonnelAdapter(this, casInfolist);
-            recycler_cas.setAdapter(adapter);
+        adapter = new PersonnelAdapter(this, casInfolist);
+        recycler_cas.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
+    }
 
+    @Override
+    public void onPersItemClick(String name, String pwd) {
+        LogUtil.i("换班为 ： " + name + "   " + pwd);
+        onChangePerson(false, name, pwd);
     }
 
 
-    private AlertDialog dialog;
-
     // 登录窗口
-    private void onChangePerson(boolean isBoos,String name ,String pwd) {
+    private void onChangePerson(boolean isBoos, String name, String pwd) {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View layout = inflater.inflate(R.layout.view_login_dialog, null);
         // 对话框
@@ -238,20 +243,41 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     }
 
     // 确认换班
-    private void onChange(boolean isBoos,String name,String customarPwd,String pwd) {
-
-       if (TextUtils.isEmpty(pwd)) {
+    private void onChange(boolean isBoos, String name, String customarPwd, String pwd) {
+        if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("请输入密码！");
         } else {
-           if (customarPwd.equals(pwd)){
-               PreferencesUtils.setPreferenceBoolean("role_boss", isBoos);
-               PreferencesUtils.setPreference("admin", name); // 收款人 换班人
-               dialog.dismiss();
-           } else {
-               ToastUtil.showToast("密码不正确");
-           }
+            if (isBoos) {
+                UserInfoBean userInfoBean = new UserInfoBean();
+                userInfoBean.setLoginName(customarPwd);
+                userInfoBean.setPassword(pwd);
+                String user = new Gson().toJson(userInfoBean);
+                mPresenter.onLogin(user, name, customarPwd, pwd);
+            } else {
+                if (customarPwd.equals(pwd)) {
+                    PreferencesUtils.setPreferenceBoolean("role_boss", isBoos);
+                    PreferencesUtils.setPreference("admin", name); // 收款人 换班人
+                    dialog.dismiss();
+                    ToastUtil.showToast("换班成功。");
+                    this.finish();
+                } else {
+                    ToastUtil.showToast("密码不正确");
+                }
+            }
+        }
+    }
 
-       }
+
+    @Override
+    public void loginResult(String token, String name, String phone, String pwd) {
+        LogUtil.i("tk" + token);
+        PreferencesUtils.setPreference("admin", name); // 收款人 换班人
+        PreferencesUtils.setPreference("phone", phone);
+        PreferencesUtils.setPreference("possword", pwd);
+        PreferencesUtils.setPreference("access_token", token);
+        PreferencesUtils.setPreferenceBoolean("role_boss", true);
+        ToastUtil.showToast("换班老板成功。");
+        this.finish();
     }
 
 
@@ -293,13 +319,12 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                     if (cursor != null) {
                         cursor.close();
                     }
-                    LogUtil.i("onMonitorWifi    finally      cursor.close()");
+                    LogUtil.i("finally      cursor.close()");
                 }
 
             }
         });
     }
-
 
 
 }

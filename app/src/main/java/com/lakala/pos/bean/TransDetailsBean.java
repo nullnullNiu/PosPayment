@@ -53,6 +53,7 @@ public class TransDetailsBean {
         private String tradeTime;
         private String createTime;
         private String updateTime;
+        private int payType;
 
         private List<Details> details;
 
@@ -182,6 +183,14 @@ public class TransDetailsBean {
 
         public String getUpdateTime() {
             return updateTime;
+        }
+
+        public int getPayType() {
+            return payType;
+        }
+
+        public void setPayType(int payType) {
+            this.payType = payType;
         }
 
         public void setDetails(List<Details> details) {

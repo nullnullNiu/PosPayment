@@ -43,8 +43,8 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     TextView submit_modify; // 确认修改
     @BindView(R.id.tv_tax_number)
     TextView tax_number; // 企业税号
-    @BindView(R.id.et_industry)
-    EditText et_industry; // 行业
+    @BindView(R.id.et_goods_name)
+    EditText et_goods_name; // 行业
     @BindView(R.id.et_address)
     EditText et_address; // 门店地址
     @BindView(R.id.et_drawer)
@@ -180,6 +180,12 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
            return;
        }
 
+       String goodsName = et_goods_name.getText().toString();
+       if (TextUtils.isEmpty(goodsName)){
+           ToastUtil.showToast("商品类型不能为空");
+           return;
+       }
+
        String etAddress = et_address.getText().toString();
        if (TextUtils.isEmpty(etAddress)){
            ToastUtil.showToast("门店地址不能为空");
@@ -236,6 +242,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
         bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);
+        bean.setTaxNo(goodsName);
         bean.setAddress(etAddress);
         bean.setDrawer(etDrawer);
         bean.setChecker(etReviewed);

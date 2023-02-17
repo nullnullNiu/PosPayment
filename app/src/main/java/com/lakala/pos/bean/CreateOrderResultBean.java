@@ -1,8 +1,6 @@
 package com.lakala.pos.bean;
 
-import java.io.Serializable;
-
-public class CreateOrderResultBean  {
+public class CreateOrderResultBean {
 
 
     private int code;
@@ -36,62 +34,61 @@ public class CreateOrderResultBean  {
 
     public class Data {
 
-        private String payOrderNo;
-        private String createTime;
-        private String merchantOrderNo;
-        private String channelId;
-        private String merchantNo;
+        private String merchant_no;
+        private String channel_id;
+        private String out_order_no;
+        private String order_create_time;
+        private String order_efficient_time;
+        private String pay_order_no;
 
-        public void setPayOrderNo(String payOrderNo) {
-            this.payOrderNo = payOrderNo;
+        public void setMerchant_no(String merchant_no) {
+            this.merchant_no = merchant_no;
         }
 
-        public String getPayOrderNo() {
-            return payOrderNo;
+        public String getMerchant_no() {
+            return merchant_no;
         }
 
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
+        public void setChannel_id(String channel_id) {
+            this.channel_id = channel_id;
         }
 
-        public String getCreateTime() {
-            return createTime;
+        public String getChannel_id() {
+            return channel_id;
         }
 
-        public void setMerchantOrderNo(String merchantOrderNo) {
-            this.merchantOrderNo = merchantOrderNo;
+        public void setOut_order_no(String out_order_no) {
+            this.out_order_no = out_order_no;
         }
 
-        public String getMerchantOrderNo() {
-            return merchantOrderNo;
+        public String getOut_order_no() {
+            return out_order_no;
         }
 
-        public void setChannelId(String channelId) {
-            this.channelId = channelId;
+        public void setOrder_create_time(String order_create_time) {
+            this.order_create_time = order_create_time;
         }
 
-        public String getChannelId() {
-            return channelId;
+        public String getOrder_create_time() {
+            return order_create_time;
         }
 
-        public void setMerchantNo(String merchantNo) {
-            this.merchantNo = merchantNo;
+        public void setOrder_efficient_time(String order_efficient_time) {
+            this.order_efficient_time = order_efficient_time;
         }
 
-        public String getMerchantNo() {
-            return merchantNo;
+        public String getOrder_efficient_time() {
+            return order_efficient_time;
         }
 
-        @Override
-        public String toString() {
-            return "Data{" +
-                    "payOrderNo='" + payOrderNo + '\'' +
-                    ", createTime='" + createTime + '\'' +
-                    ", merchantOrderNo='" + merchantOrderNo + '\'' +
-                    ", channelId='" + channelId + '\'' +
-                    ", merchantNo='" + merchantNo + '\'' +
-                    '}';
+        public void setPay_order_no(String pay_order_no) {
+            this.pay_order_no = pay_order_no;
         }
+
+        public String getPay_order_no() {
+            return pay_order_no;
+        }
+
     }
 
     @Override

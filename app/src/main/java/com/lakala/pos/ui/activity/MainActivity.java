@@ -24,10 +24,12 @@ import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.CreateOrderBean;
 import com.lakala.pos.bean.CreateOrderResultBean;
 import com.lakala.pos.bean.TranQueryBean;
+import com.lakala.pos.bean.TransactionEntity;
 import com.lakala.pos.common.DeviceInfo;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.dialog.BillingCodeDialog;
@@ -212,7 +214,22 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
             case R.id.cash_receipt_tv://收现金
                 cashPayment = true;
-                uploaduploadOrder("","","","11");
+                amount = money_et.getText().toString();
+                LogUtil.i("收款金额：" + money);
+                if (TextUtils.isEmpty(amount)) {
+                    ToastUtil.showToast("请输入金额");
+                    return;
+                }
+                try {
+                    money = Double.parseDouble(amount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showToast("金额格式输入错误！");
+                    stringBuilder.setLength(0);
+                    money_et.setText("");
+                    return;
+                }
+                uploaduploadOrder("","","","11",String.valueOf(money));
 
                 break;
             case R.id.collection_code_tv://收款码
@@ -547,7 +564,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
-
+    // 创建订单
     private void onCreateOrder(int term_type) {
         String term_no = "";
         String busiType = "";
@@ -582,41 +599,62 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     @Override
     public void getCreateQrderResult(int term_type, CreateOrderResultBean bean) {
-
         LogUtil.i(bean.toString());
-
-        String payOrderNo = bean.getData().getPayOrderNo();
-        String createTime = bean.getData().getCreateTime();
-        String merchantOrderNo = bean.getData().getMerchantOrderNo();
-        String channelId = bean.getData().getChannelId();
-        String merchantNo = bean.getData().getMerchantNo();
-
         if (bean == null || bean.getData() == null) {
             ToastUtil.showToast("创建订单失败");
             LogUtil.i("创建订单失败" + bean.toString());
             return;
         }
+        String out_order_no = bean.getData().getOut_order_no();//商户订单号
 
         if (term_type == 1) { //银行卡
-            Intent bankCardIntent = new Intent(this, BankCardActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("payOrderNo", payOrderNo);
-            bundle.putString("createTime", createTime);
-            bundle.putString("merchantOrderNo", merchantOrderNo);
-            bundle.putString("channelId", channelId);
-            bundle.putString("merchantNo", merchantNo);
-            bundle.putDouble("amount", money);
-            bankCardIntent.putExtras(bundle);
-            startActivity(bankCardIntent);
+//            Intent bankCardIntent = new Intent(this, BankCardActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("payOrderNo", payOrderNo);
+//            bundle.putString("createTime", createTime);
+//            bundle.putString("merchantOrderNo", merchantOrderNo);
+//            bundle.putString("channelId", channelId);
+//            bundle.putString("merchantNo", merchantNo);
+//            bundle.putDouble("amount", money);
+//            bankCardIntent.putExtras(bundle);
+//            startActivity(bankCardIntent);
+            bankPay(out_order_no);
         } else if (term_type == 2) { // 扫码
-            scanPay(merchantOrderNo,payOrderNo);
+            scanPay(out_order_no);
         }
     }
 
 
+    private void bankPay(String orderNo){
+        LogUtil.i(" 消费-================ " );
+        try {
+            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            Bundle bundle = new Bundle();
+            bundle.putString("msg_tp", "0200");
+            bundle.putString("pay_tp", "0");
+            bundle.putString("proc_tp", "00");
+            bundle.putString("proc_cd", "000000");
+            bundle.putString("amt", String.valueOf(money));
+            bundle.putString("order_no", orderNo);
+            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+            bundle.putString("order_info", "用户银行卡刷卡支付");
+            intent.putExtras(bundle);
+
+            startActivityForResult(intent, BANK_CODE_OK);
+        } catch (ActivityNotFoundException e) {
+            LogUtil.e( e.toString());
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+
+    }
 
 
-    private void scanPay(String merchantOrderNo,String payOrderNo){
+
+    private void scanPay(String orderNo){
         LogUtil.i(" 扫码支付-================ " );
         // 扫码支付
         try {
@@ -628,16 +666,13 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             bundle.putString("pay_tp", "1");
             bundle.putString("proc_tp", "00");
             bundle.putString("proc_cd", "660000");
-            bundle.putString("amt", amount+"");
+            bundle.putString("amt", String.valueOf(money));
+            bundle.putString("order_no", orderNo);
             bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
             bundle.putString("time_stamp", System.currentTimeMillis() + "");
-            bundle.putString("order_no", merchantOrderNo);
-            bundle.putString("pay_order_no", payOrderNo);
             bundle.putString("order_info", "用户扫码付款");
-//            bundle.putString("print_info", "打印信息");
-//            bundle.putString("remarkinfo", "备注信息");
             intent.putExtras(bundle);
-            startActivityForResult(intent, 2);
+            startActivityForResult(intent, SCAN_CODE_OK);
         } catch (ActivityNotFoundException e) {
             LogUtil.e( e.toString());
         } catch (Exception e) {
@@ -656,13 +691,10 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             LogUtil.i("data == null");
             return;
         }
-//            String code = data.getExtras().getString("rescode");
-//            LogUtil.i("rescode=" + code);
-//            String reason = data.getExtras().getString("reason");
-//            LogUtil.i("reason=" +reason);
-
-//        String code = data.getExtras().getString("rescode");//响应吗
-//        String message = data.getExtras().getString("reason");//相应信息
+        String reason = data.getExtras().getString("reason");
+        String code = data.getExtras().getString("rescode");//响应吗
+        String message = data.getExtras().getString("reason");//相应信息
+        String datas = data.getExtras().getString("data");//相应数据
 
         switch (resultCode) {
             // 成功
@@ -679,20 +711,25 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                     LogUtil.i("商户号:" + Global.MERCHANT_NO + "   银行卡终端号:" + Global.BANK_TERM_NO + "    扫码终端号:" + Global.CODE_TERM_NO
                             + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
                 } else if (requestCode == SCAN_CODE_OK) { // 扫码
-
+                    initScanPayData(data);
                 }else if (requestCode == BANK_CODE_OK){ // 银行卡
-
-
+                    initBankPayData(data);
                 }
-
-
+                LogUtil.i("响应吗：" + code + "      响应错误信息：" + message + "\n\r 响应数据：" + datas);
                 break;
-            // 取消
+            // 支付取消
             case Activity.RESULT_CANCELED:
-
+                if (reason != null) {
+                    ToastUtil.showToast(reason);
+                }
+                LogUtil.i("交易取消 :   响应吗：" + code + "       响应错误信息：" + message + "\n\r 响应数据：" + datas);
                 break;
+            // 交易失败
             case -2:
-
+                if (reason != null) {
+                    ToastUtil.showToast(" 交易失败：\n\n\r" + reason + message);
+                }
+                LogUtil.i("交易失败 :   响应吗：" + code + "       响应错误信息：" + message + "\n\r 响应数据：" + datas);
                 break;
             default:
                 break;
@@ -700,12 +737,73 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
+    // 扫码支付返回信息
+    private void initScanPayData(Intent data){
+        // 报文类型
+        String msg_tp = data.getExtras().getString("msg_tp");
+        // 支付方式
+        String pay_tp = data.getExtras().getString("pay_tp");
+        // 检索参考号
+        String refernumber = data.getExtras().getString("refernumber");
+        // 订单号
+        String order_no = data.getExtras().getString("order_no");
+        // 交易时间戳
+        String time_stamp = data.getExtras().getString("time_stamp");
+        // 失败原因
+        String reason = data.getExtras().getString("reason");
+        // 交易详情
+        TransactionEntity transactionEntity = new Gson().fromJson(data.getExtras().getString("txndetail"), TransactionEntity.class);
+        // 附加数据
+        String adddataword = data.getExtras().getString("adddataword");
+        //备注信息
+        String remarkinfo = data.getExtras().getString("remarkinfo");
+        //实付金额(余额)
+        String amt = data.getExtras().getString("amt");
+        //订单金额
+        String orderAmt = data.getExtras().getString("orderamt");
+        //折扣金额
+        String discountAmt = data.getExtras().getString("discountamt");
 
+        uploaduploadOrder(transactionEntity.getOrderid_scan(),transactionEntity.getBatchno(),transactionEntity.getSystraceno(),pay_tp,amt);
 
+    }
+    // 银行卡支付返回信息
+    private void initBankPayData(Intent data){
+        // 报文类型
+        String msg_tp = data.getExtras().getString("msg_tp");
+        // 支付方式
+        String pay_tp = data.getExtras().getString("pay_tp");
+        // 检索参考号
+        String refernumber = data.getExtras().getString("refernumber");
+        // 订单号
+        String order_no = data.getExtras().getString("order_no");
+        // 卡号
+        String card_no = data.getExtras().getString("card_no");
+        // 交易时间戳
+        String time_stamp = data.getExtras().getString("time_stamp");
+        // 失败原因
+        String reason = data.getExtras().getString("reason");
+        // 附加数据
+        String adddataword = data.getExtras().getString("adddataword");
+        // 交易详情
+        TransactionEntity transactionEntity = new Gson().fromJson(data.getExtras().getString("txndetail"), TransactionEntity.class);
+        // 卡组织
+        String card_org = data.getExtras().getString("card_org");
+        //备注信息
+        String remarkinfo = data.getExtras().getString("remarkinfo");
+        //实付金额(余额)
+        String amt = data.getExtras().getString("amt");
+        //订单金额
+        String orderAmt = data.getExtras().getString("orderamt");
+        //折扣金额
+        String discountAmt = data.getExtras().getString("discountamt");
+
+        uploaduploadOrder(transactionEntity.getOrderid_scan(),transactionEntity.getBatchno(),transactionEntity.getSystraceno(),pay_tp,amt);
+    }
 
 
     // 上送订单
-    private void uploaduploadOrder(String orderNo,String batchNo,String voucherNo,String payType){
+    private void uploaduploadOrder(String orderNo,String batchNo,String voucherNo,String payType,String amt){
 
        String reviewed =  PreferencesUtils.getPreferenceString("checker", "");//复核人
        String drawer =  PreferencesUtils.getPreferenceString("drawer", "");//开票人
@@ -723,6 +821,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             object.put("batchNo",batchNo);//批次号
             object.put("voucherNo",voucherNo);//凭证号
             object.put("payType",payType);//支付方式
+            object.put("amount",amt);//支付金额
 
             mPresenter.uploaduploadOrder(object.toString());
         } catch (JSONException e) {
@@ -730,7 +829,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         }
 
     }
-
 
 
     // 上送订单返回

@@ -4,6 +4,7 @@ public class BindDeviceInfoBean {
 
     private String deviceCode;
     private String taxNo;
+    private String goodsName;
     private String address;
     private String position;
     private String drawer;
@@ -28,6 +29,14 @@ public class BindDeviceInfoBean {
 
     public void setTaxNo(String taxNo) {
         this.taxNo = taxNo;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     public String getAddress() {
@@ -99,6 +108,7 @@ public class BindDeviceInfoBean {
         return "BindDeviceInfoBean{" +
                 "deviceCode='" + deviceCode + '\'' +
                 ", taxNo='" + taxNo + '\'' +
+                ", goodsName='" + goodsName + '\'' +
                 ", address='" + address + '\'' +
                 ", position='" + position + '\'' +
                 ", drawer='" + drawer + '\'' +

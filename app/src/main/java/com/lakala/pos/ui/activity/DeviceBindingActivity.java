@@ -270,7 +270,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         LogUtil.i("tk" + token);
         PreferencesUtils.setPreference("checker", etReviewed); //复核人
         PreferencesUtils.setPreference("drawer", etDrawer); //开票人
-        PreferencesUtils.setPreference("admin", etAdmin);
+        PreferencesUtils.setPreference("admin", etAdmin); // 收款人 换班人
         PreferencesUtils.setPreference("phone", etPhone);
         PreferencesUtils.setPreference("possword", "123456");
         PreferencesUtils.setPreference("access_token", token);

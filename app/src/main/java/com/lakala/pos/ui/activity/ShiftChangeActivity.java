@@ -32,6 +32,7 @@ import com.lakala.pos.sqlite.SaveDataToDatabase;
 import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
+import com.lakala.pos.utils.PreferencesUtils;
 import com.lakala.pos.utils.ToastUtil;
 
 import org.json.JSONException;
@@ -44,7 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChangePresenter> implements IShiftChangeView {
+public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChangePresenter> implements IShiftChangeView ,BossPersonnelAdapter.OnItemClickListion{
 
 
     BossPersonnelAdapter bossPersonnelAdapter;
@@ -111,6 +112,12 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
         recycler_boss.setAdapter(bossPersonnelAdapter);
     }
 
+    @Override
+    public void onItemClick(String name, String pwd) {
+        LogUtil.i("换班为 ： "+name );
+        onChangePerson(true,name,pwd);
+    }
+
 
     // 获取员工
     public void onGetVlucoInfoDatabase() {
@@ -146,11 +153,11 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
                     LogUtil.i("  会计  扫描数据库,将数据库信息放入infolist " + infoBean.toString());
                     LogUtil.i("  会计  扫描数据库,将数据库信息放入infolist " + accInfolist.toString());
                 }
-//                if (type == 3) {
-//                    UserInfoBean infoBean = new UserInfoBean(type, name, pwd);
-//                    casInfolist.add(infoBean);//把数据库的每一行加入数组中
-//                    LogUtil.i(" 收银   扫描数据库,将数据库信息放入infolist " + infoBean.toString());
-//                }
+                if (type == 3) {
+                    UserInfoBean infoBean = new UserInfoBean(type, name, pwd);
+                    casInfolist.add(infoBean);//把数据库的每一行加入数组中
+                    LogUtil.i(" 收银   扫描数据库,将数据库信息放入infolist " + infoBean.toString());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +169,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
             LogUtil.i("finally      cursor.close()");
 
                 setAccAdapter(accInfolist);
-//                setCasAdapter(casInfolist);
+                setCasAdapter(casInfolist);
 
         }
     }
@@ -193,7 +200,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
     private AlertDialog dialog;
 
     // 登录窗口
-    private void onLogin() {
+    private void onChangePerson(boolean isBoos,String name ,String pwd) {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View layout = inflater.inflate(R.layout.view_login_dialog, null);
         // 对话框
@@ -208,7 +215,8 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
         dialogWindow.setAttributes(lp);
         dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
-        EditText et_name = layout.findViewById(R.id.et_name);
+        TextView et_name = layout.findViewById(R.id.et_name);
+        et_name.setText(name);
         EditText et_pwd = layout.findViewById(R.id.et_password);
 //        ll_pw=layout.findViewById(R.id.ll_pw);
 //        rl_name=layout.findViewById(R.id.rl_name);
@@ -224,21 +232,26 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLogin(et_name.getText().toString(), et_pwd.getText().toString());
+                onChange(isBoos, name, pwd, et_pwd.getText().toString());
             }
         });
     }
 
-    // 登录
-    private void onLogin(String name, String pwd) {
-        if (TextUtils.isEmpty(name)) {
-            ToastUtil.showToast("请输入名字！");
-        } else if (TextUtils.isEmpty(pwd)) {
+    // 确认换班
+    private void onChange(boolean isBoos,String name,String customarPwd,String pwd) {
+
+       if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("请输入密码！");
         } else {
-            dialog.dismiss();
-            onInspectUser(0, name, pwd);
-        }
+           if (customarPwd.equals(pwd)){
+               PreferencesUtils.setPreferenceBoolean("role_boss", isBoos);
+               PreferencesUtils.setPreference("admin", name); // 收款人 换班人
+               dialog.dismiss();
+           } else {
+               ToastUtil.showToast("密码不正确");
+           }
+
+       }
     }
 
 
@@ -286,6 +299,7 @@ public class ShiftChangeActivity extends MVPActivity<IShiftChangeView, ShiftChan
             }
         });
     }
+
 
 
 }

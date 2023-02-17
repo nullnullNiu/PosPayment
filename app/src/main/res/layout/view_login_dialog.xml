@@ -22,7 +22,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center|top"
-            android:text="登录"
+            android:text="换班"
             android:textColor="#515151"
             android:textSize="22dp" />
 
@@ -81,7 +81,7 @@
                     android:textColor="#515151"
                     android:textSize="18dp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -92,7 +92,7 @@
                     android:background="@null"
                     android:cursorVisible="true"
                     android:gravity="bottom"
-                    android:hint="请输入名字"
+
                     android:textColor="#515151"
                     android:textCursorDrawable="@null" />
 
@@ -196,7 +196,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/frame"
                     android:gravity="center"
-                    android:text="登录"
+                    android:text="确定"
                     android:textColor="#515151"
                     android:textSize="16dp" />
             </LinearLayout>

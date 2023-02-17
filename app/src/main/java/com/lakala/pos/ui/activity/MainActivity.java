@@ -90,6 +90,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     private boolean invoiceSwitch  = false;
     private boolean cashPayment = false;
 
+    private static final int DEVICE_CODE_OK = 1;
+    private static final int SCAN_CODE_OK = 2;
+    private static final int BANK_CODE_OK = 3;
 
     @Override
     protected MainActivityPresenter createPresenter() {
@@ -209,7 +212,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
             case R.id.cash_receipt_tv://收现金
                 cashPayment = true;
-                uploaduploadOrder();
+                uploaduploadOrder("","","","11");
 
                 break;
             case R.id.collection_code_tv://收款码
@@ -414,7 +417,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             bundle.putString("msg_tp", "0000");
             bundle.putString("proc_cd", "100000");
             intent.putExtras(bundle);
-            this.startActivityForResult(intent, 1);
+            this.startActivityForResult(intent, DEVICE_CODE_OK);
         } catch (ActivityNotFoundException e) {
             ToastUtil.showToast("调用对象不存在，请检查设备。");
         } catch (Exception e) {
@@ -423,39 +426,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.i("商终信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
 
-        switch (resultCode) {
-            // 成功
-            case Activity.RESULT_OK:
-                if (requestCode == 1) {
-                    if (data != null) {
-                        LogUtil.i("data != null： ");
-                        Global.MERCHANT_NO = data.getExtras().getString("merchant_no"); // 商户号
-                        Global.BANK_TERM_NO = data.getExtras().getString("bank_term_no"); // 银行卡终端号
-                        Global.CODE_TERM_NO = data.getExtras().getString("code_term_no"); // 扫码终端号
-                        Global.FBANK_TERM_NO = data.getExtras().getString("fbank_term_no"); // 外卡终端号
-                        Global.REASON = data.getExtras().getString("reason"); // 失败原因
-                    }
-                    LogUtil.i("商户号:" + Global.MERCHANT_NO + "   银行卡终端号:" + Global.BANK_TERM_NO + "    扫码终端号:" + Global.CODE_TERM_NO
-                            + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
-                }
-
-                break;
-            // 取消
-            case Activity.RESULT_CANCELED:
-
-                break;
-            case -2:
-
-                break;
-            default:
-                break;
-        }
-    }
 
 
     // 撤销窗口
@@ -638,12 +609,103 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             bankCardIntent.putExtras(bundle);
             startActivity(bankCardIntent);
         } else if (term_type == 2) { // 扫码
-
-
+            scanPay(merchantOrderNo,payOrderNo);
         }
     }
+
+
+
+
+    private void scanPay(String merchantOrderNo,String payOrderNo){
+        LogUtil.i(" 扫码支付-================ " );
+        // 扫码支付
+        try {
+            ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            Bundle bundle = new Bundle();
+            bundle.putString("msg_tp", "0200");
+            bundle.putString("pay_tp", "1");
+            bundle.putString("proc_tp", "00");
+            bundle.putString("proc_cd", "660000");
+            bundle.putString("amt", amount+"");
+            bundle.putString("appid", "com.lakala.pos");//传入自己应用的appId
+            bundle.putString("time_stamp", System.currentTimeMillis() + "");
+            bundle.putString("order_no", merchantOrderNo);
+            bundle.putString("pay_order_no", payOrderNo);
+            bundle.putString("order_info", "用户扫码付款");
+//            bundle.putString("print_info", "打印信息");
+//            bundle.putString("remarkinfo", "备注信息");
+            intent.putExtras(bundle);
+            startActivityForResult(intent, 2);
+        } catch (ActivityNotFoundException e) {
+            LogUtil.e( e.toString());
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i("sdk 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
+
+        if (data == null){
+            LogUtil.i("data == null");
+            return;
+        }
+//            String code = data.getExtras().getString("rescode");
+//            LogUtil.i("rescode=" + code);
+//            String reason = data.getExtras().getString("reason");
+//            LogUtil.i("reason=" +reason);
+
+//        String code = data.getExtras().getString("rescode");//响应吗
+//        String message = data.getExtras().getString("reason");//相应信息
+
+        switch (resultCode) {
+            // 成功
+            case Activity.RESULT_OK:
+                if (requestCode == DEVICE_CODE_OK) {
+                    if (data != null) {
+                        LogUtil.i("data != null： ");
+                        Global.MERCHANT_NO = data.getExtras().getString("merchant_no"); // 商户号
+                        Global.BANK_TERM_NO = data.getExtras().getString("bank_term_no"); // 银行卡终端号
+                        Global.CODE_TERM_NO = data.getExtras().getString("code_term_no"); // 扫码终端号
+                        Global.FBANK_TERM_NO = data.getExtras().getString("fbank_term_no"); // 外卡终端号
+                        Global.REASON = data.getExtras().getString("reason"); // 失败原因
+                    }
+                    LogUtil.i("商户号:" + Global.MERCHANT_NO + "   银行卡终端号:" + Global.BANK_TERM_NO + "    扫码终端号:" + Global.CODE_TERM_NO
+                            + "   外卡终端号:" + Global.FBANK_TERM_NO + "   失败原因:" + Global.REASON);
+                } else if (requestCode == SCAN_CODE_OK) { // 扫码
+
+                }else if (requestCode == BANK_CODE_OK){ // 银行卡
+
+
+                }
+
+
+                break;
+            // 取消
+            case Activity.RESULT_CANCELED:
+
+                break;
+            case -2:
+
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+
+
+
     // 上送订单
-    private void uploaduploadOrder(){
+    private void uploaduploadOrder(String orderNo,String batchNo,String voucherNo,String payType){
 
        String reviewed =  PreferencesUtils.getPreferenceString("checker", "");//复核人
        String drawer =  PreferencesUtils.getPreferenceString("drawer", "");//开票人
@@ -654,13 +716,13 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             object.put("checker",reviewed);//复核人
             object.put("payee",admin);//收款人
             object.put("drawer",drawer);//开票人
-            object.put("orderNo","");//卡拉卡生成的订单号
+            object.put("orderNo",orderNo);//卡拉卡生成的订单号
             object.put("deviceCode",Global.DEVICE_ID);//设备号
             object.put("orderSort", "000"+Global.ORDER_SORT);//该设备下订单序号
             object.put("invoiceMark",invoiceSwitch ? 1 : 0);//0不开发票 1开发票
-            object.put("batchNo","");//批次号
-            object.put("voucherNo","");//凭证号
-            object.put("payType","11");//凭证号
+            object.put("batchNo",batchNo);//批次号
+            object.put("voucherNo",voucherNo);//凭证号
+            object.put("payType",payType);//支付方式
 
             mPresenter.uploaduploadOrder(object.toString());
         } catch (JSONException e) {

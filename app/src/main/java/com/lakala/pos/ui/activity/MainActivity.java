@@ -708,9 +708,9 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
                 if (requestCode == DEVICE_CODE_OK) {
                     if (data != null) {
                         LogUtil.i("data != null： ");
-                        Global.MERCHANT_NO = data.getExtras().getString("merchant_no"); // 商户号
-                        Global.BANK_TERM_NO = data.getExtras().getString("bank_term_no"); // 银行卡终端号
-                        Global.CODE_TERM_NO = data.getExtras().getString("code_term_no"); // 扫码终端号
+//                        Global.MERCHANT_NO = data.getExtras().getString("merchant_no"); // 商户号
+//                        Global.BANK_TERM_NO = data.getExtras().getString("bank_term_no"); // 银行卡终端号
+//                        Global.CODE_TERM_NO = data.getExtras().getString("code_term_no"); // 扫码终端号
                         Global.FBANK_TERM_NO = data.getExtras().getString("fbank_term_no"); // 外卡终端号
                         Global.REASON = data.getExtras().getString("reason"); // 失败原因
                     }

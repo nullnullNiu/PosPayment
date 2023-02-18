@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -100,6 +101,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
     private static final int SCAN_CODE_OK = 2;
     private static final int BANK_CODE_OK = 3;
 
+    long time = 0;
     @Override
     protected MainActivityPresenter createPresenter() {
         return new MainActivityPresenter();
@@ -121,10 +123,38 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         invoiceSwitch = PreferencesUtils.getPreferenceBoolean("invoice_switch",false);
         btnSwitch.setChecked(invoiceSwitch);
         btnSwitch.setOnCheckedChangeListener(this);
-        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
-        tv_title.setText("00" + Global.ORDER_SORT);
+//        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
+//        tv_title.setText("00" + Global.ORDER_SORT);
+        judge();
     }
 
+    private void judge(){
+        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
+        if (Global.ORDER_SORT == 0){
+            tv_title.setText("00" + Global.ORDER_SORT);
+            return;
+        }
+
+        time = PreferencesUtils.getPreferenceLoging("DATE_TIME",0);
+        if (time == 0){
+            time = System.currentTimeMillis();
+            PreferencesUtils.setPreferenceLoging("DATE_TIME",time);
+            return;
+        }
+
+       boolean isToday = DateUtils.isToday(time);
+        LogUtil.i(" 保存的日期是 " +
+                com.lakala.pos.utils.DateUtils.millis2String(time,com.lakala.pos.utils.DateUtils.yyyyMMddHHmmssSSS.get()));
+
+       if (!isToday){
+           LogUtil.i("不是今天,订单流水 清零。。。");
+           Global.ORDER_SORT = 0;
+           PreferencesUtils.setPreferenceInt("ORDER_SORT",Global.ORDER_SORT);
+        }
+
+        tv_title.setText("00" + Global.ORDER_SORT);
+
+    }
 
     // 判断储存权限
     public boolean getDownladPermis() {

@@ -1,5 +1,6 @@
 package com.lakala.pos.bean;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -212,9 +213,9 @@ public class TransDetailsBean {
             private String goodsUnit;
             private int goodsQuantity;
             private int goodsPrice;
-            private int goodsTotalPrice;
-            private double goodsTotalTax;
-            private int goodsTaxRate;
+            private BigDecimal goodsTotalPrice;
+            private BigDecimal goodsTotalTax;
+            private BigDecimal goodsTaxRate;
             private String vatSpecialManagement;
             private String freeTaxMark;
             private String preferentialMarkFlag;
@@ -285,27 +286,27 @@ public class TransDetailsBean {
                 return goodsPrice;
             }
 
-            public void setGoodsTotalPrice(int goodsTotalPrice) {
+            public void setGoodsTotalPrice(BigDecimal goodsTotalPrice) {
                 this.goodsTotalPrice = goodsTotalPrice;
             }
 
-            public int getGoodsTotalPrice() {
+            public BigDecimal getGoodsTotalPrice() {
                 return goodsTotalPrice;
             }
 
-            public void setGoodsTotalTax(double goodsTotalTax) {
+            public void setGoodsTotalTax(BigDecimal goodsTotalTax) {
                 this.goodsTotalTax = goodsTotalTax;
             }
 
-            public double getGoodsTotalTax() {
+            public BigDecimal getGoodsTotalTax() {
                 return goodsTotalTax;
             }
 
-            public void setGoodsTaxRate(int goodsTaxRate) {
+            public void setGoodsTaxRate(BigDecimal goodsTaxRate) {
                 this.goodsTaxRate = goodsTaxRate;
             }
 
-            public int getGoodsTaxRate() {
+            public BigDecimal getGoodsTaxRate() {
                 return goodsTaxRate;
             }
 

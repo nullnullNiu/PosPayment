@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.lakala.pos.R;
 import com.lakala.pos.bean.CreateOrderBean;
 import com.lakala.pos.bean.CreateOrderResultBean;
+import com.lakala.pos.bean.SubmitOrderBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.bean.TransactionEntity;
 import com.lakala.pos.common.DeviceInfo;
@@ -117,8 +121,8 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         invoiceSwitch = PreferencesUtils.getPreferenceBoolean("invoice_switch",false);
         btnSwitch.setChecked(invoiceSwitch);
         btnSwitch.setOnCheckedChangeListener(this);
-        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",1);
-        time_tv.setText("000" + Global.ORDER_SORT);
+        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
+        tv_title.setText("00" + Global.ORDER_SORT);
     }
 
 
@@ -215,7 +219,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             case R.id.cash_receipt_tv://收现金
                 cashPayment = true;
                 amount = money_et.getText().toString();
-                LogUtil.i("收款金额：" + money);
+                LogUtil.i("收款金额：" + amount);
                 if (TextUtils.isEmpty(amount)) {
                     ToastUtil.showToast("请输入金额");
                     return;
@@ -519,7 +523,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             return;
         }
         try {
-            voucher_no.setText(listBean.get(numb).getOrderNo());
+            voucher_no.setText("凭证号：" + listBean.get(numb).getVoucherNo());
             String time = listBean.get(numb).getCreateTime();
             String t = time.substring(time.indexOf(":") - 2, time.lastIndexOf(":"));
             LogUtil.e(time + "=================" + t);
@@ -540,6 +544,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtil.i(e.toString());
         }
     }
 
@@ -581,10 +586,10 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         createOrderBean.setTermId("A0010000");
         createOrderBean.setBusiType(busiType);
 
+
         try {
             JSONObject object = new JSONObject();
             object.put("merchantNo", Global.MERCHANT_NO); //结算商户号 必传
-//            object.put("merchantNo", "822290070111135"); //结算商户号 必传
             object.put("termId", term_no); //终端号
             object.put("orderInfo", "消费支出"); //订单信息
             object.put("channelId", "2021052614391"); //渠道编号 必传
@@ -688,6 +693,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         LogUtil.i("sdk 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
 
         if (data == null){
+            ToastUtil.showToast("暂无支付插件，请更新设备。");
             LogUtil.i("data == null");
             return;
         }
@@ -721,6 +727,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             case Activity.RESULT_CANCELED:
                 if (reason != null) {
                     ToastUtil.showToast(reason);
+                    LogUtil.i("reason：" + reason);
                 }
                 LogUtil.i("交易取消 :   响应吗：" + code + "       响应错误信息：" + message + "\n\r 响应数据：" + datas);
                 break;
@@ -728,6 +735,7 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
             case -2:
                 if (reason != null) {
                     ToastUtil.showToast(" 交易失败：\n\n\r" + reason + message);
+                    LogUtil.i("reason：" + reason);
                 }
                 LogUtil.i("交易失败 :   响应吗：" + code + "       响应错误信息：" + message + "\n\r 响应数据：" + datas);
                 break;
@@ -764,6 +772,10 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         //折扣金额
         String discountAmt = data.getExtras().getString("discountamt");
 
+        LogUtil.i("报文类型:" + msg_tp + "   支付方式:" + pay_tp+ "    检索参考号:" + refernumber
+                + "   订单号:" + order_no + "   交易时间戳:" + time_stamp +"    交易详情" + transactionEntity.toString()
+                + "   附加数据:" + adddataword + "   备注信息:" + remarkinfo +"    实付金额" + amt
+                + "   订单金额:" + orderAmt + "   折扣金额:" + discountAmt);
         uploaduploadOrder(transactionEntity.getOrderid_scan(),transactionEntity.getBatchno(),transactionEntity.getSystraceno(),pay_tp,amt);
 
     }
@@ -797,6 +809,11 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         String orderAmt = data.getExtras().getString("orderamt");
         //折扣金额
         String discountAmt = data.getExtras().getString("discountamt");
+
+        LogUtil.i("报文类型:" + msg_tp + "   支付方式:" + pay_tp+ "    检索参考号:" + refernumber
+                + "   订单号:" + order_no + "   卡号：" +card_no +  "   交易时间戳:" + time_stamp +"    交易详情" + transactionEntity.toString()
+                + "   附加数据:" + adddataword + "   备注信息:" + remarkinfo +"    实付金额" + amt + "  卡组织:"  +card_org
+                + "   订单金额:" + orderAmt + "   折扣金额:" + discountAmt);
 
         uploaduploadOrder(transactionEntity.getOrderid_scan(),transactionEntity.getBatchno(),transactionEntity.getSystraceno(),pay_tp,amt);
     }
@@ -833,17 +850,22 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
 
     // 上送订单返回
     @Override
-    public void uploaduploadOrderResult(String result) {
+    public void uploaduploadOrderResult(SubmitOrderBean bean) {
+        LogUtil.i("上送订单成功数据返回： "+bean.toString());
         Global.ORDER_SORT ++;
         PreferencesUtils.setPreferenceInt("ORDER_SORT",Global.ORDER_SORT);
-        time_tv.setText("000" + Global.ORDER_SORT);
-
-        if (cashPayment && invoiceSwitch){ //现金支付 且 开票开关开着 弹出开票码
-            billingCodeDialog = new BillingCodeDialog().newInstance("billingCode");
-            billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
+        tv_title.setText("00" + Global.ORDER_SORT);
+        if (cashPayment && invoiceSwitch){
+            if (null == bean || null == bean.getData()) {
+                ToastUtil.showToast("交易成功，发票码获取失败了");
+            } else {
+                billingCodeDialog = new BillingCodeDialog().newInstance(bean.getData().getUrl());
+                billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
+            }
+        }else {
+            ToastUtil.showToast("交易成功！");
         }
     }
-
 
 
 }

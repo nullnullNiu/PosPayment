@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.lakala.pos.ui.MVPActivity;
 import com.lakala.pos.ui.MyApplication;
 import com.lakala.pos.utils.LogUtil;
 import com.lakala.pos.utils.PreferencesUtils;
+import com.lakala.pos.utils.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,6 +71,9 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     @BindView(R.id.et_undo_password)
     EditText undoPassword;
 
+
+    String revokePwd = "";
+
     StringBuilder  builderAcc = new StringBuilder();
     StringBuilder  builderCas = new StringBuilder();
     StringBuilder  builderBoss = new StringBuilder();
@@ -89,6 +94,7 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
         swCollection.setOnCheckedChangeListener(this);
         swScan.setOnCheckedChangeListener(this);
         swCash.setOnCheckedChangeListener(this);
+        undoPassword.setText(PreferencesUtils.getPreferenceString("revoke_pwd", "123456"));
         undoPassword.addTextChangedListener(this);
     }
 
@@ -107,10 +113,10 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     @Override
     public void afterTextChanged(Editable s) {
         LogUtil.i("afterTextChanged 修改后"  + s );
-       String pw = s.toString();
-        if (pw.length()>=6){
-            PreferencesUtils.setPreference("revoke_pwd", pw);
-        }
+        revokePwd = s.toString();
+//        if (revokePwd.length()>=6){
+//            PreferencesUtils.setPreference("revoke_pwd", revokePwd);
+//        }
     }
 
 
@@ -161,7 +167,7 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
     }
 
 
-    @OnClick({R.id.back_tv, R.id.boss, R.id.accounting, R.id.cashier})
+    @OnClick({R.id.back_tv, R.id.boss, R.id.accounting, R.id.cashier,R.id.submit_tv})
     public void onViewClicked(View view) {
         clearBuilder();
         Intent i = new Intent(this,SetPersonnelActivity.class);
@@ -180,6 +186,18 @@ public class SetingActivity extends MVPActivity<ISetingView, SetPresenter>
             case R.id.cashier: // 收银员
                 i.putExtra("type",3);
                 startActivity(i);
+                break;
+
+            case R.id.submit_tv: // 确定
+                if (!TextUtils.isEmpty(revokePwd)) {
+                    if (revokePwd.length() >= 6) {
+                        PreferencesUtils.setPreference("revoke_pwd", revokePwd);
+                        ToastUtil.showToast("撤销密码设置成功！");
+                    }else {
+                        ToastUtil.showToast("撤销密码非法，请输入6位数数字密码。");
+                        LogUtil.i("rePwd : " + revokePwd);
+                    }
+                }
                 break;
         }
     }

@@ -54,7 +54,7 @@ public class TranQueryAdapter extends BaseAdapter {
         }
 
 
-        viewHolder.tranCode.setText(data_list.get(position).getOrderNo());
+        viewHolder.tranCode.setText(data_list.get(position).getVoucherNo());
         viewHolder.createTime.setText(data_list.get(position).getCreateTime());
         viewHolder.amount.setText(data_list.get(position).getAmount()+"");
 

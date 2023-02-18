@@ -1,5 +1,6 @@
 package com.lakala.pos.bean;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -130,7 +131,6 @@ public class TranQueryBean {
 
     }
 
-
     public class Records {
 
         private String orderNo;
@@ -150,6 +150,7 @@ public class TranQueryBean {
         private double amount;
         private int pageNum;
         private int pageSize;
+        private int payType;
 
         public void setOrderNo(String orderNo) {
             this.orderNo = orderNo;
@@ -287,5 +288,14 @@ public class TranQueryBean {
             return pageSize;
         }
 
+        public void setPayType(int payType) {
+            this.payType = payType;
+        }
+
+        public int getPayType() {
+            return payType;
+        }
+
     }
+
 }

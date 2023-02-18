@@ -157,8 +157,8 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
         LogUtil.e("size ===========" + tranQueryBean.getData().getRecords().size());
         listView.removeFooterView(footerLoadView);
 
-        LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
-        if (pageNum > 1 && totalItemCount < 10) {
+        if (pageNum > 1 && tranQueryBean.getData().getRecords().size() < 10) {
+            LogUtil.i("第" + pageNum +"页。。。。。。。。。。。。。。。。。");
             listView.setVisibility(View.VISIBLE);
             tvEmpty.setVisibility(View.GONE);
             listView.addFooterView(footerView);
@@ -167,7 +167,18 @@ public class TranQueryFragment extends Fragment implements AdapterView.OnItemCli
             return;
         }
 
-        LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
+
+//        LogUtil.i("pageNum:  " + pageNum + "      totalItemCount:  " + totalItemCount);
+//        if (pageNum > 1 && totalItemCount > 10) {
+//            LogUtil.i("第" + pageNum +"页。。。。。。。。。。。。。。。。。");
+//            listView.setVisibility(View.VISIBLE);
+//            tvEmpty.setVisibility(View.GONE);
+//            listView.addFooterView(footerView);
+//            tranQueryAdapter.notifyDataSetChanged();
+//            isScrollLoad = false;
+//            return;
+//        }
+
         if (null != tranQueryBean && null != tranQueryBean.getData() && 0 < tranQueryBean.getData().getRecords().size()) {
             listView.setVisibility(View.VISIBLE);
             tvEmpty.setVisibility(View.GONE);

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lakala.pos.bean.CreateOrderResultBean;
+import com.lakala.pos.bean.SubmitOrderBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.common.Global;
 import com.lakala.pos.http.net.DataListener;
@@ -120,7 +121,8 @@ public class MainActivityPresenter extends BasePresenter<IHomeView> {
                 JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
                 int code = jsonObject.get("code").getAsInt();
                 if (code == 0) {
-                    getView().uploaduploadOrderResult(result);
+                    SubmitOrderBean bean = new Gson().fromJson(result,SubmitOrderBean.class);
+                    getView().uploaduploadOrderResult(bean);
                 } else {
                     String msg = jsonObject.get("message").getAsString();
                     ToastUtil.showToast(msg);

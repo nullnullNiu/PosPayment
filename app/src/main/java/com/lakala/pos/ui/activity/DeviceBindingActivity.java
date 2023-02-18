@@ -64,6 +64,11 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
     private String name = "";
 
+    private String tax = "";
+    private String entName = "";
+    private String goodsName = "";
+    private String etAddress = "";
+
     private String etPhone;
     private String etAdmin;
 
@@ -113,8 +118,30 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         }
 
         et_entName.addTextChangedListener(this);
+
+        setViewInfo();
     }
 
+
+    private void setViewInfo(){
+        String entName = PreferencesUtils.getPreferenceString("entName", ""); //企业名称
+        et_entName.setText(entName);
+        String tax = PreferencesUtils.getPreferenceString("tax_number", ""); //企业税号
+        tax_number.setText(tax);
+        String goodsName = PreferencesUtils.getPreferenceString("goodsName", ""); //商品类型
+        et_goods_name.setText(goodsName);
+        String etAddress = PreferencesUtils.getPreferenceString("etAddress", ""); //门店地址
+        et_address.setText(etAddress);
+        String etDrawer = PreferencesUtils.getPreferenceString("drawer", ""); //开票人
+        et_drawer.setText(etDrawer);
+        String etReviewed = PreferencesUtils.getPreferenceString("checker", ""); //审核人
+        et_reviewed.setText(etReviewed);
+        String etAdmin = PreferencesUtils.getPreferenceString("admin", ""); // 收款人 换班人 管理员
+        et_admin.setText(etAdmin);
+        String etPhone = PreferencesUtils.getPreferenceString("phone", ""); // 手机号
+        et_phone.setText(etPhone);
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -168,25 +195,25 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
 
     private void bindDevice() {
-       String tax = tax_number.getText().toString();
+       tax = tax_number.getText().toString();
        if (TextUtils.isEmpty(tax)){
            ToastUtil.showToast("企业税号不能为空");
            return;
        }
 
-       String entName = et_entName.getText().toString();
+       entName = et_entName.getText().toString();
        if (TextUtils.isEmpty(entName)){
            ToastUtil.showToast("企业名称不能为空");
            return;
        }
 
-       String goodsName = et_goods_name.getText().toString();
+       goodsName = et_goods_name.getText().toString();
        if (TextUtils.isEmpty(goodsName)){
            ToastUtil.showToast("商品类型不能为空");
            return;
        }
 
-       String etAddress = et_address.getText().toString();
+       etAddress = et_address.getText().toString();
        if (TextUtils.isEmpty(etAddress)){
            ToastUtil.showToast("门店地址不能为空");
            return;
@@ -263,16 +290,23 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     }
 
 
+
     @Override
     public void loginResult(String token) {
         LogUtil.i("tk" + token);
-        PreferencesUtils.setPreference("checker", etReviewed); //复核人
+        PreferencesUtils.setPreference("entName", entName); //企业名称
+        PreferencesUtils.setPreference("tax_number", tax); //企业税号
+        PreferencesUtils.setPreference("goodsName", goodsName); //商品类型
+        PreferencesUtils.setPreference("etAddress", etAddress); //门店地址
         PreferencesUtils.setPreference("drawer", etDrawer); //开票人
-        PreferencesUtils.setPreference("admin", etAdmin); // 收款人 换班人
-        PreferencesUtils.setPreference("phone", etPhone);
+        PreferencesUtils.setPreference("checker", etReviewed); //审核人
+        PreferencesUtils.setPreference("admin", etAdmin); // 收款人 换班人 管理员
+        PreferencesUtils.setPreference("phone", etPhone); // 手机号
         PreferencesUtils.setPreference("possword", "123456");
         PreferencesUtils.setPreference("access_token", token);
         PreferencesUtils.setPreferenceBoolean("role_boss", true);
+
+
 
         ToastUtil.showToast("绑定成功。");
         startActivity(new Intent(this,MainActivity.class));

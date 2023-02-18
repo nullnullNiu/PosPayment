@@ -15,5 +15,6 @@
     <color name="gray9">#E1E1E1</color>
     <color name="dot_blue">#1296db</color>
     <color name="smjz_app_theme">#006cff</color>
+    <color name="app_theme_colors">#0C7EF3</color>
 
 </resources>

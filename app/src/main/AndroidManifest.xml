@@ -87,6 +87,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PosPayment"
         android:usesCleartextTraffic="true"
+        android:screenOrientation="portrait"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity

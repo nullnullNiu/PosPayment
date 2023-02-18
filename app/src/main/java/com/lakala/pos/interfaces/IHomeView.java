@@ -2,6 +2,7 @@ package com.lakala.pos.interfaces;
 
 
 import com.lakala.pos.bean.CreateOrderResultBean;
+import com.lakala.pos.bean.SubmitOrderBean;
 import com.lakala.pos.bean.TranQueryBean;
 import com.lakala.pos.interfaces.base.ILoadingView;
 
@@ -12,6 +13,6 @@ public interface IHomeView {
 
     void getCreateQrderResult(int term_type , CreateOrderResultBean bean);
 
-    void uploaduploadOrderResult(String result);
+    void uploaduploadOrderResult(SubmitOrderBean bean);
 
 }

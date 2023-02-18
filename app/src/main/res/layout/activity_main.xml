@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:text="111"
+            android:text="000"
             android:textColor="#999999"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/im_more"
@@ -89,19 +89,19 @@
             android:layout_height="wrap_content"
             android:text=""
             app:layout_constraintBottom_toBottomOf="@id/voucher_no"
-            app:layout_constraintEnd_toStartOf="@id/voucher"
+            app:layout_constraintEnd_toStartOf="@id/voucher_no"
             app:layout_constraintStart_toStartOf="@+id/expense_title"
             app:layout_constraintTop_toTopOf="@id/voucher_no" />
 
 
-        <TextView
-            android:id="@+id/voucher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="凭证号："
-            app:layout_constraintBottom_toBottomOf="@id/voucher_no"
-            app:layout_constraintEnd_toStartOf="@id/voucher_no"
-            app:layout_constraintTop_toTopOf="@id/voucher_no" />
+<!--        <TextView-->
+<!--            android:id="@+id/voucher"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="凭证号："-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/voucher_no"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/voucher_no"-->
+<!--            app:layout_constraintTop_toTopOf="@id/voucher_no" />-->
 
 
         <TextView
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
-            android:text="0000000"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="@id/time_tv"
             app:layout_constraintEnd_toStartOf="@id/time_tv"
             app:layout_constraintTop_toTopOf="@id/time_tv" />
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="00:00"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="@id/expense_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/expense_title" />

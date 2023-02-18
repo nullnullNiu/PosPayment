@@ -122,7 +122,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="2023"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -164,7 +164,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="收款码消费"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -207,7 +207,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="000000"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -248,7 +248,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="1111"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -330,7 +330,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="1"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -371,7 +371,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="1"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -400,6 +400,7 @@
                 android:paddingBottom="15dp"
                 android:text="生成开票码:"
                 android:textColor="@color/black"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -407,12 +408,13 @@
                 android:id="@+id/invoicing_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="right|center"
                 android:layout_weight="0.4"
-                android:gravity="right"
+                android:gravity="right|center"
                 android:paddingTop="10dp"
+                android:drawableStart="@mipmap/tran_code"
                 android:paddingBottom="10dp"
-                android:text="2023/01/28"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -453,7 +455,7 @@
                 android:gravity="right"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="2023/01/28"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>

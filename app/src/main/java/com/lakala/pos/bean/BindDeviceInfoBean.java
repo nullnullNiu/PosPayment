@@ -4,8 +4,9 @@ public class BindDeviceInfoBean {
 
     private String deviceCode;
     private String taxNo;
-    private String goodsName;
+    private String industry;
     private String address;
+    private String goodsName;
     private String position;
     private String drawer;
     private String checker;
@@ -29,6 +30,14 @@ public class BindDeviceInfoBean {
 
     public void setTaxNo(String taxNo) {
         this.taxNo = taxNo;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
     public String getGoodsName() {

@@ -275,7 +275,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
         bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);
-//        bean.setIndustry(etIndustry);
+        bean.setIndustry(etIndustry);
         bean.setAddress(etAddress);
         bean.setGoodsName(goodsName);
         bean.setDrawer(etDrawer);
@@ -312,7 +312,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         LogUtil.i("tk" + token);
         PreferencesUtils.setPreference("entName", entName); //企业名称
         PreferencesUtils.setPreference("tax_number", tax); //企业税号
-        PreferencesUtils.setPreference("etIndustry", etIndustry); //商品类型
+        PreferencesUtils.setPreference("etIndustry", etIndustry); //行业名称
         PreferencesUtils.setPreference("etAddress", etAddress); //门店地址
         PreferencesUtils.setPreference("goodsName", goodsName); //商品类型
         PreferencesUtils.setPreference("drawer", etDrawer); //开票人

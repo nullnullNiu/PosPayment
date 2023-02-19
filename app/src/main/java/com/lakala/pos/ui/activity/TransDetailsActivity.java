@@ -188,11 +188,11 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
             ToastUtil.showToast("订单号 或 流水号查询不到，无法打印。");
             return;
         }
-        LogUtil.e(" 打印 =============="+payOrderNo +"   " + batchbillNo);
+
         if (payType == 0) {
             //    银行卡交易重打印
             try {
-                LogUtil.e(" 打印 ==============");
+                LogUtil.e(" 打印 =============="+payOrderNo +"   " + batchbillNo);
                 ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
                 Intent intent = new Intent();
                 intent.setComponent(component);
@@ -221,7 +221,7 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
 
 //        扫码重打印
         try {
-            LogUtil.e(" 扫码重打印 ==============");
+            LogUtil.e(" 扫码重打印 ==============拉卡拉订单号 ： "+payOrderNo +"     批次流水号 ： " + batchbillNo);
             ComponentName component = new ComponentName("com.lkl.cloudpos.payment", "com.lkl.cloudpos.payment.activity.MainMenuActivity");
             Intent intent = new Intent();
             intent.setComponent(component);
@@ -230,6 +230,7 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
             bundle.putString("pay_tp", "1");//            支付方式
             bundle.putString("proc_tp", "00");//            交易类型
             bundle.putString("proc_cd", "700007");//            交易处理码
+//            bundle.putString("order_no", "20230219000000000000000000000001");//            订单号
 
             bundle.putString("appid", "com.lakala.pos");//            应用包名
             bundle.putString("time_stamp", System.currentTimeMillis() + "");//           交易时间戳

@@ -52,9 +52,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:text="设备序号"
         android:textSize="18sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -126,8 +136,7 @@
             app:layout_constraintTop_toBottomOf="@+id/enterprise_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="2.5"
-            app:layout_constraintStart_toStartOf="@+id/enterprise_name"
-            >
+            app:layout_constraintStart_toStartOf="@+id/enterprise_name" >
 
         </Spinner>
 
@@ -154,71 +163,35 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="1dp"-->
-<!--        android:background="@color/white"-->
-<!--        -->
-<!--        android:orientation="horizontal">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_industry"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:paddingStart="25dp"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            android:text="行业"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/et_industry"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="0.45"-->
-<!--            android:background="@null"-->
-<!--            android:clickable="true"-->
-<!--            android:focusableInTouchMode="true"-->
-<!--            android:hint="请输入行业名称"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            android:singleLine="true"-->
-<!--            android:textColor="#333333"-->
-<!--            android:textColorHint="#999999"-->
-<!--            android:textSize="15sp"-->
-<!--            app:layout_constrainedWidth="true" />-->
-
-<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/white"
+
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_industry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="25dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="商品类型"
+            android:text="行业"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_goods_name"
+            android:id="@+id/et_industry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.45"
             android:background="@null"
             android:clickable="true"
             android:focusableInTouchMode="true"
-            android:hint="请输入商品类型"
+            android:hint="请输入行业名称（如餐饮服务...）"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:singleLine="true"
@@ -228,6 +201,42 @@
             app:layout_constrainedWidth="true" />
 
     </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="1dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:paddingStart="25dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:text="商品类型"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_goods_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="0.45"-->
+<!--            android:background="@null"-->
+<!--            android:clickable="true"-->
+<!--            android:focusableInTouchMode="true"-->
+<!--            android:hint="请输入商品类型"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:textColor="#333333"-->
+<!--            android:textColorHint="#999999"-->
+<!--            android:textSize="15sp"-->
+<!--            app:layout_constrainedWidth="true" />-->
+
+<!--    </LinearLayout>-->
 
 
     <LinearLayout
@@ -319,6 +328,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="商品名称"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_goods_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:background="@null"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:hint="请输入商品名称（如餐饮费...)"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            app:layout_constrainedWidth="true" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -474,9 +519,9 @@
     </LinearLayout>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
         <TextView
             android:id="@+id/submit_modify"
@@ -496,6 +541,10 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

@@ -123,8 +123,6 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         invoiceSwitch = PreferencesUtils.getPreferenceBoolean("invoice_switch",false);
         btnSwitch.setChecked(invoiceSwitch);
         btnSwitch.setOnCheckedChangeListener(this);
-//        Global.ORDER_SORT = PreferencesUtils.getPreferenceInt("ORDER_SORT",0);
-//        tv_title.setText("00" + Global.ORDER_SORT);
         judge();
     }
 

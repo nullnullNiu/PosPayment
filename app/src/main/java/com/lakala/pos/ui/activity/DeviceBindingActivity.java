@@ -43,8 +43,13 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
     TextView submit_modify; // 确认修改
     @BindView(R.id.tv_tax_number)
     TextView tax_number; // 企业税号
+
+    @BindView(R.id.et_industry)
+    EditText et_industry; // 行业
+
     @BindView(R.id.et_goods_name)
-    EditText et_goods_name; // 行业
+    EditText et_goods_name; // 商品名称
+
     @BindView(R.id.et_address)
     EditText et_address; // 门店地址
     @BindView(R.id.et_drawer)
@@ -66,6 +71,7 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
     private String tax = "";
     private String entName = "";
+    private String etIndustry = "";
     private String goodsName = "";
     private String etAddress = "";
 
@@ -128,6 +134,8 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         et_entName.setText(entName);
         String tax = PreferencesUtils.getPreferenceString("tax_number", ""); //企业税号
         tax_number.setText(tax);
+        String industry = PreferencesUtils.getPreferenceString("etIndustry", ""); //行业名称
+        et_industry.setText(industry);
         String goodsName = PreferencesUtils.getPreferenceString("goodsName", ""); //商品类型
         et_goods_name.setText(goodsName);
         String etAddress = PreferencesUtils.getPreferenceString("etAddress", ""); //门店地址
@@ -207,11 +215,12 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
            return;
        }
 
-       goodsName = et_goods_name.getText().toString();
-       if (TextUtils.isEmpty(goodsName)){
-           ToastUtil.showToast("商品类型不能为空");
-           return;
-       }
+        etIndustry = et_industry.getText().toString();
+        if (TextUtils.isEmpty(etIndustry)){
+            ToastUtil.showToast("行业名称不能为空");
+            return;
+        }
+
 
        etAddress = et_address.getText().toString();
        if (TextUtils.isEmpty(etAddress)){
@@ -219,7 +228,14 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
            return;
        }
 
-       etDrawer = et_drawer.getText().toString();
+        goodsName = et_goods_name.getText().toString();
+        if (TextUtils.isEmpty(goodsName)){
+            ToastUtil.showToast("商品类型不能为空");
+            return;
+        }
+
+
+        etDrawer = et_drawer.getText().toString();
        if (TextUtils.isEmpty(etDrawer)){
            ToastUtil.showToast("开票人不能为空");
            return;
@@ -259,13 +275,13 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
 
         bean.setDeviceCode(Global.DEVICE_ID);
         bean.setTaxNo(tax);
-        bean.setGoodsName(goodsName);
+//        bean.setIndustry(etIndustry);
         bean.setAddress(etAddress);
+        bean.setGoodsName(goodsName);
         bean.setDrawer(etDrawer);
         bean.setChecker(etReviewed);
         bean.setSellerName(entName);
         bean.setSellerNo(Global.MERCHANT_NO);
-//        bean.setSellerNo("2112");
         bean.setBossName(etAdmin);
         bean.setBossPhone(etPhone);
 
@@ -296,8 +312,9 @@ public class DeviceBindingActivity extends MVPActivity<IDeviceBindView, DeviceBi
         LogUtil.i("tk" + token);
         PreferencesUtils.setPreference("entName", entName); //企业名称
         PreferencesUtils.setPreference("tax_number", tax); //企业税号
-        PreferencesUtils.setPreference("goodsName", goodsName); //商品类型
+        PreferencesUtils.setPreference("etIndustry", etIndustry); //商品类型
         PreferencesUtils.setPreference("etAddress", etAddress); //门店地址
+        PreferencesUtils.setPreference("goodsName", goodsName); //商品类型
         PreferencesUtils.setPreference("drawer", etDrawer); //开票人
         PreferencesUtils.setPreference("checker", etReviewed); //审核人
         PreferencesUtils.setPreference("admin", etAdmin); // 收款人 换班人 管理员

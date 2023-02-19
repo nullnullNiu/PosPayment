@@ -885,16 +885,24 @@ public class MainActivity extends MVPActivity<IHomeView, MainActivityPresenter> 
         Global.ORDER_SORT ++;
         PreferencesUtils.setPreferenceInt("ORDER_SORT",Global.ORDER_SORT);
         tv_title.setText("00" + Global.ORDER_SORT);
+//        pageNum =1;
+        mPresenter.queryOrders(pageNum);
+
         if (cashPayment && invoiceSwitch){
             if (null == bean || null == bean.getData()) {
                 ToastUtil.showToast("交易成功，发票码获取失败了");
             } else {
-                billingCodeDialog = new BillingCodeDialog().newInstance(bean.getData().getUrl());
-                billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
+                if (TextUtils.isEmpty(bean.getData().getUrl())){
+                    ToastUtil.showToast("交易成功，发票码获取失败了");
+                }else {
+                    billingCodeDialog = new BillingCodeDialog().newInstance(bean.getData().getUrl());
+                    billingCodeDialog.show(getFragmentManager(), "billingCodeDialog");
+                }
             }
         }else {
             ToastUtil.showToast("交易成功！");
         }
+
     }
 
 

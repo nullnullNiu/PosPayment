@@ -131,6 +131,12 @@ public class SummaryActivity extends MVPActivity<ISummaryView, SummaryPresenter>
             tvEmpty.setVisibility(View.VISIBLE);
             return;
         }
+
+        if (summaryBean.getData().getSUCCESS() == null && summaryBean.getData().getREFUND()  == null) {
+            tvEmpty.setVisibility(View.VISIBLE);
+            return;
+        }
+
         tvEmpty.setVisibility(View.GONE);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);

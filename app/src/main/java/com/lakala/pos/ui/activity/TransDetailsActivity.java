@@ -144,7 +144,9 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
             return;
         }
         payOrderNo = bean.getData().getOrderNo();
+
         batchbillNo = bean.getData().getBatchNo();
+
         payType = bean.getData().getPayType();
         trans_data.setText(bean.getData().getTradeTime()); //交易时间
 
@@ -186,7 +188,7 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
             ToastUtil.showToast("订单号 或 流水号查询不到，无法打印。");
             return;
         }
-
+        LogUtil.e(" 打印 =============="+payOrderNo +"   " + batchbillNo);
         if (payType == 0) {
             //    银行卡交易重打印
             try {
@@ -251,6 +253,11 @@ public class TransDetailsActivity extends MVPActivity<ITransView, TransPresenter
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i("打印信息查询 返回信息：  requestCode=" + requestCode + "  resultCode =" + resultCode);
 
+        if (data == null){
+            ToastUtil.showToast("暂无打印插件，请更新设备。");
+            LogUtil.i("data == null");
+            return;
+        }
         String reason = data.getExtras().getString("reason");
         String code = data.getExtras().getString("rescode");//响应吗
         String message = data.getExtras().getString("reason");//相应信息
